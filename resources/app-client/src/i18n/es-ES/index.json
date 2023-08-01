@@ -1,0 +1,23 @@
+{
+  "global": {
+    "home": "Inicio",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "update": "Actualizar",
+    "headers": {
+      "id": "ID",
+      "name": "Nombre",
+      "options": "Opciones"
+    }
+  },
+  "products": {
+    "attributesGroup": {
+      "title": "Atributos",
+      "create_attribute": "Crear atributo",
+      "edit_attribute": "Editar atributo",
+      "attribute_name": "Nombre del atributo"
+    }
+  }
+}

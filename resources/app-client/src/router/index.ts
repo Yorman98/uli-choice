@@ -10,6 +10,7 @@ const router = createRouter({
       children: [
         {
           path: 'dashboard',
+          name: 'adminDashboard',
           component: () => import('../pages/dashboard.vue'),
         },
         {
@@ -35,6 +36,10 @@ const router = createRouter({
         {
           path: 'form-layouts',
           component: () => import('../pages/form-layouts.vue'),
+        },
+        {
+          path: 'product/categories',
+          component: () => import('@/views/pages/products/UCProductCategories.vue'),
         },
       ],
     },

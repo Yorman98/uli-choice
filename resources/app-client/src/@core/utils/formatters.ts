@@ -26,7 +26,7 @@ export const formatDate = (value: string, formatting: Intl.DateTimeFormatOptions
   if (!value)
     return value
 
-  return new Intl.DateTimeFormat('en-US', formatting).format(new Date(value))
+  return new Intl.DateTimeFormat('es-ES', formatting).format(new Date(value))
 }
 
 /**
@@ -42,7 +42,7 @@ export const formatDateToMonthShort = (value: string, toTimeForCurrentDay = true
   if (toTimeForCurrentDay && isToday(date))
     formatting = { hour: 'numeric', minute: 'numeric' }
 
-  return new Intl.DateTimeFormat('en-US', formatting).format(new Date(value))
+  return new Intl.DateTimeFormat('es-ES', formatting).format(new Date(value))
 }
 
 export const prefixWithPlus = (value: number) => value > 0 ? `+${value}` : value
