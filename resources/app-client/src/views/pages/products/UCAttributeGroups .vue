@@ -1,70 +1,74 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { ref, Ref } from 'vue';
+import type { Ref } from 'vue'
+import { ref } from 'vue'
 import UCHeaderPage from '@/components/helpers/UCHeaderPage.vue'
-import UCEditTable from "@/components/helpers/UCEditTable.vue";
+import UCEditTable from '@/components/helpers/UCTable.vue'
 
-const { t } = useI18n();
-const headers: any[] =  [
+const { t } = useI18n()
+
+const headers: any[] = [
   { title: t('global.headers.id'), align: 'start', sortable: false, key: 'id' },
   { title: t('global.headers.name'), key: 'name' },
-  { title: t('global.headers.options'), align: 'end', key: 'actions', sortable: false }
-];
+  { title: t('global.headers.options'), align: 'end', key: 'actions', sortable: false },
+]
+
 const attributes: Object[] = [
   {
     id: 1,
-    name: 'Talla'
+    name: 'Talla',
   },
   {
     id: 2,
-    name: 'Color'
-  }
-];
+    name: 'Color',
+  },
+]
+
 const path: Object[] = [
   {
     title: t('global.home'),
     disabled: false,
     to: {
-      name: 'adminDashboard'
+      name: 'adminDashboard',
     },
   },
   {
-    title:  t('products.attributesGroup.title'),
-    disabled: true
-  }
-];
-let dialog: Ref<boolean> = ref(false);
-let isEdit: Ref<boolean> = ref(false);
-let attribute: Object = {};
-function editItem (payload: Object) {
-  attribute = payload;
-  isEdit.value = true;
-  dialog.value = true;
+    title: t('products.attributesGroup.title'),
+    disabled: true,
+  },
+]
+
+const dialog: Ref<boolean> = ref(false)
+const isEdit: Ref<boolean> = ref(false)
+let attribute: Object = {}
+function editItem(payload: Object) {
+  attribute = payload
+  isEdit.value = true
+  dialog.value = true
 }
 
-function deleteItem (payload: number) {
-  console.log(payload);
+function deleteItem(payload: number) {
+  console.log(payload)
 }
 
-function openDialog () {
-  dialog.value = true;
+function openDialog() {
+  dialog.value = true
 }
-function closeDialog () {
-  dialog.value = false;
-  isEdit.value = false;
-  attribute = {};
+function closeDialog() {
+  dialog.value = false
+  isEdit.value = false
+  attribute = {}
 }
 
-function saveAttributeData () {
-  console.log(attribute);
-  closeDialog();
+function saveAttributeData() {
+  console.log(attribute)
+  closeDialog()
 }
 </script>
 
 <template>
   <VRow>
     <VCol cols="12">
-
       <UCHeaderPage
         class="mb-5"
         :title="t('products.attributesGroup.title')"
@@ -72,7 +76,6 @@ function saveAttributeData () {
       />
 
       <VCard class="pa-4">
-
         <VCardTitle class="d-flex justify-end mb-4">
           <VBtn @click="openDialog">
             <VIcon
@@ -95,7 +98,6 @@ function saveAttributeData () {
             @deleteItem="deleteItem"
           />
         </VCardText>
-
       </VCard>
 
       <VDialog
@@ -105,7 +107,6 @@ function saveAttributeData () {
         persistent
       >
         <VCard class="pa-4">
-
           <VCardTitle>
             <h4 class="text-h4 mb-4">
               {{ isEdit ? $t('products.attributesGroup.edit_attribute') : $t('products.attributesGroup.create_attribute') }}
@@ -123,16 +124,16 @@ function saveAttributeData () {
           <VCardActions class="d-flex justify-end">
             <VBtn
               color="primary"
-              @click="closeDialog"
               outlined
+              @click="closeDialog"
             >
               {{ $t('global.cancel') }}
             </VBtn>
 
             <VBtn
               color="primary"
-              @click="saveAttributeData"
               flat
+              @click="saveAttributeData"
             >
               {{ isEdit ? $t('global.update') : $t('global.save') }}
             </VBtn>

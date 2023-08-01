@@ -39,7 +39,7 @@ const router = createRouter({
         },
         {
           path: 'product/categories',
-          component: () => import('@/views/pages/products/UCProductCategories.vue'),
+          component: () => import('@/views/pages/products/UCAttributeGroups .vue'),
         },
       ],
     },
