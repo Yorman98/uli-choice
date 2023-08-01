@@ -71,6 +71,7 @@ class AuthController extends Controller
             'phone_number' => 'nullable|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6',
+            'role' => 'nullable|string|in:admin,client'
         ];
 
         $validator = Validator::make($request->all(), $validatorRules);
@@ -88,6 +89,7 @@ class AuthController extends Controller
             'email' => $request->email,
             'phone_number' => $request->phone_number ?? null,
             'password' => Hash::make($request->password),
+            'role' => $request->type ?? null
         ]);
 
         return response()->json([
