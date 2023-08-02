@@ -219,4 +219,7 @@ yarn.lock
 # and uncomment the following lines
 # .pnp.*
 
+# Ignore all directories called ds_store anywhere
+*.DS_Store*
+
 # End of https://www.toptal.com/developers/gitignore/api/vue,vuejs,yarn,visualstudiocode,phpunit,phpstorm,laravel,composer
