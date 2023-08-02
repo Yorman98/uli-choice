@@ -95,7 +95,7 @@ class AttributeGroupController extends Controller
     public function store(Request $request): JsonResponse
     {
         $validatorRules = [
-            'name' => 'required|string',
+            'name' => 'required|string|unique:attribute_groups,name',
             'group_type' => ['required', 'string', Rule::in(['select', 'radio'])]
         ];
 

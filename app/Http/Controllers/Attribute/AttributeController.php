@@ -54,7 +54,7 @@ class AttributeController extends Controller
     public function store(Request $request): JsonResponse
     {
         $validatorRules = [
-            'name' => 'required|string',
+            'name' => 'required|string|unique:attributes,name,NULL,id,attribute_group_id,' . $request->attribute_group_id,
             'attribute_group_id' => 'required|integer',
         ];
 
