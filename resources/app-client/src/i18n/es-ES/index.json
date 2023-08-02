@@ -6,18 +6,29 @@
     "cancel": "Cancelar",
     "save": "Guardar",
     "update": "Actualizar",
+    "see": "Ver",
     "headers": {
       "id": "ID",
       "name": "Nombre",
       "options": "Opciones"
     }
   },
+  "navbar": {
+    "attributes_groups": "Grupo de atributos",
+    "attributes": "Atributos",
+    "categories": "Categorias"
+  },
   "products": {
-    "attributesGroup": {
-      "title": "Atributos",
-      "create_attribute": "Crear atributo",
+    "attributes": {
+      "attributes_group_title": "Grupo de atributos",
+      "create_group_attribute": "Crear grupo de atributos",
       "edit_attribute": "Editar atributo",
-      "attribute_name": "Nombre del atributo"
+      "attribute_name": "Nombre del atributo",
+      "attribute_list_title": "Lista de atributos",
+      "create_attribute": "Crear atributo"
+    },
+    "categories": {
+      "categories_group_title": "Categorias"
     }
   }
 }

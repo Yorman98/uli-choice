@@ -86,6 +86,24 @@ const upgradeBanner = computed(() => {
           to: '/account-settings',
         }"
       />
+      <VerticalNavLink
+        :item="{
+          title: $t('navbar.attributes_groups'),
+          icon: 'mdi-account-cog-outline',
+          to: {
+            name: 'attributesGroups',
+          },
+        }"
+      />
+      <VerticalNavLink
+        :item="{
+          title: $t('navbar.categories'),
+          icon: 'mdi-account-cog-outline',
+          to: {
+            name: 'categories',
+          },
+        }"
+      />
 
       <!-- 👉 Pages -->
       <VerticalNavSectionTitle
