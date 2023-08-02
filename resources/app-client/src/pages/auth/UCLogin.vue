@@ -1,12 +1,26 @@
 <script setup lang="ts">
-import AuthProvider from '@/views/pages/authentication/AuthProvider.vue'
-import logo from '@images/logo.svg?raw'
+import logo from '@images/logo-uli.png'
+import { useUserStore } from '@/store/user'
+import router from '@/router'
+import { validateMatch, validateRequired } from '@/services/FormValidationService'
+
+const userStore = useUserStore()
 
 const form = ref({
   email: '',
   password: '',
   remember: false,
 })
+
+const checkLogin = async () => {
+  await userStore.login({
+    email: form.value.email,
+    password: form.value.password,
+  })
+
+  // redirect to dashboard
+  router.push('/')
+}
 
 const isPasswordVisible = ref(false)
 </script>
@@ -18,40 +32,35 @@ const isPasswordVisible = ref(false)
       max-width="448"
     >
       <VCardItem class="justify-center">
-        <template #prepend>
-          <div class="d-flex">
-            <div
-              class="d-flex text-primary"
-              v-html="logo"
-            />
-          </div>
-        </template>
-
-        <VCardTitle class="text-2xl font-weight-bold">
-          sneat
-        </VCardTitle>
+        <VImg
+          class="bg-white"
+          width="120"
+          :aspect-ratio="1"
+          :src="logo"
+        ></VImg>
       </VCardItem>
 
       <VCardText class="pt-2">
         <h5 class="text-h5 mb-1">
-          Welcome to sneat! 👋🏻
+          Welcome! 👋🏻
         </h5>
-        <p class="mb-0">
-          Please sign-in to your account and start the adventure
-        </p>
       </VCardText>
 
       <VCardText>
-        <VForm @submit.prevent="$router.push('/')">
+        <VForm @submit.prevent="checkLogin">
           <VRow>
             <!-- email -->
             <VCol cols="12">
               <VTextField
                 v-model="form.email"
                 autofocus
-                placeholder="johndoe@email.com"
-                label="Email"
+                placeholder="example@email.com"
+                :label="$t('global.email')"
                 type="email"
+                :rules="[
+                  (val) => validateRequired(val) || $t('registration.required_field'),
+                  (val) => validateMatch(val, 'email') || $t('registration.incorrect_email'),
+                ]"
               />
             </VCol>
 
@@ -59,32 +68,21 @@ const isPasswordVisible = ref(false)
             <VCol cols="12">
               <VTextField
                 v-model="form.password"
-                label="Password"
-                placeholder="············"
+                :label="$t('global.password')"
                 :type="isPasswordVisible ? 'text' : 'password'"
                 :append-inner-icon="isPasswordVisible ? 'bx-hide' : 'bx-show'"
+                :rules="[
+                  (val) => validateRequired(val) || $t('registration.required_field')
+                ]"
                 @click:append-inner="isPasswordVisible = !isPasswordVisible"
               />
 
-              <!-- remember me checkbox -->
-              <div class="d-flex align-center justify-space-between flex-wrap mt-1 mb-4">
-                <VCheckbox
-                  v-model="form.remember"
-                  label="Remember me"
-                />
-
-                <RouterLink
-                  class="text-primary ms-2 mb-1"
-                  to="javascript:void(0)"
-                >
-                  Forgot Password?
-                </RouterLink>
-              </div>
-
               <!-- login button -->
               <VBtn
+                class="mt-6 mb-3"
                 block
                 type="submit"
+                :disabled="!validateRequired(form.email) || !validateMatch(form.email, 'email') || !validateRequired(form.password)"
               >
                 Login
               </VBtn>
@@ -103,23 +101,6 @@ const isPasswordVisible = ref(false)
                 Create an account
               </RouterLink>
             </VCol>
-
-            <VCol
-              cols="12"
-              class="d-flex align-center"
-            >
-              <VDivider />
-              <span class="mx-4">or</span>
-              <VDivider />
-            </VCol>
-
-            <!-- auth providers -->
-            <VCol
-              cols="12"
-              class="text-center"
-            >
-              <AuthProvider />
-            </VCol>
           </VRow>
         </VForm>
       </VCardText>
@@ -128,5 +109,5 @@ const isPasswordVisible = ref(false)
 </template>
 
 <style lang="scss">
-@use "@core/scss/template/pages/page-auth.scss";
+@use "@core/scss/template/pages/page-auth";
 </style>

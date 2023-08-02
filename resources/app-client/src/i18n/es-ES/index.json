@@ -11,7 +11,13 @@
       "id": "ID",
       "name": "Nombre",
       "options": "Opciones"
-    }
+    },
+    "email": "Correo electrónico",
+    "password": "Contraseña"
+  },
+  "registration": {
+    "required_field": "Campo requerido",
+    "incorrect_email": "Dirección de correo electrónico incorrecto"
   },
   "navbar": {
     "attributes_groups": "Grupo de atributos",

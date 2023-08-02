@@ -48,9 +48,9 @@ const router = createRouter({
           component: () => import('@/pages/attributes/UCAttributesList.vue'),
         },
         {
-            path: 'categories',
-            name: 'categories',
-            component: () => import('@/pages/categories/UCCategories.vue'),
+          path: 'categories',
+          name: 'categories',
+          component: () => import('@/pages/categories/UCCategories.vue'),
         },
       ],
     },
@@ -60,7 +60,7 @@ const router = createRouter({
       children: [
         {
           path: 'login',
-          component: () => import('../pages/login.vue'),
+          component: () => import('../pages/auth/UCLogin.vue'),
         },
         {
           path: 'register',
