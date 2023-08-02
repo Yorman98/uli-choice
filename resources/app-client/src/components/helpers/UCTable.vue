@@ -14,12 +14,20 @@ defineProps({
     type: String,
     default: 'No data available',
   },
+  hasSubItems: {
+    type: Boolean,
+    default: false,
+  }
 })
 
-const emit = defineEmits(['editItem', 'deleteItem'])
+const emit = defineEmits(['editItem', 'deleteItem', 'goToItem'])
 
 function editItem(item: Object) {
   emit('editItem', item.selectable)
+}
+
+function goToItem(item: Object) {
+  emit('goToItem', item.selectable.id)
 }
 
 function deleteItem(item: Object) {
@@ -31,6 +39,7 @@ function deleteItem(item: Object) {
   <VDataTable
     :headers="headers as any"
     :items="items"
+    :no-data-text="noDataText"
     class="uc-table rounded-lg elevation-1"
   >
     <template #item.actions="{ item }">
@@ -42,6 +51,17 @@ function deleteItem(item: Object) {
         </template>
 
         <VList>
+          <VListItem
+            v-if="hasSubItems"
+            @click="goToItem(item)"
+          >
+            <template #prepend>
+              <VIcon icon="mdi-eye-outline" />
+            </template>
+
+            <VListItemTitle v-text="$t('global.see')" />
+          </VListItem>
+
           <VListItem @click="editItem(item)">
             <template #prepend>
               <VIcon icon="mdi-pencil-outline" />

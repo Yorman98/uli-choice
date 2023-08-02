@@ -38,8 +38,19 @@ const router = createRouter({
           component: () => import('../pages/form-layouts.vue'),
         },
         {
-          path: 'product/categories',
-          component: () => import('@/views/pages/products/UCAttributeGroups .vue'),
+          path: 'attributes/groups',
+          name: 'attributesGroups',
+          component: () => import('@/pages/attributes/UCAttributeGroups .vue'),
+        },
+        {
+          path: 'attributes/list/:id',
+          name: 'attributesList',
+          component: () => import('@/pages/attributes/UCAttributesList.vue'),
+        },
+        {
+            path: 'categories',
+            name: 'categories',
+            component: () => import('@/pages/categories/UCCategories.vue'),
         },
       ],
     },
