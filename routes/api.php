@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\Product\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,7 +27,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-/* 
+/*
 |--------------------------------------------------------------------------
 | Authentication Routes
 |--------------------------------------------------------------------------
@@ -42,37 +43,54 @@ Route::group(['prefix' => 'auth'], static function () {
 });
 
 
-/*
-|--------------------------------------------------------------------------
-| Attribute Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register attribute routes for your application.
-|
-*/
-Route::group(['prefix' => 'attribute'], static function () {
-    Route::get('/', [AttributeController::class, 'index']);
-    Route::get('/{id}', [AttributeController::class, 'show']);
-    Route::post('/', [AttributeController::class, 'store']);
-    Route::put('/{id}', [AttributeController::class, 'update']);
-    Route::delete('/{id}', [AttributeController::class, 'destroy']);
+Route::middleware('auth:sanctum')->group(static function () {
+    /*
+    |--------------------------------------------------------------------------
+    | Attribute Routes
+    |--------------------------------------------------------------------------
+    |
+    | Here is where you can register attribute routes for your application.
+    |
+    */
+    Route::group(['prefix' => 'attribute'], static function () {
+        Route::get('/', [AttributeController::class, 'index']);
+        Route::get('/{id}', [AttributeController::class, 'show']);
+        Route::post('/', [AttributeController::class, 'store']);
+        Route::put('/{id}', [AttributeController::class, 'update']);
+        Route::delete('/{id}', [AttributeController::class, 'destroy']);
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Attribute Group Routes
+    |--------------------------------------------------------------------------
+    |
+    | Here is where you can register attribute group routes for your application.
+    |
+    */
+    Route::group(['prefix' => 'attribute-group'], static function () {
+        Route::get('/', [AttributeGroupController::class, 'index']);
+        Route::get('/{id}', [AttributeGroupController::class, 'getAttributesByAttributeGroup']);
+        Route::post('/', [AttributeGroupController::class, 'store']);
+        Route::put('/{id}', [AttributeGroupController::class, 'update']);
+        Route::delete('/{id}', [AttributeGroupController::class, 'destroy']);
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Product Routes
+    |--------------------------------------------------------------------------
+    |
+    | Here is where you can register product routes for your application.
+    |
+    */
+    Route::group(['prefix' => 'product'], static function () {
+        Route::get('/', [ProductController::class, 'index']);
+        Route::get('/{id}', [ProductController::class, 'show']);
+        Route::post('/', [ProductController::class, 'store']);
+    });
 });
 
-/*
-|--------------------------------------------------------------------------
-| Attribute Group Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register attribute group routes for your application.
-|
-*/
-Route::group(['prefix' => 'attribute-group'], static function () {
-    Route::get('/', [AttributeGroupController::class, 'index']);
-    Route::get('/{id}', [AttributeGroupController::class, 'getAttributesByAttributeGroup']);
-    Route::post('/', [AttributeGroupController::class, 'store']);
-    Route::put('/{id}', [AttributeGroupController::class, 'update']);
-    Route::delete('/{id}', [AttributeGroupController::class, 'destroy']);
-});
 
 Route::group(['middleware' => ['auth:sanctum']], function() {
     Route::resource('clients', ClientController::class);

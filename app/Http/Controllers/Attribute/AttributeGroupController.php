@@ -11,13 +11,6 @@ use Illuminate\Validation\Rule;
 
 class AttributeGroupController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:sanctum', [
-            'except' => ['login', 'register']
-        ]);
-    }
-
     /**
      * Retrieve all attribute groups from the system.
      *

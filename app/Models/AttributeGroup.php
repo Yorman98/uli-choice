@@ -22,6 +22,8 @@ class AttributeGroup extends Model
 
     /**
      * Get the attributes for the group.
+     *
+     * @return HasMany
      */
     public function attributes(): HasMany
     {
