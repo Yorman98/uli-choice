@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+
 
 class ClientController extends Controller
 {
@@ -18,7 +21,6 @@ class ClientController extends Controller
         $clients = User::where('role', 'client')->get();
         return response()->json([
             'success' => true,
-            'message' => 'List of clients',
             'data' => $clients
         ], 200); 
     }
@@ -32,14 +34,23 @@ class ClientController extends Controller
     public function store(Request $request)
     {
         // Validate request
-        $request->validate([
+        $validatorRules = [
             'first_name' => 'required',
             'last_name' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:8',
-            'role' => 'required'
-        ]);
-        
+            'role' => 'required|in:admin,client'
+        ];
+
+        $validator = Validator::make($request->all(), $validatorRules);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
         // Create user
         $client = User::create([
             'first_name' => $request->first_name,
@@ -47,20 +58,13 @@ class ClientController extends Controller
             'phone_number' => $request->get('phone_number'), // optional
             'email' => $request->email,
             'role' => $request->role,
-            'password' => bcrypt($request->password)
+            'password' => Hash::make($request->password)
         ]);
-        
-        // Create token
-        $token = $client->createToken('auth_token')->plainTextToken;
         
         // Response
         return response()->json([
             'success' => true,
-            'message' => 'User created successfully',
-            'data' => [
-                'user' => $client,
-                'token' => $token
-            ]
+            'data' => $client
         ], 201); 
     }
 
@@ -86,7 +90,6 @@ class ClientController extends Controller
         // Response
         return response()->json([
             'success' => true,
-            'message' => 'User found',
             'data' => $client
         ], 200);    
     
@@ -113,23 +116,33 @@ class ClientController extends Controller
         }
                 
         // Validate request
-        $request->validate([
+        $validatorRules = [
             'first_name' => 'required',
             'last_name' => 'required',
             'email' => 'required|email|unique:users,email,'.$client->id,
-        ]);
+        ];
+
+        $validator = Validator::make($request->all(), $validatorRules);
+        
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation error',
+                'errors' => $validator->errors()
+            ], 422);
+        }
                 
         // Update user
         $client->update([
             'first_name' => $request->name,
             'last_name' => $request->last_name,
             'email' => $request->email,
+            'phone_number' => $request->get('phone_number'), // optional
         ]);
                 
         // Response
         return response()->json([
             'success' => true,
-            'message' => 'User updated successfully',
             'data' => $client
         ], 200);
     }
@@ -159,7 +172,6 @@ class ClientController extends Controller
         // Response
         return response()->json([
             'success' => true,
-            'message' => 'User deleted successfully',
             'data' => $client
         ], 200);
     }
