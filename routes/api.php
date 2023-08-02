@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\Attribute\AttributeGroupController;
 use App\Http\Controllers\Attribute\AttributeController;
+use App\Http\Controllers\ClientController;
 
 
 /*
@@ -73,3 +74,6 @@ Route::group(['prefix' => 'attribute-group'], static function () {
     Route::delete('/{id}', [AttributeGroupController::class, 'destroy']);
 });
 
+Route::group(['middleware' => ['auth:sanctum']], function() {
+    Route::resource('clients', ClientController::class);
+});
