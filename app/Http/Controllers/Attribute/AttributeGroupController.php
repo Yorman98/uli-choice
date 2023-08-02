@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\AttributeGroup;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class AttributeGroupController extends Controller
 {
