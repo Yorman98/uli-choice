@@ -1,9 +1,13 @@
 <?php
 
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\User\AuthController;
+use App\Http\Controllers\Attribute\AttributeGroupController;
+use App\Http\Controllers\Attribute\AttributeController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -21,9 +25,51 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
+/* 
+|--------------------------------------------------------------------------
+| Authentication Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register authentication routes for your application.
+|
+*/
 Route::group(['prefix' => 'auth'], static function () {
     Route::post('login', [AuthController::class, 'login']);
     Route::post('register', [AuthController::class, 'register']);
     Route::post('refresh', [AuthController::class, 'refresh']);
     Route::delete('logout', [AuthController::class, 'logout']);
 });
+
+
+/*
+|--------------------------------------------------------------------------
+| Attribute Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register attribute routes for your application.
+|
+*/
+Route::group(['prefix' => 'attribute'], static function () {
+    Route::get('/', [AttributeController::class, 'index']);
+    Route::get('/{id}', [AttributeController::class, 'show']);
+    Route::post('/', [AttributeController::class, 'store']);
+    Route::put('/{id}', [AttributeController::class, 'update']);
+    Route::delete('/{id}', [AttributeController::class, 'destroy']);
+});
+
+/*
+|--------------------------------------------------------------------------
+| Attribute Group Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register attribute group routes for your application.
+|
+*/
+Route::group(['prefix' => 'attribute-group'], static function () {
+    Route::get('/', [AttributeGroupController::class, 'index']);
+    Route::get('/{id}', [AttributeGroupController::class, 'getAttributesByAttributeGroup']);
+    Route::post('/', [AttributeGroupController::class, 'store']);
+    Route::put('/{id}', [AttributeGroupController::class, 'update']);
+    Route::delete('/{id}', [AttributeGroupController::class, 'destroy']);
+});
+
