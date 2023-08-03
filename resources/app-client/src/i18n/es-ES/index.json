@@ -10,7 +10,8 @@
     "headers": {
       "id": "ID",
       "name": "Nombre",
-      "options": "Opciones"
+      "options": "Opciones",
+      "description": "Descripción"
     },
     "email": "Correo electrónico",
     "password": "Contraseña"
@@ -34,7 +35,11 @@
       "create_attribute": "Crear atributo"
     },
     "categories": {
-      "categories_group_title": "Categorias"
+      "categories_group_title": "Categorias",
+      "create_category": "Crear categoria",
+      "edit_category": "Editar categoria",
+      "category_name": "Nombre de la categoria",
+      "category_description": "Descripción de la categoria"
     }
   }
 }

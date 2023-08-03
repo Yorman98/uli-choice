@@ -2,7 +2,7 @@
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router';
 import { ref, Ref } from "vue"
-import type { AttributeGroupInterface } from '@/store/interfaces/AttributeInterface'
+import type { AttributeGroupInterface } from '@/store/types/AttributeInterface'
 import UCHeaderPage from '@/components/helpers/UCHeaderPage.vue'
 import UCTable from '@/components/helpers/UCTable.vue'
 import UCCreateAttributeDialog from '@/pages/attributes/components/UCCreateAttributeDialog.vue'
@@ -60,11 +60,11 @@ function editItem(payload: AttributeGroupInterface) {
   attributeDialog.value.openDialog()
 }
 
-function goToGroup(payload: number) {
+function goToGroup(payload: AttributeGroupInterface) {
   router.push({
     name: 'attributesList',
     params: {
-      id: payload,
+      id: payload.id,
     },
   })
 }
@@ -129,7 +129,7 @@ function saveAttributeData() {
         :isEdit="isEdit"
         :attribute="attribute"
         @closeDialog="closeDialog"
-        @saveAttributeData="saveAttributeData"
+        @saveData="saveAttributeData"
       />
     </VCol>
   </VRow>

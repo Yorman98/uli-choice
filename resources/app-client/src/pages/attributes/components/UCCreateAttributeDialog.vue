@@ -14,7 +14,7 @@ defineProps({
 
 defineExpose({ openDialog })
 
-const emit = defineEmits(['closeDialog', 'saveAttributeData'])
+const emit = defineEmits(['closeDialog', 'saveData'])
 
 const dialog: Ref<boolean> = ref(false)
 
@@ -27,9 +27,9 @@ function closeDialog() {
   emit('closeDialog')
 }
 
-function saveAttributeData() {
+function saveData() {
   dialog.value = false
-  emit('saveAttributeData')
+  emit('saveData')
 }
 </script>
 
@@ -65,7 +65,7 @@ function saveAttributeData() {
         <VBtn
             color="primary"
             flat
-            @click="saveAttributeData"
+            @click="saveData"
         >
           {{ isEdit ? $t('global.update') : $t('global.save') }}
         </VBtn>

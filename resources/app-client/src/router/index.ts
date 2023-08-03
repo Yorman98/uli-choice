@@ -60,6 +60,11 @@ const router = createRouter({
           name: 'categories',
           component: () => import('@/pages/categories/UCCategories.vue'),
         },
+        {
+          path: 'category/:category',
+          name: 'subCategories',
+          component: () => import('@/pages/categories/UCCategories.vue'),
+        },
       ],
     },
     {
