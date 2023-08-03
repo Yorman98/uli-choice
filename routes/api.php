@@ -1,7 +1,5 @@
 <?php
 
-
-use App\Http\Controllers\Product\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -9,6 +7,9 @@ use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\Attribute\AttributeGroupController;
 use App\Http\Controllers\Attribute\AttributeController;
 use App\Http\Controllers\ProductCategory\CategoryController;
+use App\Http\Controllers\Product\ProductController;
+use App\Http\Controllers\Purchase\PurchaseController;
+use App\Http\Controllers\Provider\ProviderController;
 use App\Http\Controllers\ClientController;
 
 
@@ -108,6 +109,39 @@ Route::middleware('auth:sanctum')->group(static function () {
         Route::post('/', [CategoryController::class, 'store']);
         Route::put('/{id}', [CategoryController::class, 'update']);
         Route::delete('/{id}', [CategoryController::class, 'destroy']);
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Purchase Routes
+    |--------------------------------------------------------------------------
+    |
+    | Here is where you can register purchase routes for your application.
+    |
+    */
+    Route::group(['prefix' => 'purchase'], static function () {
+        Route::get('/', [PurchaseController::class, 'index']);
+        Route::get('/provider/{id}', [PurchaseController::class, 'getPurchasesByProviderID']);
+        Route::get('/{id}', [PurchaseController::class, 'show']);
+        Route::post('/', [PurchaseController::class, 'store']);
+        Route::put('/{id}', [PurchaseController::class, 'update']);
+        Route::delete('/{id}', [PurchaseController::class, 'destroy']);
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Provider Routes
+    |--------------------------------------------------------------------------
+    | 
+    | Here is where you can register provider routes for your application.
+    |
+    */
+    Route::group(['prefix' => 'provider'], static function () {
+        Route::get('/', [ProviderController::class, 'index']);
+        Route::get('/{id}', [ProviderController::class, 'show']);
+        Route::post('/', [ProviderController::class, 'store']);
+        Route::put('/{id}', [ProviderController::class, 'update']);
+        Route::delete('/{id}', [ProviderController::class, 'destroy']);
     });
 });
 
