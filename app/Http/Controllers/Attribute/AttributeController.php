@@ -25,7 +25,9 @@ class AttributeController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        $attributes = Attribute::all();
+        $perPage = $request->query('perPage', 10);
+   
+        $attributes = Attribute::paginate($perPage)->toArray();
 
         return response()->json([
             'success' => true,
