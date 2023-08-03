@@ -55,7 +55,7 @@ class PurchaseController extends Controller
         //Paginate
         $perPage = $request->query('perPage', 10);
 
-        $purchases = Purchase::with('provider')->where('provider_id', $id)->paginate($perPage)->toArray();
+        $purchases = Purchase::where('provider_id', $id)->paginate($perPage)->toArray();
         $this->removeUnnecessaryPaginationData($purchases);
 
         return response()->json([
@@ -104,7 +104,7 @@ class PurchaseController extends Controller
     public function store(Request $request): JsonResponse
     {
         $validationRules = [
-            'total' => 'required|numeric',
+            'total' => 'required|numeric|min:0',
             'provider_id' => 'nullable|integer|exists:providers,id',
             'description' => 'nullable|string',
         ];

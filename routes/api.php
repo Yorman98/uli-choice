@@ -9,7 +9,7 @@ use App\Http\Controllers\Attribute\AttributeController;
 use App\Http\Controllers\ProductCategory\CategoryController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Purchase\PurchaseController;
-use App\Http\Controllers\ProviderController;
+use App\Http\Controllers\Provider\ProviderController;
 use App\Http\Controllers\ClientController;
 
 
