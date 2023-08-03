@@ -65,7 +65,7 @@ class ProductController extends Controller
             ], 422);
         }
 
-        $product = Product::find($id)->with('categories');
+        $product = Product::with(['categories'])->find($id);
 
         return response()->json([
             'success' => true,
@@ -120,13 +120,85 @@ class ProductController extends Controller
 
             $product->save();
 
-            $product->load('categories');
+            DB::commit();
+
+            return response()->json([
+                'success' => true
+            ]);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+
+            return response()->json([
+                'success' => false,
+                'errors' => $th->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Update a product
+     *
+     * @param Request $request
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function update(Request $request,int $id): JsonResponse
+    {
+        $validationRules = [
+            'id' => 'required|integer|min:1|exists:products,id',
+            'name' => 'nullable|string',
+            'slug' => 'nullable|string|unique:products,slug,' . $id,
+            'code' => 'nullable|string|unique:products,code,' . $id,
+            'description' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'categories' => 'nullable|array',
+        ];
+
+        $validator = Validator::make(array_merge($request->all(), ['id' => $id]), $validationRules);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $product = Product::find($id);
+
+            if ($request->has('name')) {
+                $product->name = $request->name;
+            }
+
+            if ($request->has('slug')) {
+                $product->slug = $request->slug;
+            }
+
+            if ($request->has('code')) {
+                $product->code = $request->code;
+            }
+
+            if ($request->has('description')) {
+                $product->description = $request->description;
+            }
+
+            if ($request->hasFile('image')) {
+                $path = Storage::disk('public')->putFile('images/products', $request->file('image'));
+                $product->image = $path;
+            }
+
+            if ($request->has('categories')) {
+                $product->categories()->sync($request->categories);
+            }
+
+            $product->save();
 
             DB::commit();
 
             return response()->json([
-                'success' => true,
-                'product' => $product
+                'success' => true
             ]);
         } catch (\Throwable $th) {
             DB::rollBack();
