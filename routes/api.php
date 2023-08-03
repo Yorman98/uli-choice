@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\Attribute\AttributeGroupController;
 use App\Http\Controllers\Attribute\AttributeController;
+use App\Http\Controllers\ProductCategory\CategoryController;
 use App\Http\Controllers\ClientController;
 
 
@@ -90,6 +91,23 @@ Route::middleware('auth:sanctum')->group(static function () {
         Route::post('/', [ProductController::class, 'store']);
         Route::post('/{id}', [ProductController::class, 'update']);
         Route::delete('/{id}', [ProductController::class, 'destroy']);
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Product Category Routes
+    |--------------------------------------------------------------------------
+    |
+    | Here is where you can register category routes for your application.
+    |
+    */
+    Route::group(['prefix' => 'category'], static function () {
+        Route::get('/', [CategoryController::class, 'index']);
+        Route::get('/tree', [CategoryController::class, 'getAllCategoriesTree']);
+        Route::get('/{id}', [CategoryController::class, 'show']);
+        Route::post('/', [CategoryController::class, 'store']);
+        Route::put('/{id}', [CategoryController::class, 'update']);
+        Route::delete('/{id}', [CategoryController::class, 'destroy']);
     });
 });
 
