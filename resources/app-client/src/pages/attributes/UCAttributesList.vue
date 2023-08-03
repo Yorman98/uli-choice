@@ -3,7 +3,7 @@ import { useI18n } from "vue-i18n"
 import { ref, Ref } from "vue"
 import UCHeaderPage from "@/components/helpers/UCHeaderPage.vue"
 import UCTable from "@/components/helpers/UCTable.vue"
-import { AttributeInterface } from "@/store/interfaces/AttributeInterface"
+import { AttributeInterface } from "@/store/types/AttributeInterface"
 import UCCreateAttributeDialog from '@/pages/attributes/components/UCCreateAttributeDialog.vue'
 
 const { t } = useI18n()
@@ -132,7 +132,7 @@ function saveAttributeData() {
       :isEdit="isEdit"
       :attribute="attribute"
       @closeDialog="closeDialog"
-      @saveAttributeData="saveAttributeData"
+      @saveData="saveAttributeData"
     />
   </div>
 </template>

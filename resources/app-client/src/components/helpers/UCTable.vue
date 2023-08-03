@@ -27,7 +27,7 @@ function editItem(item: Object) {
 }
 
 function goToItem(item: Object) {
-  emit('goToItem', item.selectable.id)
+  emit('goToItem', item.selectable)
 }
 
 function deleteItem(item: Object) {
