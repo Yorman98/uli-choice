@@ -209,4 +209,49 @@ class ProductController extends Controller
             ], 500);
         }
     }
+
+    /**
+     * Delete a product
+     *
+     * @param Request $request
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function destroy(Request $request,int $id): JsonResponse
+    {
+        $validationRules = [
+            'id' => 'required|integer|min:1|exists:products,id'
+        ];
+
+        $validator = Validator::make(['id' => $id], $validationRules);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $product = Product::find($id);
+
+            // Soft delete
+            $product->delete();
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true
+            ]);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+
+            return response()->json([
+                'success' => false,
+                'errors' => $th->getMessage()
+            ], 500);
+        }
+    }
 }
