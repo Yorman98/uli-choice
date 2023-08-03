@@ -2,8 +2,14 @@
 import { useTheme } from 'vuetify'
 
 import { hexToRgb } from '@layouts/utils'
+import { useUserStore } from '@/store/user'
 
 const { global } = useTheme()
+const userStore = useUserStore()
+
+onBeforeMount(async () => {
+  await userStore.loadUser()
+})
 </script>
 
 <template>

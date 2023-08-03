@@ -1,9 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { authAdmin, authClient } from '@/router/middlewares/auth'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    { path: '/', redirect: '/dashboard' },
+    { path: '/', redirect: '/login' },
     {
       path: '/',
       component: () => import('../layouts/default.vue'),
@@ -12,14 +13,21 @@ const router = createRouter({
           path: 'dashboard',
           name: 'adminDashboard',
           component: () => import('../pages/dashboard.vue'),
+          meta: {
+            middleware: [authAdmin],
+          },
+        },
+        {
+          path: 'typography',
+          name: 'clientDashboard',
+          component: () => import('../pages/typography.vue'),
+          meta: {
+            middleware: [authClient],
+          },
         },
         {
           path: 'account-settings',
           component: () => import('../pages/account-settings.vue'),
-        },
-        {
-          path: 'typography',
-          component: () => import('../pages/typography.vue'),
         },
         {
           path: 'icons',

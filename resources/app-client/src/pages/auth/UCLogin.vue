@@ -18,8 +18,12 @@ const checkLogin = async () => {
     password: form.value.password,
   })
 
-  // redirect to dashboard
-  router.push('/')
+  await userStore.loadUser()
+
+  if (userStore.getUserInfo.role === 'admin')
+    router.push('/dashboard')
+  else
+    router.push('/typography')
 }
 
 const isPasswordVisible = ref(false)
@@ -37,7 +41,7 @@ const isPasswordVisible = ref(false)
           width="120"
           :aspect-ratio="1"
           :src="logo"
-        ></VImg>
+        />
       </VCardItem>
 
       <VCardText class="pt-2">
@@ -72,7 +76,7 @@ const isPasswordVisible = ref(false)
                 :type="isPasswordVisible ? 'text' : 'password'"
                 :append-inner-icon="isPasswordVisible ? 'bx-hide' : 'bx-show'"
                 :rules="[
-                  (val) => validateRequired(val) || $t('registration.required_field')
+                  (val) => validateRequired(val) || $t('registration.required_field'),
                 ]"
                 @click:append-inner="isPasswordVisible = !isPasswordVisible"
               />

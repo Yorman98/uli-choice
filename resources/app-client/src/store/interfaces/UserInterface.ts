@@ -2,6 +2,6 @@ export interface UserInterface {
   firstName: string
   lastName: string
   email: string
-  userType: string
+  role: string
   phoneNumber?: string
 }
