@@ -11,7 +11,7 @@ defineProps({
     <VCard class="pa-4">
       <VCardTitle>
 
-        <h3 class="text-h3 mb-4">{{ title }}</h3>
+        <h3 class="text-h4 mb-4">{{ title }}</h3>
 
         <v-breadcrumbs
           class="pl-4"
