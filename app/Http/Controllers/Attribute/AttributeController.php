@@ -28,6 +28,7 @@ class AttributeController extends Controller
         $perPage = $request->query('perPage', 10);
    
         $attributes = Attribute::paginate($perPage)->toArray();
+        $this->removeUnnecessaryPaginationData($attributes);
 
         return response()->json([
             'success' => true,

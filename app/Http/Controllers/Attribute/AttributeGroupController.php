@@ -26,6 +26,10 @@ class AttributeGroupController extends Controller
         $perPage = $request->query('perPage', 10);
 
         $attributeGroups = AttributeGroup::with('attributes')->paginate($perPage);
+        // Transform attributeGroups to array 
+        $attributeGroups = $attributeGroups->toArray();  
+        
+        $this->removeUnnecessaryPaginationData($attributeGroups);
 
         return response()->json([
             'success' => true,
