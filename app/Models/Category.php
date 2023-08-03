@@ -12,6 +12,13 @@ class Category extends Model
     use HasFactory;
 
     /**
+     * Hide pivot table ids
+     *
+     * @var string[] $hidden
+     */
+    protected $hidden = ['pivot'];
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
@@ -27,7 +34,7 @@ class Category extends Model
      */
     public function products(): BelongsToMany
     {
-        return $this->belongsToMany(Product::class);
+        return $this->belongsToMany(Product::class, 'product_category');
     }
 
     /**

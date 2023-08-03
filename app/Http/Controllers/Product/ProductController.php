@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
@@ -63,7 +65,7 @@ class ProductController extends Controller
             ], 422);
         }
 
-        $product = Product::find($id);
+        $product = Product::find($id)->with('categories');
 
         return response()->json([
             'success' => true,
@@ -84,7 +86,8 @@ class ProductController extends Controller
             'slug' => 'required|string|unique:products,slug',
             'code' => 'required|string|unique:products,code',
             'description' => 'nullable|string',
-            // 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'categories' => 'nullable|array',
         ];
 
         $validator = Validator::make($request->all(), $validationRules);
@@ -96,20 +99,42 @@ class ProductController extends Controller
             ], 422);
         }
 
-        $product = Product::create([
-            'name' => $request->name,
-            'slug' => $request->slug,
-            'code' => $request->code,
-            'description' => $request->description
-        ]);
+        try {
+            DB::beginTransaction();
 
-        // TODO: Upload image, if any
+            $product = Product::create([
+                'name' => $request->name,
+                'slug' => $request->slug,
+                'code' => $request->code,
+                'description' => $request->description
+            ]);
 
-        // TODO: Associate product with categories, if any
+            if ($request->hasFile('image')) {
+                $path = Storage::disk('public')->putFile('images/products', $request->file('image'));
+                $product->image = $path;
+            }
 
-        return response()->json([
-            'success' => true,
-            'data' => $product
-        ]);
+            if ($request->has('categories')) {
+                $product->categories()->attach($request->categories);
+            }
+
+            $product->save();
+
+            $product->load('categories');
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'product' => $product
+            ]);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+
+            return response()->json([
+                'success' => false,
+                'errors' => $th->getMessage()
+            ], 500);
+        }
     }
 }
