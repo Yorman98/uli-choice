@@ -1,29 +1,26 @@
 <script setup lang="ts">
 import logo from '@images/logo-uli.png'
-import { useUserStore } from '@/store/user'
-import router from '@/router'
 import { validateMatch, validateRequired } from '@/services/FormValidationService'
+import { useUserStore } from '@/store/user'
 
 const userStore = useUserStore()
 
 const form = ref({
+  first_name: '',
+  last_name: '',
   email: '',
+  phone_number: '',
   password: '',
-  remember: false,
 })
 
-const checkLogin = async () => {
-  await userStore.login({
+const checkRegistration = async () => {
+  await userStore.register({
+    first_name: form.value.first_name,
+    last_name: form.value.last_name,
     email: form.value.email,
+    phone_number: form.value.phone_number,
     password: form.value.password,
   })
-
-  await userStore.loadUser()
-
-  if (userStore.getUserInfo.role === 'admin')
-    router.push('/dashboard')
-  else
-    router.push('/typography')
 }
 
 const isPasswordVisible = ref(false)
@@ -46,13 +43,46 @@ const isPasswordVisible = ref(false)
 
       <VCardText class="pt-2">
         <h5 class="text-h5 mb-1">
-          {{ $t('global.welcome') }} 👋🏻
+          {{ $t('global.welcome') }}
         </h5>
+        <p class="mb-0">
+          {{ $t('registration.register_message') }}
+        </p>
       </VCardText>
 
       <VCardText>
-        <VForm @submit.prevent="checkLogin">
+        <VForm @submit.prevent="checkRegistration">
           <VRow>
+            <!-- Username -->
+            <VCol cols="12">
+              <VTextField
+                v-model="form.first_name"
+                :label="$t('global.firstname')"
+                :rules="[
+                  (val) => validateRequired(val) || $t('registration.required_field'),
+                ]"
+              />
+            </VCol>
+
+            <!-- Lastname -->
+            <VCol cols="12">
+              <VTextField
+                v-model="form.last_name"
+                :label="$t('global.lastname')"
+                :rules="[
+                  (val) => validateRequired(val) || $t('registration.required_field'),
+                ]"
+              />
+            </VCol>
+
+            <!-- Phone -->
+            <VCol cols="12">
+              <VTextField
+                v-model="form.phone_number"
+                :label="$t('global.phone')"
+              />
+            </VCol>
+
             <!-- email -->
             <VCol cols="12">
               <VTextField
@@ -75,32 +105,32 @@ const isPasswordVisible = ref(false)
                 :append-inner-icon="isPasswordVisible ? 'bx-hide' : 'bx-show'"
                 :rules="[
                   (val) => validateRequired(val) || $t('registration.required_field'),
+                  (val) => validateMatch(val, 'password') || $t('registration.incorrect_password'),
                 ]"
                 @click:append-inner="isPasswordVisible = !isPasswordVisible"
               />
 
-              <!-- login button -->
+              <!-- registration button -->
               <VBtn
                 class="mt-6 mb-3"
                 block
                 type="submit"
-                :disabled="!validateRequired(form.email) || !validateMatch(form.email, 'email') || !validateRequired(form.password)"
               >
-                {{ $t('registration.login') }}
+                {{ $t('registration.register') }}
               </VBtn>
             </VCol>
 
-            <!-- create account -->
+            <!-- login instead -->
             <VCol
               cols="12"
               class="text-center text-base"
             >
-              <span>{{ $t('registration.new_register_message') }}</span>
+              <span>{{ $t('registration.login_message') }}</span>
               <RouterLink
                 class="text-primary ms-2"
-                to="/register"
+                to="/login"
               >
-                {{ $t('registration.sign_up') }}
+                {{ $t('registration.login') }}
               </RouterLink>
             </VCol>
           </VRow>
