@@ -52,6 +52,23 @@
       "edit_category": "Editar categoria",
       "category_name": "Nombre de la categoria",
       "category_description": "Descripción de la categoria"
+    },
+    "form_product": {
+      "create_product_title": "Crear un nuevo producto",
+      "product_name": "Nombre del producto",
+      "product_details": "Detalles del producto",
+      "product_slug": "Slug del producto",
+      "product_code": "Codigo del producto",
+      "product_description": "Descripción del producto",
+      "product_variant": "Variantes del producto",
+      "add_variant": "Agregar variante",
+      "variant": "Variante",
+      "product_sku": "SKU del producto",
+      "product_price": "Precio del producto",
+      "product_cost":  "Costo del producto",
+      "product_stock": "Stock del producto",
+      "product_group": "Grupo de atributos",
+      "product_attributes": "Atributos del producto",
     }
   }
 }
