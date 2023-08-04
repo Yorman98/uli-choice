@@ -82,7 +82,7 @@ const router = createRouter({
         },
         {
           path: 'register',
-          component: () => import('../pages/register.vue'),
+          component: () => import('../pages/auth/UCRegister.vue'),
         },
         {
           path: '/:pathMatch(.*)*',
