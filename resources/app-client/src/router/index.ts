@@ -65,6 +65,11 @@ const router = createRouter({
           name: 'subCategories',
           component: () => import('@/pages/categories/UCCategories.vue'),
         },
+        {
+          path: 'product/new-product',
+          name: 'formProduct',
+          component: () => import('@/pages/product/UCFormProduct.vue'),
+        },
       ],
     },
     {
