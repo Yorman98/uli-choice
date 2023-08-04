@@ -1,7 +1,7 @@
-export interface UserInterface<T> {
-  name?: string;
-  lastName?: string;
-  email?: string;
-  password?: string;
-  userType?: string;
+export interface UserInterface {
+  firstName: string
+  lastName: string
+  email: string
+  role: string
+  phoneNumber?: string
 }
