@@ -51,6 +51,7 @@
       "create_category": "Crear categoria",
       "edit_category": "Editar categoria",
       "category_name": "Nombre de la categoria",
+      "category_slug": "Slug de la categoria",
       "category_description": "Descripción de la categoria"
     },
     "form_product": {
