@@ -18,7 +18,8 @@
     "firstname": "Nombre",
     "lastname": "Apellido",
     "phone": "Teléfono",
-    "welcome": "Bienvenido"
+    "welcome": "Bienvenido",
+    "error": "Ha ocurrido un error."
   },
   "registration": {
     "required_field": "Campo requerido",
@@ -30,7 +31,6 @@
     "new_register_message": "¿Eres nuevo en nuestra plataforma?",
     "sign_up": "Regístrate",
     "login_message": "¿Ya tienes una cuenta?"
-
   },
   "navbar": {
     "attributes_groups": "Grupo de atributos",
@@ -68,7 +68,7 @@
       "product_cost":  "Costo del producto",
       "product_stock": "Stock del producto",
       "product_group": "Grupo de atributos",
-      "product_attributes": "Atributos del producto",
+      "product_attributes": "Atributos del producto"
     }
   }
 }

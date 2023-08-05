@@ -3,7 +3,7 @@ import type { AxiosResponse } from 'axios'
 import type { UserInterface } from '@/store/types/UserInterface'
 import UserService from '@/services/UserService'
 import AuthService from '@/services/AuthService'
-import type {LoginResponseInterface, RegisterResponseInterface} from '@/services/types/AuthTypes'
+import type { LoginResponseInterface, RegisterResponseInterface } from '@/services/types/AuthTypes'
 import type { UserResponseInterface } from '@/services/types/UserTypes'
 
 export const useUserStore = defineStore('user', {
