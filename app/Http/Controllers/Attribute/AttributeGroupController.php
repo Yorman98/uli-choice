@@ -23,7 +23,13 @@ class AttributeGroupController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        $attributeGroups = AttributeGroup::with('attributes')->get();
+        $perPage = $request->query('perPage', 10);
+
+        $attributeGroups = AttributeGroup::with('attributes')->paginate($perPage);
+        // Transform attributeGroups to array 
+        $attributeGroups = $attributeGroups->toArray();  
+        
+        $this->removeUnnecessaryPaginationData($attributeGroups);
 
         return response()->json([
             'success' => true,
@@ -59,7 +65,14 @@ class AttributeGroupController extends Controller
             ], 422);
         }
 
-        $attributeGroup = AttributeGroup::with('attributes')->find($id);
+        $perPage = $request->query('perPage', 10);
+
+        $attributeGroup = AttributeGroup::with([
+            'attributes' => function ($query) use ($perPage) {
+                $query->paginate($perPage);
+            }
+        ])->find($id);
+
 
         if (!$attributeGroup) {
             return response()->json([
