@@ -13,12 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('providers', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('website')->nullable();
-            $table->string('phone_number', 15)->nullable();
-            $table->timestamps();
+        Schema::table('products', function (Blueprint $table) {
+            //
+            $table->softDeletes();
         });
     }
 
@@ -29,6 +26,9 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('providers');
+        Schema::table('products', function (Blueprint $table) {
+            //
+            $table->dropSoftDeletes();
+        });
     }
 };

@@ -16,10 +16,8 @@ return new class extends Migration
         Schema::create('purchases', function (Blueprint $table) {
             $table->id();
             $table->float('total');
-            $table->string('website');
-            $table->string('phone_number', 15)->nullable();
             $table->text('description')->nullable();
-            $table->foreignId('provider_id')->constrained()->onDelete('cascade');
+            $table->foreignId('provider_id')->nullable()->constrained()->nullOnDelete();
             $table->timestamps();
         });
     }
