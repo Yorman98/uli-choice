@@ -2,8 +2,10 @@
 import logo from '@images/logo-uli.png'
 import { validateMatch, validateRequired } from '@/services/FormValidationService'
 import { useUserStore } from '@/store/user'
+import router from '@/router'
 
 const userStore = useUserStore()
+const isProgressRegister = ref(false)
 
 const form = ref({
   first_name: '',
@@ -14,6 +16,8 @@ const form = ref({
 })
 
 const checkRegistration = async () => {
+  isProgressRegister.value = true
+
   await userStore.register({
     first_name: form.value.first_name,
     last_name: form.value.last_name,
@@ -21,6 +25,19 @@ const checkRegistration = async () => {
     phone_number: form.value.phone_number,
     password: form.value.password,
   })
+
+  router.push('/login')
+}
+
+const validateForm = () => {
+  const { first_name, last_name, email, password } = form.value
+
+  return validateRequired(first_name)
+    && validateRequired(last_name)
+    && validateRequired(email)
+    && validateMatch(email, 'email')
+    && validateRequired(password)
+    && validateMatch(password, 'password')
 }
 
 const isPasswordVisible = ref(false)
@@ -115,6 +132,8 @@ const isPasswordVisible = ref(false)
                 class="mt-6 mb-3"
                 block
                 type="submit"
+                :loading="isProgressRegister"
+                :disabled="!validateForm()"
               >
                 {{ $t('registration.register') }}
               </VBtn>
