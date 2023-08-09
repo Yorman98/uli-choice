@@ -1,11 +1,11 @@
 export interface AttributeGroupInterface {
-  id: number
+  id?: number
   name: string
-  groupType: string
+	group_type: string
 }
 
 export interface AttributeInterface {
-  id: number
+  id?: number
   name: string
-  attributeGroupId: number
+  attributeGroupId?: number
 }

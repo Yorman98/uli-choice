@@ -140,13 +140,14 @@ class AttributeGroupController extends Controller
      */
     public function update(Request $request, $id): JsonResponse
     {
+
         $validatorRules = [
             'id' => 'required|integer',
             'name' => 'required|string',
             'group_type' => ['required', 'string', Rule::in(['select', 'radio'])]
         ];
 
-        $validator = Validator::make(['id' => $id], $validatorRules);
+        $validator = Validator::make(array_merge($request->all(), ['id' => $id]), $validatorRules);
 
         if ($validator->fails()) {
             return response()->json([
@@ -188,7 +189,7 @@ class AttributeGroupController extends Controller
      *                                      - If validation fails for the ID, 'success' will be false, and 'errors' will contain the validation errors.
      *                                      - If the attribute group with the given ID is not found, 'success' will be false, and 'message' will indicate 'Attribute group not found'.
      */
-    public function delete(Request $request, $id): JsonResponse
+    public function destroy(Request $request, $id): JsonResponse
     {
         $validatorRules = [
             'id' => 'required|integer',

@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('attributes', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->foreignId('attribute_group_id')->constrained();
+            $table->foreignId('attribute_group_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
 
             // Prevent duplicate attributes in the same group
