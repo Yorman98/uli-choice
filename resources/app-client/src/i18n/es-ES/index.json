@@ -11,7 +11,9 @@
       "id": "ID",
       "name": "Nombre",
       "options": "Opciones",
-      "description": "Descripción"
+      "description": "Descripción",
+      "provider": "Proveedor",
+      "amount": "Monto"
     },
     "email": "Correo electrónico",
     "password": "Contraseña",
@@ -35,7 +37,9 @@
   "navbar": {
     "attributes_groups": "Grupo de atributos",
     "attributes": "Atributos",
-    "categories": "Categorias"
+    "categories": "Categorias",
+    "products": "Productos",
+    "purchases": "Compras"
   },
   "products": {
     "attributes": {
@@ -71,5 +75,9 @@
       "product_group": "Grupo de atributos",
       "product_attributes": "Atributos del producto"
     }
+  },
+  "purchases": {
+    "store_purchases": "Compras realizadas",
+    "add_purchase": "Agregar compra"
   }
 }
