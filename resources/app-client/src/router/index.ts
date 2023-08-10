@@ -10,14 +10,6 @@ const router = createRouter({
       component: () => import('../layouts/default.vue'),
       children: [
         {
-          path: 'dashboard',
-          name: 'adminDashboard',
-          component: () => import('../pages/dashboard.vue'),
-          meta: {
-            middleware: [authAdmin],
-          },
-        },
-        {
           path: 'typography',
           name: 'clientDashboard',
           component: () => import('../pages/typography.vue'),
@@ -45,6 +37,20 @@ const router = createRouter({
           path: 'form-layouts',
           component: () => import('../pages/form-layouts.vue'),
         },
+      ],
+    },
+    {
+      path: '/',
+      component: () => import('../layouts/default.vue'),
+      children: [
+        {
+          path: 'dashboard',
+          name: 'adminDashboard',
+          component: () => import('@/pages/dashboard.vue'),
+          meta: {
+            middleware: [authAdmin],
+          },
+        },
         {
           path: 'attributes/groups',
           name: 'attributesGroups',
@@ -70,6 +76,11 @@ const router = createRouter({
           name: 'formProduct',
           component: () => import('@/pages/product/UCFormProduct.vue'),
         },
+        {
+          name: 'purchase',
+          path: 'purchase',
+          component: () => import('@/pages/purchases/UCPurchases.vue'),
+        },
       ],
     },
     {
@@ -78,11 +89,11 @@ const router = createRouter({
       children: [
         {
           path: 'login',
-          component: () => import('../pages/auth/UCLogin.vue'),
+          component: () => import('@/pages/auth/UCLogin.vue'),
         },
         {
           path: 'register',
-          component: () => import('../pages/auth/UCRegister.vue'),
+          component: () => import('@/pages/auth/UCRegister.vue'),
         },
         {
           path: '/:pathMatch(.*)*',

@@ -7,11 +7,18 @@
     "save": "Guardar",
     "update": "Actualizar",
     "see": "Ver",
+    "close": "Cerrar",
     "headers": {
       "id": "ID",
       "name": "Nombre",
       "options": "Opciones",
-      "description": "Descripción"
+      "description": "Descripción",
+      "provider": "Proveedor",
+      "total": "Total",
+      "date_created": "Fecha de creación",
+      "date_updated": "Fecha de actualización",
+      "phone": "Teléfono",
+      "website": "Sitio web"
     },
     "email": "Correo electrónico",
     "password": "Contraseña",
@@ -35,7 +42,9 @@
   "navbar": {
     "attributes_groups": "Grupo de atributos",
     "attributes": "Atributos",
-    "categories": "Categorias"
+    "categories": "Categorias",
+    "products": "Productos",
+    "purchases": "Compras"
   },
   "products": {
     "attributes": {
@@ -72,5 +81,11 @@
       "product_group": "Grupo de atributos",
       "product_attributes": "Atributos del producto"
     }
+  },
+  "purchases": {
+    "store_purchases": "Compras realizadas",
+    "add_purchase": "Agregar compra",
+    "purchase_data": "Datos de la compra",
+    "provider_data": "Datos del proveedor"
   }
 }

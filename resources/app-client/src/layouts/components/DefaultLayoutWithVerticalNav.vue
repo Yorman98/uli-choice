@@ -79,11 +79,11 @@ const upgradeBanner = computed(() => {
           to: '/dashboard',
         }"
       />
-      <VerticalNavLink
+
+      <!-- 👉 Products -->
+      <VerticalNavSectionTitle
         :item="{
-          title: 'Account Settings',
-          icon: 'mdi-account-cog-outline',
-          to: '/account-settings',
+          heading: $t('navbar.products'),
         }"
       />
       <VerticalNavLink
@@ -105,10 +105,33 @@ const upgradeBanner = computed(() => {
         }"
       />
 
-      <!-- 👉 Pages -->
+      <!-- 👉 Purchases -->
       <VerticalNavSectionTitle
         :item="{
-          heading: 'Pages',
+          heading: $t('navbar.purchases'),
+        }"
+      />
+      <VerticalNavLink
+        :item="{
+          title: $t('purchases.store_purchases'),
+          icon: 'mdi-account-tag-outline',
+          to: {
+            name: 'purchase',
+          },
+        }"
+      />
+
+      <!-- 👉 Options theme -->
+      <VerticalNavSectionTitle
+        :item="{
+          heading: 'Pages of theme',
+        }"
+      />
+      <VerticalNavLink
+        :item="{
+          title: 'Account Settings',
+          icon: 'mdi-account-cog-outline',
+          to: '/account-settings',
         }"
       />
       <VerticalNavLink
@@ -130,13 +153,6 @@ const upgradeBanner = computed(() => {
           title: 'Error',
           icon: 'bx-info-circle',
           to: '/no-existence',
-        }"
-      />
-
-      <!-- 👉 User Interface -->
-      <VerticalNavSectionTitle
-        :item="{
-          heading: 'User Interface',
         }"
       />
       <VerticalNavLink
