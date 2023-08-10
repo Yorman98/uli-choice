@@ -26,18 +26,20 @@ const path: Ref<any[]> = ref([
 ])
 
 const openPurchase: Ref<boolean> = ref(false)
-const editPurchase: Ref<boolean> = ref(false)
+const isViewPurchase: Ref<boolean> = ref(false)
+const isEditPurchase: Ref<boolean> = ref(false)
 
 const headers: any[] = [
   { title: t('global.headers.id'), align: 'start', sortable: false, key: 'id' },
   { title: t('global.headers.provider'), key: 'provider.name' },
   { title: t('global.headers.description'), key: 'description' },
-  { title: t('global.headers.amount'), key: 'total' },
+  { title: t('global.headers.total'), key: 'total' },
   { title: t('global.headers.options'), align: 'end', key: 'actions', sortable: false },
 ]
 
 const purchasesList: Ref<PurchaseInterface[]> = ref([])
 const providersList: Ref<ProviderInterface[]> = ref([])
+const dataPurchase: Ref<PurchaseInterface> = ref({} as PurchaseInterface)
 
 const purchaseInfo: UnwrapNestedRefs<PurchaseInterface> = reactive({
   total: null,
@@ -78,7 +80,7 @@ function closePurchase() {
 }
 
 async function savePurchase() {
-  if (editPurchase.value)
+  if (isEditPurchase.value)
     await PurchaseService.updatePurchase(purchaseInfo)
   else
     await PurchaseService.createPurchase(purchaseInfo)
@@ -86,6 +88,24 @@ async function savePurchase() {
   purchasesList.value = []
   await dataPurchases()
   closePurchase()
+}
+
+function viewPurchase(purchase: PurchaseInterface) {
+  isViewPurchase.value = true
+  dataPurchase.value = Object.assign(purchaseInfo, purchase)
+
+  console.log(dataPurchase)
+}
+function editPurchase(purchase: PurchaseInterface) {
+  isEditPurchase.value = true
+  openPurchase.value = true
+  Object.assign(purchaseInfo, purchase)
+}
+
+async function deletePurchase(payload: number) {
+  await PurchaseService.deletePurchase(payload)
+  purchasesList.value = []
+  await dataPurchases()
 }
 </script>
 
@@ -118,6 +138,9 @@ async function savePurchase() {
             :headers="headers"
             :items="purchasesList"
             hasSubItems
+            @goToItem="viewPurchase"
+            @editItem="editPurchase"
+            @deleteItem="deletePurchase"
           />
         </VCardText>
       </VCard>
@@ -148,7 +171,7 @@ async function savePurchase() {
               v-model="purchaseInfo.total"
               class="mb-6"
               density="compact"
-              :label="$t('global.headers.amount')"
+              :label="$t('global.headers.total')"
             />
 
             <VTextField
@@ -172,7 +195,51 @@ async function savePurchase() {
               flat
               @click="savePurchase"
             >
-              {{ editPurchase ? $t('global.update') : $t('global.save') }}
+              {{ isEditPurchase ? $t('global.update') : $t('global.save') }}
+            </VBtn>
+          </VCardActions>
+        </VCard>
+      </VDialog>
+
+      <VDialog
+        v-model="isViewPurchase"
+        max-width="700px"
+      >
+        <VCard class="pa-4">
+          <VCardText>
+            <h4 class="text-h4 mb-5 font-weight-bold">
+              {{ $t('purchases.purchase_data') }}
+            </h4>
+            <p class="mb-1">
+              <span class="font-weight-bold">{{ $t('global.headers.date_created') }}: </span>{{ dataPurchase.created_at }}
+            </p>
+            <p class="mb-1">
+              <span class="font-weight-bold">{{ $t('global.headers.total') }}: </span>{{ dataPurchase.total }}
+            </p>
+            <p class="mb-1">
+              <span class="font-weight-bold">{{ $t('global.headers.description') }}: </span>{{ dataPurchase.description }}
+            </p>
+            <h6 class="text-h6 mt-5 mb-2 font-weight-bold">
+              {{ $t('purchases.provider_data') }}
+            </h6>
+            <p class="mb-1">
+              <span class="font-weight-bold">{{ $t('global.headers.name') }}: </span>{{ dataPurchase.provider.name }}
+            </p>
+            <p class="mb-1">
+              <span class="font-weight-bold">{{ $t('global.headers.phone') }}: </span>{{ dataPurchase.provider.phone_number }}
+            </p>
+            <p class="mb-1">
+              <span class="font-weight-bold">{{ $t('global.headers.website') }}: </span>{{ dataPurchase.provider.website }}
+            </p>
+          </VCardText>
+
+          <VCardActions class="d-flex justify-end">
+            <VBtn
+              color="primary"
+              outlined
+              @click="isViewPurchase = false"
+            >
+              {{ $t('global.close') }}
             </VBtn>
           </VCardActions>
         </VCard>
