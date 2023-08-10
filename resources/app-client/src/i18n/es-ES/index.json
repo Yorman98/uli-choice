@@ -53,7 +53,8 @@
       "edit_attribute": "Editar atributo",
       "attribute_name": "Nombre del atributo",
       "attribute_list_title": "Lista de atributos",
-      "create_attribute": "Crear atributo"
+      "create_attribute": "Crear atributo",
+      "attribute_type": "Tipo de atributo"
     },
     "categories": {
       "categories_group_title": "Categorias",
