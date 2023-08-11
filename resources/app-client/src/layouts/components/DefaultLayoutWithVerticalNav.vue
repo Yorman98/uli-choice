@@ -88,6 +88,15 @@ const upgradeBanner = computed(() => {
       />
       <VerticalNavLink
         :item="{
+          title: $t('navbar.users'),
+          icon: 'mdi-account-cog-outline',
+          to: {
+            name: 'users',
+          },
+        }"
+      />
+      <VerticalNavLink
+        :item="{
           title: $t('navbar.attributes_groups'),
           icon: 'mdi-account-cog-outline',
           to: {

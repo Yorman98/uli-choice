@@ -10,13 +10,17 @@
     "headers": {
       "id": "ID",
       "name": "Nombre",
-      "options": "Opciones"
+      "options": "Opciones",
+      "last_name": "Apellido",
+      "email": "Correo Electrónico",
+      "phone_number": "Número de telefono"
     }
   },
   "navbar": {
     "attributes_groups": "Grupo de atributos",
     "attributes": "Atributos",
-    "categories": "Categorias"
+    "categories": "Categorias",
+    "users": "Usuarios"
   },
   "products": {
     "attributes": {
@@ -30,5 +34,9 @@
     "categories": {
       "categories_group_title": "Categorias"
     }
+  },
+  "users": {
+    "create_user": "Crear usuario",
+    "edit_user": "Editar usuario"
   }
 }

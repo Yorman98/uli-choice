@@ -52,6 +52,21 @@ const router = createRouter({
             name: 'categories',
             component: () => import('@/pages/categories/UCCategories.vue'),
         },
+        {
+          path: 'admin/users',
+          name: 'users',
+          component: () => import('@/pages/admin/UCUsers.vue'),
+        },
+        {
+          path: 'admin/users/create',
+          name: 'createUsers',
+          component: () => import('@/pages/admin/UCCreateUser.vue'),
+        },
+        {
+          path: 'admin/users/edit/:id',
+          name: 'editUsers',
+          component: () => import('@/pages/admin/UCCreateUser.vue'),
+        }
       ],
     },
     {
