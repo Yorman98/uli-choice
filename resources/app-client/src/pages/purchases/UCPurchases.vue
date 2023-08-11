@@ -8,6 +8,7 @@ import UCHeaderPage from '@/components/helpers/UCHeaderPage.vue'
 import UCTable from '@/components/helpers/UCTable.vue'
 import PurchaseService from '@/services/PurchaseService'
 import ProviderService from '@/services/ProviderService'
+import { formatDate } from '@/utils/dateUtils'
 
 const { t } = useI18n()
 
@@ -93,19 +94,30 @@ async function savePurchase() {
 function viewPurchase(purchase: PurchaseInterface) {
   isViewPurchase.value = true
   dataPurchase.value = Object.assign(purchaseInfo, purchase)
-
-  console.log(dataPurchase)
 }
 function editPurchase(purchase: PurchaseInterface) {
   isEditPurchase.value = true
   openPurchase.value = true
   Object.assign(purchaseInfo, purchase)
+
+  isEditPurchase.value = false
 }
 
 async function deletePurchase(payload: number) {
   await PurchaseService.deletePurchase(payload)
   purchasesList.value = []
   await dataPurchases()
+}
+
+function addPurchase() {
+  if (!isEditPurchase.value) {
+    Object.assign(purchaseInfo, {
+      total: null,
+      id: null,
+      description: '',
+    })
+  }
+  openPurchase.value = true
 }
 </script>
 
@@ -120,7 +132,7 @@ async function deletePurchase(payload: number) {
 
       <VCard class="pa-4">
         <VCardTitle class="d-flex justify-end mb-4">
-          <VBtn @click="openPurchase = true">
+          <VBtn @click="addPurchase">
             <VIcon
               color="white pr-2"
               size="35"
@@ -137,7 +149,7 @@ async function deletePurchase(payload: number) {
           <UCTable
             :headers="headers"
             :items="purchasesList"
-            hasSubItems
+            has-sub-items
             @goToItem="viewPurchase"
             @editItem="editPurchase"
             @deleteItem="deletePurchase"
@@ -211,7 +223,7 @@ async function deletePurchase(payload: number) {
               {{ $t('purchases.purchase_data') }}
             </h4>
             <p class="mb-1">
-              <span class="font-weight-bold">{{ $t('global.headers.date_created') }}: </span>{{ dataPurchase.created_at }}
+              <span class="font-weight-bold">{{ $t('global.headers.date_created') }}: </span>{{ formatDate(dataPurchase.created_at) }}
             </p>
             <p class="mb-1">
               <span class="font-weight-bold">{{ $t('global.headers.total') }}: </span>{{ dataPurchase.total }}
