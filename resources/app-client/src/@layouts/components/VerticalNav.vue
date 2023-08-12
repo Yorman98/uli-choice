@@ -2,7 +2,7 @@
 import type { Component } from 'vue'
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
 import { useDisplay } from 'vuetify'
-import logo from '@images/logo.svg?raw'
+import logo from '@images/logo-uli.png'
 
 interface Props {
   tag?: string | Component
@@ -56,16 +56,13 @@ const handleNavScroll = (evt: Event) => {
       <slot name="nav-header">
         <RouterLink
           to="/"
-          class="app-logo d-flex align-center gap-x-3 app-title-wrapper"
+          class="app-logo d-flex align-center app-title-wrapper ma-0"
         >
-          <div
-            class="d-flex"
-            v-html="logo"
+          <VImg
+            :src="logo"
+            alt="Logo"
+            width="120px"
           />
-
-          <h1 class="leading-normal">
-            sneat
-          </h1>
         </RouterLink>
       </slot>
     </div>
@@ -110,6 +107,7 @@ const handleNavScroll = (evt: Event) => {
   .nav-header {
     display: flex;
     align-items: center;
+    justify-content: center;
 
     .header-action {
       cursor: pointer;

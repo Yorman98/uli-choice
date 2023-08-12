@@ -1,8 +1,13 @@
 export interface ProductInterface {
-  id: number
+  id?: number
   name: string
   slug: string
   code: string
   description: string
-  img: string
+  groups: string[]
+  attributes: string[]
+  image: string
+  created_at?: string
+  updated_at?: string
+  deleted_at?: string
 }
