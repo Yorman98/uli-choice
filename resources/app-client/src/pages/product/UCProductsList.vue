@@ -7,7 +7,6 @@ import UCTable from '@/components/helpers/UCTable.vue'
 import type { ProductInterface } from '@/store/types/ProductInterface'
 import ProductService from '@/services/ProductService'
 import router from '@/router'
-import productService from '@/services/ProductService'
 
 const { t } = useI18n()
 
@@ -35,7 +34,7 @@ const headers: any[] = [
 const productsList: Ref<ProductInterface[]> = ref([])
 
 async function dataProducts() {
-  const response = await ProductService.getProducts({ page: 1, perPage: 10 })
+  const response = await ProductService.getProducts()
   const data = response?.data?.data ?? []
 
   data.data.forEach((product: ProductInterface) => {
@@ -69,7 +68,7 @@ function editProduct(product: ProductInterface) {
 }
 
 async function deleteProduct(productId: number) {
-  await productService.deleteProduct(productId)
+  await ProductService.deleteProduct(productId)
   productsList.value = []
   await dataProducts()
 }
@@ -117,7 +116,3 @@ onMounted(async () => {
     </VCol>
   </VRow>
 </template>
-
-<style lang="scss" scoped>
-
-</style>

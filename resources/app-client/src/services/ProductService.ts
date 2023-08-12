@@ -14,16 +14,16 @@ class ProductService {
       })
   }
 
-  getProducts(payload: { page: number; perPage: number }): Promise<ProductResponseInterface> {
-    return ApiService.get(`/product/?page=${payload.page}&perPage=${payload.perPage}`)
+  getProducts(): Promise<ProductResponseInterface> {
+    return ApiService.get('/product')
   }
 
   getProduct(id: number): AxiosPromise<ProductResponseInterface> {
     return ApiService.get(`/product/${id}`)
   }
 
-  updateProduct(payload: UnwrapNestedRefs<ProductInterface>): AxiosPromise<ProductResponseInterface> {
-    return ApiService.post(`/product/${payload.id}`, payload,
+  updateProduct(id: number, payload: UnwrapNestedRefs<ProductInterface>): AxiosPromise<ProductResponseInterface> {
+    return ApiService.post(`/product/${id}`, payload,
       {
         headers: {
           'Content-Type': 'multipart/form-data',

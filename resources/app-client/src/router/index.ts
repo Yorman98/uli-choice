@@ -72,7 +72,7 @@ const router = createRouter({
           component: () => import('@/pages/categories/UCCategories.vue'),
         },
         {
-          path: 'product',
+          path: 'product-list',
           children: [
             {
               name: 'product-list',
@@ -95,6 +95,22 @@ const router = createRouter({
           path: 'purchase',
           name: 'purchase',
           component: () => import('@/pages/purchases/UCPurchases.vue'),
+        },
+      ],
+    },
+    {
+      path: '/',
+      component: () => import('../layouts/blank.vue'),
+      children: [
+        {
+          path: 'products',
+          children: [
+            {
+              name: 'products',
+              path: '',
+              component: () => import('@/pages/product/UCProductsCard.vue'),
+            },
+          ],
         },
       ],
     },
