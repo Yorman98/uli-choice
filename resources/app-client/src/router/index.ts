@@ -48,9 +48,9 @@ const router = createRouter({
           component: () => import('@/pages/attributes/UCAttributesList.vue'),
         },
         {
-            path: 'categories',
-            name: 'categories',
-            component: () => import('@/pages/categories/UCCategories.vue'),
+          path: 'categories',
+          name: 'categories',
+          component: () => import('@/pages/categories/UCCategories.vue'),
         },
         {
           path: 'admin/users',

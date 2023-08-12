@@ -30,22 +30,31 @@ const headers: any[] = [
   { title: t('global.headers.options'), align: 'end', key: 'actions', sortable: false },
 ]
 
-const attributes: any[] = [
-  {
-    id: 1,
-    name: 'Angel',
-    last_name: 'Pico',
-    email: 'angel.j.pico@gmail.com',
-    phone_number: '+584120738575',
-  },
-  {
-    id: 2,
-    name: 'Josue',
-    last_name: 'Arellano',
-    email: 'angel.j.pico@gmail.com',
-    phone_number: '+584120738575',
-  },
-]
+const users: any[] = ref([])
+
+onMounted(() => {
+  getData()
+})
+
+function getData() {
+  //AQUI VA EL ENDPOINT DE TRAER LOS USUARIOS
+  users.value = [
+    {
+      id: 1,
+      name: 'Angel',
+      last_name: 'Pico',
+      email: 'angel.j.pico@gmail.com',
+      phone_number: '+584120738575',
+    },
+    {
+      id: 2,
+      name: 'Josue',
+      last_name: 'Arellano',
+      email: 'angel.j.pico@gmail.com',
+      phone_number: '+584120738575',
+    },
+  ]
+}
 
 function editItem(payload: any) {
   router.push({
@@ -58,6 +67,8 @@ function editItem(payload: any) {
 
 function deleteItem(payload: number) {
   console.log('eliminar', payload)
+  //AQUI VA EL ENDPOINT DE ELIMINAR
+  getData()
 }
 
 function goToCreateUser() {
@@ -94,7 +105,7 @@ function goToCreateUser() {
         <VCardText>
           <UCTable
             :headers="headers"
-            :items="attributes"
+            :items="users"
             @editItem="editItem"
             @deleteItem="deleteItem"
           />
