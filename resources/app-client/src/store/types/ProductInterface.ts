@@ -5,4 +5,7 @@ export interface ProductInterface {
   code: string
   description: string
   img: string
+  created_at?: string
+  updated_at?: string
+  deleted_at?: string
 }

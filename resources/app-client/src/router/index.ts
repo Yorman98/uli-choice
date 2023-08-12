@@ -72,13 +72,23 @@ const router = createRouter({
           component: () => import('@/pages/categories/UCCategories.vue'),
         },
         {
-          path: 'product/new-product',
-          name: 'formProduct',
-          component: () => import('@/pages/product/UCFormProduct.vue'),
+          path: 'product',
+          children: [
+            {
+              name: 'product',
+              path: '',
+              component: () => import('@/pages/product/UCProductsList.vue'),
+            },
+            {
+              path: 'new-product',
+              name: 'formProduct',
+              component: () => import('@/pages/product/UCFormProduct.vue'),
+            },
+          ],
         },
         {
-          name: 'purchase',
           path: 'purchase',
+          name: 'purchase',
           component: () => import('@/pages/purchases/UCPurchases.vue'),
         },
       ],

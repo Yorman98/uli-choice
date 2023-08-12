@@ -18,7 +18,8 @@
       "date_created": "Fecha de creación",
       "date_updated": "Fecha de actualización",
       "phone": "Teléfono",
-      "website": "Sitio web"
+      "website": "Sitio web",
+      "code": "Código"
     },
     "email": "Correo electrónico",
     "password": "Contraseña",
@@ -47,6 +48,8 @@
     "purchases": "Compras"
   },
   "products": {
+    "products_list": "Lista de productos",
+    "add_product": "Agregar producto",
     "attributes": {
       "attributes_group_title": "Grupo de atributos",
       "create_group_attribute": "Crear grupo de atributos",
