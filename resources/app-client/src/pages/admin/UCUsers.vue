@@ -66,7 +66,6 @@ function editItem(payload: any) {
 }
 
 function deleteItem(payload: number) {
-  console.log('eliminar', payload)
   //AQUI VA EL ENDPOINT DE ELIMINAR
   getData()
 }

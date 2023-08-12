@@ -29,20 +29,29 @@ const headers: any[] = [
   { title: t('global.headers.options'), align: 'end', key: 'actions', sortable: false },
 ]
 
-const attributes: any[] = [
-  {
-    id: 1,
-    name: 'Shein',
-    website: 'https://us.shein.com/',
-    phone_number: '+58123456789',
-  },
-  {
-    id: 2,
-    name: 'Amazon',
-    website: 'https://www.amazon.com/',
-    phone_number: '+58123456789',
-  },
-]
+const providers: any[] = ref([])
+
+onMounted(() => {
+  getData()
+})
+
+function getData() {
+  // AQUI VA EL ENDPOINT DE TRAER LOS PROVEEDORES
+  providers.value = [
+    {
+      id: 1,
+      name: 'Shein',
+      website: 'https://us.shein.com/',
+      phone_number: '+58123456789',
+    },
+    {
+      id: 2,
+      name: 'Amazon',
+      website: 'https://www.amazon.com/',
+      phone_number: '+58123456789',
+    },
+  ]
+}
 
 function editItem(payload: any) {
   router.push({
@@ -54,7 +63,8 @@ function editItem(payload: any) {
 }
 
 function deleteItem(payload: number) {
-  console.log('eliminar', payload)
+  // AQUI VA EL ENDPOINT DE ELIMINAR
+  getData()
 }
 
 function goToCreateProvider() {
@@ -91,7 +101,7 @@ function goToCreateProvider() {
         <VCardText>
           <UCTable
             :headers="headers"
-            :items="attributes"
+            :items="providers"
             @editItem="editItem"
             @deleteItem="deleteItem"
           />

@@ -65,7 +65,6 @@ const validateForm = () => {
 }
 
 function getUserData(id: any) {
-  console.log('Get user', id.value)
   //AQUI VA EL ENDPOINT PARA TRAERME EL USUARIO
   form.value = {
     first_name: 'Angel',
@@ -83,7 +82,6 @@ function updatePath() {
 function saveUser() {
   //AQUI VA EL ENDPOINT PARA GUARDAR O ACTUALIZAR EL USUARIO
   isProgressRegister.value = true
-  console.log('CREAR', form.value)
   router.push({
     name: 'users',
   })

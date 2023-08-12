@@ -13,9 +13,11 @@
       "options": "Opciones",
       "last_name": "Apellido",
       "email": "Correo Electrónico",
-      "phone_number": "Número de telefono",
+      "phone_number": "Número de teléfono",
       "website": "Sitio web"
     },
+    "website": "Website",
+    "name": "Nombre",
     "email": "Correo electrónico",
     "password": "Contraseña",
     "firstname": "Nombre",
