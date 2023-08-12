@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
+import { validateMatch, validateRequired } from '@/services/FormValidationService'
 import UCHeaderPage from '@/components/helpers/UCHeaderPage.vue'
 
 const { t } = useI18n()
@@ -9,7 +10,7 @@ const router = useRouter()
 const route = useRoute()
 
 const isPasswordVisible = ref(false)
-const isEdit = ref(false)
+const isProgressRegister = ref(false)
 
 const path: any[] = ref([
   {
@@ -40,24 +41,33 @@ const accountData = {
   password: '',
 }
 
-const accountDataLocal = ref(structuredClone(accountData))
+const form = ref(structuredClone(accountData))
 
 const id: any = ref(null)
 
 onMounted(() => {
   id.value = `${route.params.id}`
-  console.log(id)
-  console.log(accountData)
   if (id.value !== 'undefined') {
     getUserData(id)
     updatePath()
   }
-  else console.log('crear')
 })
+
+const validateForm = () => {
+  const { first_name, last_name, email, password } = form.value
+
+  return validateRequired(first_name)
+    && validateRequired(last_name)
+    && validateRequired(email)
+    && validateMatch(email, 'email')
+    && validateRequired(password)
+    && validateMatch(password, 'password')
+}
 
 function getUserData(id: any) {
   console.log('Get user', id.value)
-  accountDataLocal.value = {
+  //AQUI VA EL ENDPOINT PARA TRAERME EL USUARIO
+  form.value = {
     first_name: 'Angel',
     last_name: 'Pico',
     email: 'angel@email.com',
@@ -71,7 +81,12 @@ function updatePath() {
 }
 
 function saveUser() {
-  console.log('CREAR', accountDataLocal.value)
+  //AQUI VA EL ENDPOINT PARA GUARDAR O ACTUALIZAR EL USUARIO
+  isProgressRegister.value = true
+  console.log('CREAR', form.value)
+  router.push({
+    name: 'users',
+  })
 }
 </script>
 
@@ -86,16 +101,18 @@ function saveUser() {
 
       <VCard class="pa-4">
         <VCardText>
-          <VForm class="mt-6">
+          <VForm class="mt-6" @submit.prevent="saveUser">
             <VRow>
               <VCol
                 md="6"
                 cols="12"
               >
                 <VTextField
-                  v-model="accountDataLocal.first_name"
-                  placeholder="John"
-                  label="First Name"
+                  v-model="form.first_name"
+                  :label="$t('global.firstname')"
+                  :rules="[
+                    (val) => validateRequired(val) || $t('registration.required_field'),
+                  ]"
                 />
               </VCol>
 
@@ -104,9 +121,11 @@ function saveUser() {
                 cols="12"
               >
                 <VTextField
-                  v-model="accountDataLocal.last_name"
-                  placeholder="Doe"
-                  label="Last Name"
+                  v-model="form.last_name"
+                  :label="$t('global.lastname')"
+                  :rules="[
+                    (val) => validateRequired(val) || $t('registration.required_field'),
+                  ]"
                 />
               </VCol>
 
@@ -115,10 +134,13 @@ function saveUser() {
                 md="6"
               >
                 <VTextField
-                  v-model="accountDataLocal.email"
-                  label="E-mail"
-                  placeholder="johndoe@gmail.com"
+                  v-model="form.email"
+                  :label="$t('global.email')"
                   type="email"
+                  :rules="[
+                    (val) => validateRequired(val) || $t('registration.required_field'),
+                    (val) => validateMatch(val, 'email') || $t('registration.incorrect_email'),
+                  ]"
                 />
               </VCol>
 
@@ -127,9 +149,8 @@ function saveUser() {
                 md="6"
               >
                 <VTextField
-                  v-model="accountDataLocal.phone_number"
-                  label="Phone Number"
-                  placeholder="+1 (917) 543-9876"
+                  v-model="form.phone_number"
+                  :label="$t('global.phone')"
                 />
               </VCol>
 
@@ -138,11 +159,14 @@ function saveUser() {
                 md="6"
               >
                 <VTextField
-                  v-model="accountDataLocal.password"
+                  v-model="form.password"
+                  :label="$t('global.password')"
                   :type="isPasswordVisible ? 'text' : 'password'"
                   :append-inner-icon="isPasswordVisible ? 'bx-hide' : 'bx-show'"
-                  label="Password"
-                  placeholder="············"
+                  :rules="[
+                    (val) => validateRequired(val) || $t('registration.required_field'),
+                    (val) => validateMatch(val, 'password') || $t('registration.incorrect_password'),
+                  ]"
                   @click:append-inner="isPasswordVisible = !isPasswordVisible"
                 />
               </VCol>
@@ -151,8 +175,12 @@ function saveUser() {
                 cols="12"
                 class="d-flex flex-wrap gap-4"
               >
-                <VBtn @click="saveUser">
-                  Save changes
+                <VBtn
+                  type="submit"
+                  :loading="isProgressSave"
+                  :disabled="!validateForm()"
+                >
+                  {{ $t(id !== 'undefined' ? 'global.update' : 'global.save') }}
                 </VBtn>
               </VCol>
             </VRow>
