@@ -1,12 +1,16 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n"
-import { ref, Ref } from "vue"
+import { ref, Ref, reactive } from "vue"
 import UCHeaderPage from "@/components/helpers/UCHeaderPage.vue"
 import UCTable from "@/components/helpers/UCTable.vue"
-import { AttributeInterface } from "@/store/interfaces/AttributeInterface"
+import { AttributeInterface } from "@/store/types/AttributeInterface"
 import UCCreateAttributeDialog from '@/pages/attributes/components/UCCreateAttributeDialog.vue'
+import AttributeService from "@/services/AttributeService";
+import { useRoute } from 'vue-router'
 
 const { t } = useI18n()
+
+const route = useRoute()
 
 const attributeDialog = ref(null)
 
@@ -39,57 +43,51 @@ const headers: any[] = [
   { title: t('global.headers.options'), align: 'end', key: 'actions', sortable: false },
 ]
 
-const attributes: AttributeInterface[] = [
-  {
-    id: 1,
-    name: 'Amarillo',
-    attributeGroupId: 1,
-  },
-  {
-    id: 2,
-    name: 'Rojo',
-    attributeGroupId: 1,
-  },
-  {
-      id: 3,
-      name: 'Verde',
-      attributeGroupId: 1,
-  },
-  {
-      id: 4,
-      name: 'Azul',
-      attributeGroupId: 1,
-  },
-]
+const attributes: Ref<AttributeInterface[]> = ref([])
 
-let attribute: AttributeInterface = {
-  id: 0,
-  name: '',
-  attributeGroupId: 0,
+let attribute: AttributeInterface = reactive({})
+
+onMounted(async () => {
+  await initData()
+})
+
+async function initData() {
+  const response = await AttributeService.getAttributesGroupById(route.params.id)
+  attributes.value = response.data.attributeGroup.attributes
 }
 
 function editItem(payload: AttributeInterface) {
-  attribute = payload
+  attribute = Object.assign(payload)
   isEdit.value = true
-    attributeDialog.value.openDialog()
+  attributeDialog.value.openDialog(attribute)
 }
 
-function deleteItem(payload: number) {
-  console.log(payload)
+async function deleteItem(payload: number) {
+  await AttributeService.deleteAttribute(payload)
+  await initData()
 }
 
 function closeDialog() {
-    isEdit.value = false
-    attribute = {
-      id: 0,
-      name: '',
-      attributeGroupId: 0,
-    }
+  isEdit.value = false
+  attribute = Object.assign({ name: '' })
+  attributeDialog.value.closeDialog()
 }
 
-function saveAttributeData() {
-    console.log(attribute)
-    closeDialog()
+async function saveAttributeData(payload: AttributeInterface) {
+  if(isEdit.value) {
+    await AttributeService.updateAttribute({
+      id: payload.id,
+      name: payload.name,
+      attribute_group_id: route.params.id
+    })
+  } else {
+    await AttributeService.createAttribute({
+      name: payload.name,
+      attribute_group_id: route.params.id
+    })
+  }
+  await initData()
+  closeDialog()
 }
 </script>
 
@@ -130,9 +128,8 @@ function saveAttributeData() {
     <UCCreateAttributeDialog
       ref="attributeDialog"
       :isEdit="isEdit"
-      :attribute="attribute"
       @closeDialog="closeDialog"
-      @saveAttributeData="saveAttributeData"
+      @saveData="saveAttributeData"
     />
   </div>
 </template>

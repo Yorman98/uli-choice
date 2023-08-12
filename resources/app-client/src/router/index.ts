@@ -1,25 +1,25 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { authAdmin, authClient } from '@/router/middlewares/auth'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    { path: '/', redirect: '/dashboard' },
+    { path: '/', redirect: '/login' },
     {
       path: '/',
       component: () => import('../layouts/default.vue'),
       children: [
         {
-          path: 'dashboard',
-          name: 'adminDashboard',
-          component: () => import('../pages/dashboard.vue'),
+          path: 'typography',
+          name: 'clientDashboard',
+          component: () => import('../pages/typography.vue'),
+          meta: {
+            middleware: [authClient],
+          },
         },
         {
           path: 'account-settings',
           component: () => import('../pages/account-settings.vue'),
-        },
-        {
-          path: 'typography',
-          component: () => import('../pages/typography.vue'),
         },
         {
           path: 'icons',
@@ -36,6 +36,20 @@ const router = createRouter({
         {
           path: 'form-layouts',
           component: () => import('../pages/form-layouts.vue'),
+        },
+      ],
+    },
+    {
+      path: '/',
+      component: () => import('../layouts/default.vue'),
+      children: [
+        {
+          path: 'dashboard',
+          name: 'adminDashboard',
+          component: () => import('@/pages/dashboard.vue'),
+          meta: {
+            middleware: [authAdmin],
+          },
         },
         {
           path: 'attributes/groups',
@@ -82,6 +96,21 @@ const router = createRouter({
           name: 'editProviders',
           component: () => import('@/pages/admin/UCCreateProvider.vue'),
         },
+        {
+          path: 'category/:category',
+          name: 'subCategories',
+          component: () => import('@/pages/categories/UCCategories.vue'),
+        },
+        {
+          path: 'product/new-product',
+          name: 'formProduct',
+          component: () => import('@/pages/product/UCFormProduct.vue'),
+        },
+        {
+          name: 'purchase',
+          path: 'purchase',
+          component: () => import('@/pages/purchases/UCPurchases.vue'),
+        },
       ],
     },
     {
@@ -90,11 +119,11 @@ const router = createRouter({
       children: [
         {
           path: 'login',
-          component: () => import('../pages/login.vue'),
+          component: () => import('@/pages/auth/UCLogin.vue'),
         },
         {
           path: 'register',
-          component: () => import('../pages/register.vue'),
+          component: () => import('@/pages/auth/UCRegister.vue'),
         },
         {
           path: '/:pathMatch(.*)*',

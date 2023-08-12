@@ -1,42 +1,51 @@
 <script setup lang="ts">
-import { ref, Ref } from "vue";
+import { reactive, ref, Ref } from 'vue'
+import { AttributeInterface, AttributeGroupInterface} from '@/store/types/AttributeInterface'
 
-defineProps({
-  isEdit: {
-    type: Boolean,
-    default: false,
-  },
-  attribute: {
-    type: Object,
-    default: () => {},
-  },
-})
+const props = defineProps(['isEdit', 'isGroup'])
 
-defineExpose({ openDialog })
+defineExpose({ openDialog, closeDialog })
 
-const emit = defineEmits(['closeDialog', 'saveAttributeData'])
+const emit = defineEmits(['closeDialog', 'saveData'])
 
 const dialog: Ref<boolean> = ref(false)
 
-function openDialog() {
+let attribute: AttributeInterface | AttributeGroupInterface = reactive({
+  name: ''
+})
+
+const groupType: String[] = ['Select', 'Radio']
+
+function openDialog(payload: any = {}) {
+  if (Object.keys(payload).length > 0) {
+    Object.assign(attribute, payload)
+  }
   dialog.value = true
 }
 
 function closeDialog() {
+  if (props.isGroup) {
+    Object.assign(attribute, {
+      name: '',
+      group_type: '',
+    })
+  } else {
+    Object.assign(attribute, {
+      name: '',
+    })
+  }
   dialog.value = false
-  emit('closeDialog')
 }
 
-function saveAttributeData() {
-  dialog.value = false
-  emit('saveAttributeData')
+function saveData() {
+  emit('saveData', attribute)
 }
 </script>
 
 <template>
   <VDialog
-      v-model="dialog"
-      max-width="700px"
+    v-model="dialog"
+    max-width="700px"
   >
     <VCard class="pa-4">
       <VCardTitle>
@@ -47,25 +56,33 @@ function saveAttributeData() {
 
       <VCardText>
         <VTextField
-            v-model="attribute.name"
-            :placeholder="$t('products.attributes.attribute_name')"
-            :label="$t('products.attributes.attribute_name')"
+          v-model="attribute.name"
+          class="mb-8"
+          :placeholder="$t('products.attributes.attribute_name')"
+          :label="$t('products.attributes.attribute_name')"
+        />
+        <VSelect
+          v-if="props.isGroup"
+          v-model="attribute.group_type"
+          :items="groupType"
+          :placeholder="$t('products.attributes.attribute_type')"
+          :label="$t('products.attributes.attribute_type')"
         />
       </VCardText>
 
       <VCardActions class="d-flex justify-end">
         <VBtn
-            color="primary"
-            outlined
-            @click="closeDialog"
+          color="primary"
+          outlined
+          @click="closeDialog"
         >
           {{ $t('global.cancel') }}
         </VBtn>
 
         <VBtn
-            color="primary"
-            flat
-            @click="saveAttributeData"
+          color="primary"
+          flat
+          @click="saveData"
         >
           {{ isEdit ? $t('global.update') : $t('global.save') }}
         </VBtn>

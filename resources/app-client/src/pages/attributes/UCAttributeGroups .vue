@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router';
-import { ref, Ref } from "vue"
-import type { AttributeGroupInterface } from '@/store/interfaces/AttributeInterface'
+import { reactive, ref, Ref } from "vue"
+import type { AttributeGroupInterface } from '@/store/types/AttributeInterface'
 import UCHeaderPage from '@/components/helpers/UCHeaderPage.vue'
 import UCTable from '@/components/helpers/UCTable.vue'
 import UCCreateAttributeDialog from '@/pages/attributes/components/UCCreateAttributeDialog.vue'
+import AttributeService from '@/services/AttributeService'
 
 const { t } = useI18n()
 
@@ -19,18 +20,7 @@ const headers: any[] = [
   { title: t('global.headers.options'), align: 'end', key: 'actions', sortable: false },
 ]
 
-const attributes: AttributeGroupInterface[] = [
-  {
-    id: 1,
-    name: 'Talla',
-    groupType: 'text',
-  },
-  {
-    id: 2,
-    name: 'Color',
-    groupType: 'text',
-  },
-]
+const attributes: Ref<AttributeGroupInterface[]> = ref([])
 
 const path: any[] = [
   {
@@ -48,42 +38,64 @@ const path: any[] = [
 
 const isEdit: Ref<boolean> = ref(false)
 
-let attribute: AttributeGroupInterface = {
-  id: 0,
+let attribute: Ref<AttributeGroupInterface> = reactive({
   name: '',
-  groupType: '',
+	group_type: '',
+})
+
+onMounted(async () => {
+  await initData()
+})
+
+async function initData() {
+  const response = await AttributeService.getAttributeGroup()
+  attributes.value = response.data.attributeGroups.data
 }
 
 function editItem(payload: AttributeGroupInterface) {
-  attribute = payload
+  attribute = Object.assign(payload)
   isEdit.value = true
-  attributeDialog.value.openDialog()
+  attributeDialog.value.openDialog(attribute)
 }
 
-function goToGroup(payload: number) {
+function goToGroup(payload: AttributeGroupInterface) {
   router.push({
     name: 'attributesList',
     params: {
-      id: payload,
+      id: payload.id,
     },
   })
 }
 
-function deleteItem(payload: number) {
-  console.log(payload)
+async function deleteItem(payload: number) {
+  await AttributeService.deleteAttributeGroup(payload)
+  await initData()
 }
 
 function closeDialog() {
   isEdit.value = false
-  attribute = {
-    id: 0,
+  attribute = Object.assign({
     name: '',
-    groupType: '',
-  }
+	  group_type: '',
+  })
+  attributeDialog.value.closeDialog()
 }
 
-function saveAttributeData() {
-  console.log(attribute)
+async function saveAttributeData(payload: AttributeGroupInterface) {
+  console.log(payload)
+	if (isEdit.value) {
+    await AttributeService.updateAttributeGroup({
+      id: payload.id,
+      name: payload.name,
+      group_type: payload.group_type.toLowerCase()
+    })
+  } else {
+		await AttributeService.createAttributeGroup({
+			name: payload.name,
+			group_type: payload.group_type.toLowerCase()
+		})
+  }
+  await initData()
   closeDialog()
 }
 </script>
@@ -115,8 +127,8 @@ function saveAttributeData() {
         <VCardText>
           <UCTable
             :headers="headers"
-            :items="attributes"
             :hasSubItems="true"
+            :items="attributes"
             @editItem="editItem"
             @goToItem="goToGroup"
             @deleteItem="deleteItem"
@@ -127,9 +139,9 @@ function saveAttributeData() {
       <UCCreateAttributeDialog
         ref="attributeDialog"
         :isEdit="isEdit"
-        :attribute="attribute"
+        :isGroup="true"
         @closeDialog="closeDialog"
-        @saveAttributeData="saveAttributeData"
+        @saveData="saveAttributeData"
       />
     </VCol>
   </VRow>
