@@ -3,6 +3,6 @@ export interface VariantInterface {
   price: number
   cost: number
   stock: number
-  group: number
+  group?: number
   attributes: number[]
 }

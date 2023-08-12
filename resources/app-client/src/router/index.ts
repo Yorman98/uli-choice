@@ -76,12 +76,17 @@ const router = createRouter({
           children: [
             {
               name: 'product',
-              path: '',
+              path: 'product-list',
               component: () => import('@/pages/product/UCProductsList.vue'),
             },
             {
               path: 'new-product',
               name: 'formProduct',
+              component: () => import('@/pages/product/UCFormProduct.vue'),
+            },
+            {
+              path: 'edit-product/:id',
+              name: 'editFormProduct',
               component: () => import('@/pages/product/UCFormProduct.vue'),
             },
           ],

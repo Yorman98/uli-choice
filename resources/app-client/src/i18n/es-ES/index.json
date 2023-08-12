@@ -82,7 +82,12 @@
       "product_cost":  "Costo del producto",
       "product_stock": "Stock del producto",
       "product_group": "Grupo de atributos",
-      "product_attributes": "Atributos del producto"
+      "product_attributes": "Atributos del producto",
+      "product_category": "Categoria del producto",
+      "change_photo": "Cambiar foto del producto",
+      "create_product": "Crear producto",
+      "update_product": "Actualizar producto",
+      "delete_product": "Eliminar producto"
     }
   },
   "purchases": {
