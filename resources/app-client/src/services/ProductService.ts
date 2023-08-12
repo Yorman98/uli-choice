@@ -1,34 +1,39 @@
 import type { AxiosPromise } from 'axios'
+import type { UnwrapNestedRefs } from 'vue/dist/vue'
 import ApiService from '@/services'
+import type { ProductResponseInterface } from '@/services/types/ProductTypes'
+import type { ProductInterface } from '@/store/types/ProductInterface'
 
-class CategoryService {
-	createProduct(payload: any): AxiosPromise<any> {
+class ProductService {
+  createProduct(payload: UnwrapNestedRefs<ProductInterface>): AxiosPromise<ProductResponseInterface> {
     return ApiService.post('/product', payload,
-      { headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
   }
 
-  getProducts(payload: any): AxiosPromise<any> {
+  getProducts(payload: { page: number; perPage: number }): Promise<ProductResponseInterface> {
     return ApiService.get(`/product/?page=${payload.page}&perPage=${payload.perPage}`)
   }
 
-  getProduct(id: number): AxiosPromise<any> {
+  getProduct(id: number): AxiosPromise<ProductResponseInterface> {
     return ApiService.get(`/product/${id}`)
   }
 
-  updateProduct(id: number, payload: any): AxiosPromise<any> {
-    return ApiService.post(`/product/${id}`, payload,
-    { headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
+  updateProduct(payload: UnwrapNestedRefs<ProductInterface>): AxiosPromise<ProductResponseInterface> {
+    return ApiService.post(`/product/${payload.id}`, payload,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
   }
 
-  deleteProduct(id: number): AxiosPromise<any> {
+  deleteProduct(id: number): AxiosPromise<ProductResponseInterface> {
     return ApiService.delete(`/product/${id}`)
   }
 }
 
-export default new CategoryService()
+export default new ProductService()

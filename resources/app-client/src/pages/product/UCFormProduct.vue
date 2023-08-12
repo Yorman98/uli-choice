@@ -1,23 +1,24 @@
 <script setup lang="ts">
-import UCHeaderPage from '@/components/helpers/UCHeaderPage.vue'
 import { useI18n } from 'vue-i18n'
-import { ProductInterface } from '@/store/types/ProductInterface'
-import { VariantInterface } from '@/store/types/VariantInterface'
-import {reactive, ref, Ref, UnwrapRef} from 'vue'
-import { AttributeGroupInterface, AttributeInterface } from '@/store/types/AttributeInterface'
+import type { Ref, UnwrapRef } from 'vue'
+import { reactive, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import UCHeaderPage from '@/components/helpers/UCHeaderPage.vue'
+import type { ProductInterface } from '@/store/types/ProductInterface'
+import type { VariantInterface } from '@/store/types/VariantInterface'
+import type { AttributeGroupInterface, AttributeInterface } from '@/store/types/AttributeInterface'
 import CategoryService from '@/services/CategoryService'
 import ProductService from '@/services/ProductService'
-import { CategoryInterface } from '@/store/types/CategoryInterface'
-import imageUrl from '@/assets/images/product/product-img.png'
-import {useRoute, useRouter} from 'vue-router'
+import type { CategoryInterface } from '@/store/types/CategoryInterface'
+import imageUrl from '@images/product/product-img.png'
 
-const route = useRoute();
+const route = useRoute()
 
 const router = useRouter()
 
 const { t } = useI18n()
 
-const isEdit: boolean = !!route.params.id
+const isEdit = !!route.params.id
 
 const path: any[] = [
   {
@@ -31,8 +32,8 @@ const path: any[] = [
     title: t('products.products_list'),
     disabled: false,
     to: {
-      name: 'product'
-    }
+      name: 'product-list',
+    },
   },
   {
     title: isEdit ? t('products.form_product.update_product') : t('products.form_product.create_product_title'),
@@ -40,15 +41,15 @@ const path: any[] = [
   },
 ]
 
-let product: UnwrapRef<ProductInterface> = reactive({
+const product: UnwrapRef<ProductInterface> = reactive({
   name: '',
   slug: '',
   code: '',
   description: '',
-  image: ''
+  image: '',
 } as ProductInterface)
 
-let categories: Ref<CategoryInterface[]> = ref([])
+const categories: Ref<CategoryInterface[]> = ref([])
 
 const groups: AttributeGroupInterface[] = [
   {
@@ -94,9 +95,11 @@ const selectedImage: Ref<any[]> = ref([])
 
 onMounted(async () => {
   const response = await CategoryService.getCategories()
+
   categories.value = response.data.categories.data
   if (isEdit) {
     const productResponse = await ProductService.getProduct(Number(route.params.id))
+
     Object.assign(product, productResponse.data.data)
     product.categories = productResponse.data.data.categories.map((category: number) => category.id)
   }
@@ -108,28 +111,26 @@ function addVariant() {
     price: 0,
     cost: 0,
     stock: 0,
-    attributes: []
+    attributes: [],
   })
 }
 
 const openFileInput = () => {
   const fileInput = document?.querySelector('.img input') as HTMLElement
-    if (fileInput) {
-      fileInput.click()
-    }
-};
+  if (fileInput)
+    fileInput.click()
+}
 
 const handleFileChange = (event: Event) => {
-  const target = event.target as HTMLInputElement;
-  if (target.files) {
-    product.image = URL.createObjectURL(target.files[0]);
-  }
-};
+  const target = event.target as HTMLInputElement
+  if (target.files)
+    product.image = URL.createObjectURL(target.files[0])
+}
 
 async function deleteProduct() {
   await ProductService.deleteProduct(Number(route.params.id))
   await router.push({
-    name: 'product'
+    name: 'product-list',
   })
 }
 function saveProductData() {
@@ -137,19 +138,17 @@ function saveProductData() {
   formData.append('slug', product.slug)
   formData.append('code', product.code)
   formData.append('description', product.description)
-  formData.append('image', selectedImage.value[0]);
-  for (const value of product.categories) {
-    formData.append('categories[]', String(value));
-  }
+  formData.append('image', selectedImage.value[0])
+  for (const value of product.categories)
+    formData.append('categories[]', String(value))
 
-  if (isEdit) {
+  if (isEdit)
     ProductService.updateProduct(Number(route.params.id), formData)
-  } else {
+  else
     ProductService.createProduct(formData)
-  }
 
   router.push({
-    name: 'product'
+    name: 'product-list',
   })
 }
 </script>
@@ -176,7 +175,8 @@ function saveProductData() {
               <VBtn @click="saveProductData">
                 <VIcon
                   class="pr-2"
-                  size="35">
+                  size="35"
+                >
                   mdi-content-save-outline
                 </VIcon>
                 <p class="text-button ma-0">
@@ -206,14 +206,14 @@ function saveProductData() {
               cols="12"
               class="d-flex flex-column justify-center align-center mb-4"
             >
-              <v-img
+              <VImg
                 :src="product.image ? product.image : imageUrl"
                 class="img-preview"
                 max-width="300"
                 height="200"
-                @click="openFileInput"
                 contain
-              ></v-img>
+                @click="openFileInput"
+              />
 
               <VBtn
                 class="my-6"
@@ -256,14 +256,14 @@ function saveProductData() {
               </VCol>
 
               <VCol cols="6">
-                <v-file-input
+                <VFileInput
                   v-model="selectedImage"
                   class="img"
                   label="Upload an image"
                   accept="image/*"
                   prepend-icon="mdi-camera"
                   @change="handleFileChange"
-                ></v-file-input>
+                />
               </VCol>
 
               <VCol cols="12">
@@ -303,8 +303,8 @@ function saveProductData() {
 
         <VCardText
           v-for="(variant, index) in variants"
-          class="mb-10 py-0"
           :key="index"
+          class="mb-10 py-0"
         >
           <p class="text-h6">
             {{ $t('products.form_product.variant') }} {{ index + 1 }}

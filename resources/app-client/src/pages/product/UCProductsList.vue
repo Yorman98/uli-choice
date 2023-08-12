@@ -7,8 +7,7 @@ import UCTable from '@/components/helpers/UCTable.vue'
 import type { ProductInterface } from '@/store/types/ProductInterface'
 import ProductService from '@/services/ProductService'
 import router from '@/router'
-import productService from "@/services/ProductService";
-
+import productService from '@/services/ProductService'
 
 const { t } = useI18n()
 
@@ -29,6 +28,7 @@ const path: Ref<any[]> = ref([
 const headers: any[] = [
   { title: t('global.headers.id'), align: 'start', sortable: false, key: 'id' },
   { title: t('global.headers.name'), key: 'name' },
+  { title: t('global.headers.description'), key: 'description' },
   { title: t('global.headers.options'), align: 'end', key: 'actions', sortable: false },
 ]
 

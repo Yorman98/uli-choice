@@ -98,7 +98,7 @@ import UserProfile from '@/layouts/components/UserProfile.vue'
           title: $t('navbar.products'),
           icon: 'mdi-hanger',
           to: {
-            name: 'product',
+            name: 'product-list',
           },
         }"
       />
