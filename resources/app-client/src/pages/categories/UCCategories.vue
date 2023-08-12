@@ -3,8 +3,9 @@ import UCHeaderPage from '@/components/helpers/UCHeaderPage.vue'
 import UCTable from '@/components/helpers/UCTable.vue'
 import { useI18n } from 'vue-i18n'
 import { CategoryInterface } from '@/store/types/CategoryInterface'
-import { ref, Ref } from 'vue'
+import { ref, Ref, reactive } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import CategoryService from '@/services/CategoryService'
 
 const { t } = useI18n()
 
@@ -39,90 +40,35 @@ const dialog: Ref<boolean> = ref(false)
 
 let categories: Ref<CategoryInterface[]> = ref([])
 
-let category: CategoryInterface = {
-  id: 0,
+let category: CategoryInterface = reactive({
   name: '',
   slug: '',
   description: ''
-}
+})
 
 watch(route, () => initData(route))
 
-onMounted(() => {
-  categories.value = [
-    {
-      id: 1,
-      name: 'Mujer',
-      slug: 'mujer',
-      description: 'Ropa para mujer'
-    },
-    {
-      id: 2,
-      name: 'Hombre',
-      slug: 'hombre',
-      description: 'Ropa para hombre'
-    },
-    {
-      id: 3,
-      name: 'Niños',
-      slug: 'niños',
-      description: 'Ropa para niños'
-    },
-  ]
+onMounted(async () => {
+  const response = await CategoryService.getCategories()
+  categories.value = response.data.categories.data
 })
 
-function initData(route: any) {
+async function initData(route: any) {
   if (Object.keys(route.params).length > 0) {
-    categories.value = [
-      {
-        id: 1,
-        name: 'Panatalones',
-        slug: 'mujer',
-        description: 'Panatalones para mujer'
-      },
-      {
-        id: 2,
-        name: 'Faldas',
-        slug: 'mujer',
-        description: 'faldas para mujer'
-      },
-      {
-        id: 3,
-        name: 'Sombreros',
-        slug: 'mujer',
-        description: 'Sombreros para mujer'
-      },
-    ]
+    const response = await CategoryService.getCategory(route.params.category)
+    categories.value = response.data.categories.data
     path.value.push({
       title: route.params.category,
       disabled: true,
     })
   } else {
-    categories.value = [
-      {
-        id: 1,
-        name: 'Mujer',
-        slug: 'mujer',
-        description: 'Ropa para mujer'
-      },
-      {
-        id: 2,
-        name: 'Hombre',
-        slug: 'hombre',
-        description: 'Ropa para hombre'
-      },
-      {
-        id: 3,
-        name: 'Niños',
-        slug: 'niños',
-        description: 'Ropa para niños'
-      },
-    ]
+    const response = await CategoryService.getCategories()
+    categories.value = response.data.categories.data
   }
 }
 
 function editItem(payload: CategoryInterface) {
-  category = payload
+  Object.assign(category, payload)
   isEdit.value = true
   dialog.value = true
 }
@@ -136,23 +82,28 @@ function goToCategory(payload: CategoryInterface) {
   })
 }
 
-function deleteItem(payload: number) {
-    console.log(payload)
+async function deleteItem(payload: number) {
+  await CategoryService.deleteCategory(payload)
+  await initData(route)
 }
 
 function closeDialog() {
   dialog.value = false
   isEdit.value = false
-  category = {
-    id: 0,
+  Object.assign(category, {
     name: '',
     slug: '',
     description: ''
-  }
+  })
 }
 
-function saveCategoryData() {
-  console.log(category)
+async function saveCategoryData() {
+  if (isEdit.value) {
+    await CategoryService.updateCategory(category)
+  } else {
+    await CategoryService.createCategory(category)
+  }
+  await initData(route)
   closeDialog()
 }
 </script>
@@ -210,6 +161,13 @@ function saveCategoryData() {
                 class="mb-8"
                 :placeholder="$t('products.categories.category_name')"
                 :label="$t('products.categories.category_name')"
+              />
+
+              <VTextField
+                v-model="category.slug"
+                class="mb-8"
+                :placeholder="$t('products.categories.category_slug')"
+                :label="$t('products.categories.category_slug')"
               />
 
               <VTextField

@@ -2,9 +2,13 @@
 import logo from '@images/logo-uli.png'
 import { useUserStore } from '@/store/user'
 import router from '@/router'
-import { validateMatch, validateRequired } from '@/services/FormValidationService'
+import { validateRequired } from '@/services/FormValidationService'
+import { ADMIN } from '@/utils/constants'
 
 const userStore = useUserStore()
+const isProgressLogin = ref(false)
+const isErrorLogin = ref(false)
+const errorMessage = ref('')
 
 const form = ref({
   email: '',
@@ -13,24 +17,50 @@ const form = ref({
 })
 
 const checkLogin = async () => {
-  await userStore.login({
-    email: form.value.email,
-    password: form.value.password,
-  })
+  isErrorLogin.value = false
+  isProgressLogin.value = true
 
-  await userStore.loadUser()
+  try {
+    await userStore.login({
+      email: form.value.email,
+      password: form.value.password,
+    })
 
-  if (userStore.getUserInfo.role === 'admin')
-    router.push('/dashboard')
-  else
-    router.push('/typography')
+    await userStore.loadUser()
+
+    if (userStore.getUserInfo.role === ADMIN)
+      router.push('/dashboard')
+    else
+      router.push('/typography')
+  }
+  catch (error) {
+    isProgressLogin.value = false
+    isErrorLogin.value = true
+    errorMessage.value = error.response.data.message
+  }
+}
+
+const validateForm = () => {
+  const { email, password } = form.value
+
+  return validateRequired(email) && validateRequired(password)
 }
 
 const isPasswordVisible = ref(false)
 </script>
 
 <template>
-  <div class="auth-wrapper d-flex align-center justify-center pa-4">
+  <div class="auth-wrapper d-flex flex-column align-center justify-center pa-4">
+    <VCard
+      v-if="isErrorLogin"
+      class="auth-error pa-3 mb-8 w-100 rounded-0"
+      max-width="448"
+    >
+      <VCardItem class="justify-start pa-0">
+        <span class="text-grey-darken-3">{{ $t('global.error') }}</span>
+        <span class="text-grey-darken-3">{{ errorMessage }}</span>
+      </VCardItem>
+    </VCard>
     <VCard
       class="auth-card pa-4 pt-7"
       max-width="448"
@@ -46,7 +76,7 @@ const isPasswordVisible = ref(false)
 
       <VCardText class="pt-2">
         <h5 class="text-h5 mb-1">
-          Welcome! 👋🏻
+          {{ $t('global.welcome') }} 👋🏻
         </h5>
       </VCardText>
 
@@ -57,13 +87,10 @@ const isPasswordVisible = ref(false)
             <VCol cols="12">
               <VTextField
                 v-model="form.email"
-                autofocus
-                placeholder="example@email.com"
                 :label="$t('global.email')"
                 type="email"
                 :rules="[
                   (val) => validateRequired(val) || $t('registration.required_field'),
-                  (val) => validateMatch(val, 'email') || $t('registration.incorrect_email'),
                 ]"
               />
             </VCol>
@@ -86,9 +113,10 @@ const isPasswordVisible = ref(false)
                 class="mt-6 mb-3"
                 block
                 type="submit"
-                :disabled="!validateRequired(form.email) || !validateMatch(form.email, 'email') || !validateRequired(form.password)"
+                :loading="isProgressLogin"
+                :disabled="!validateForm()"
               >
-                Login
+                {{ $t('registration.login') }}
               </VBtn>
             </VCol>
 
@@ -97,12 +125,12 @@ const isPasswordVisible = ref(false)
               cols="12"
               class="text-center text-base"
             >
-              <span>New on our platform?</span>
+              <span>{{ $t('registration.new_register_message') }}</span>
               <RouterLink
                 class="text-primary ms-2"
                 to="/register"
               >
-                Create an account
+                {{ $t('registration.sign_up') }}
               </RouterLink>
             </VCol>
           </VRow>
@@ -112,6 +140,13 @@ const isPasswordVisible = ref(false)
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @use "@core/scss/template/pages/page-auth";
+
+.auth-wrapper {
+  .auth-error {
+    background: #FFCDD2;
+    border-left: 2px solid red;
+  }
+}
 </style>

@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia'
 import type { AxiosResponse } from 'axios'
-import type { UserInterface } from '@/store/interfaces/UserInterface'
-import AuthService from '@/services/AuthService'
+import type { UserInterface } from '@/store/types/UserInterface'
 import UserService from '@/services/UserService'
-import type { LoginResponseInterface } from '@/services/types/AuthTypes'
+import AuthService from '@/services/AuthService'
+import type { LoginResponseInterface, RegisterResponseInterface } from '@/services/types/AuthTypes'
 import type { UserResponseInterface } from '@/services/types/UserTypes'
 
 export const useUserStore = defineStore('user', {
@@ -39,6 +39,18 @@ export const useUserStore = defineStore('user', {
         lastName: response.data.last_name,
         email: response.data.email,
         role: response.data.role,
+      }
+    },
+    async register(payload: { first_name: string; last_name: string; phone_number: string; email: string; password: string }) {
+      const response: AxiosResponse<RegisterResponseInterface> = await AuthService.register(payload)
+
+      if (response.data.user) {
+        this.userInfo = {
+          firstName: response.data.user?.first_name,
+          lastName: response.data.user?.last_name,
+          email: response.data.user?.email,
+          role: response.data.user?.role,
+        }
       }
     },
   },

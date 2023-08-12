@@ -7,23 +7,44 @@
     "save": "Guardar",
     "update": "Actualizar",
     "see": "Ver",
+    "close": "Cerrar",
     "headers": {
       "id": "ID",
       "name": "Nombre",
       "options": "Opciones",
-      "description": "Descripción"
+      "description": "Descripción",
+      "provider": "Proveedor",
+      "total": "Total",
+      "date_created": "Fecha de creación",
+      "date_updated": "Fecha de actualización",
+      "phone": "Teléfono",
+      "website": "Sitio web"
     },
     "email": "Correo electrónico",
-    "password": "Contraseña"
+    "password": "Contraseña",
+    "firstname": "Nombre",
+    "lastname": "Apellido",
+    "phone": "Teléfono",
+    "welcome": "Bienvenido",
+    "error": "Ha ocurrido un error."
   },
   "registration": {
     "required_field": "Campo requerido",
-    "incorrect_email": "Dirección de correo electrónico incorrecto"
+    "incorrect_email": "Dirección de correo electrónico incorrecto",
+    "incorrect_password": "La contraseña debe contener mínimo 8 caracteres incluyendo: una mayúscula, un número y un carácter especial.",
+    "register_message": "Debes completar el siguiente formulario para registrarte en UliChoice y ser parte de nuestros clientes.",
+    "login": "Iniciar sesión",
+    "register": "Registrarse",
+    "new_register_message": "¿Eres nuevo en nuestra plataforma?",
+    "sign_up": "Regístrate",
+    "login_message": "¿Ya tienes una cuenta?"
   },
   "navbar": {
     "attributes_groups": "Grupo de atributos",
     "attributes": "Atributos",
-    "categories": "Categorias"
+    "categories": "Categorias",
+    "products": "Productos",
+    "purchases": "Compras"
   },
   "products": {
     "attributes": {
@@ -32,14 +53,39 @@
       "edit_attribute": "Editar atributo",
       "attribute_name": "Nombre del atributo",
       "attribute_list_title": "Lista de atributos",
-      "create_attribute": "Crear atributo"
+      "create_attribute": "Crear atributo",
+      "attribute_type": "Tipo de atributo"
     },
     "categories": {
       "categories_group_title": "Categorias",
       "create_category": "Crear categoria",
       "edit_category": "Editar categoria",
       "category_name": "Nombre de la categoria",
+      "category_slug": "Slug de la categoria",
       "category_description": "Descripción de la categoria"
+    },
+    "form_product": {
+      "create_product_title": "Crear un nuevo producto",
+      "product_name": "Nombre del producto",
+      "product_details": "Detalles del producto",
+      "product_slug": "Slug del producto",
+      "product_code": "Codigo del producto",
+      "product_description": "Descripción del producto",
+      "product_variant": "Variantes del producto",
+      "add_variant": "Agregar variante",
+      "variant": "Variante",
+      "product_sku": "SKU del producto",
+      "product_price": "Precio del producto",
+      "product_cost":  "Costo del producto",
+      "product_stock": "Stock del producto",
+      "product_group": "Grupo de atributos",
+      "product_attributes": "Atributos del producto"
     }
+  },
+  "purchases": {
+    "store_purchases": "Compras realizadas",
+    "add_purchase": "Agregar compra",
+    "purchase_data": "Datos de la compra",
+    "provider_data": "Datos del proveedor"
   }
 }

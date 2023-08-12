@@ -1,3 +1,5 @@
+import type { UserResponseInterface } from '@/services/types/UserTypes'
+
 export interface LoginResponseInterface {
   success: boolean
   authorization?: {
@@ -6,4 +8,10 @@ export interface LoginResponseInterface {
   }
   error?: never
   message?: string
+}
+
+export interface RegisterResponseInterface {
+  success: boolean
+  errors?: never
+  user?: UserResponseInterface
 }
