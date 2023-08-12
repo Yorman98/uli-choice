@@ -80,7 +80,9 @@ const router = createRouter({
           component: () => import('../pages/register.vue'),
         },
         {
-          path: 'forgot-password',
+          path: 'product/:id',
+          name: 'product',
+          component: () => import('@/pages/product/UCSingleProduct.vue'),
         },
         {
           path: '/:pathMatch(.*)*',

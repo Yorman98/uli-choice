@@ -29,7 +29,12 @@ const headers: any[] = [
   { title: t('global.headers.options'), align: 'end', key: 'actions', sortable: false },
 ]
 
-
-
-
 </script>
+
+<template>
+  <VRow>
+    <VCol cols="12">
+        Testing
+      </VCol>
+  </VRow>
+</template>
