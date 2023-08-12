@@ -13,14 +13,16 @@
       "options": "Opciones",
       "last_name": "Apellido",
       "email": "Correo Electrónico",
-      "phone_number": "Número de telefono"
+      "phone_number": "Número de telefono",
+      "website": "Sitio web"
     }
   },
   "navbar": {
     "attributes_groups": "Grupo de atributos",
     "attributes": "Atributos",
     "categories": "Categorias",
-    "users": "Usuarios"
+    "users": "Usuarios",
+    "providers": "Proveedores"
   },
   "products": {
     "attributes": {
@@ -38,5 +40,9 @@
   "users": {
     "create_user": "Crear usuario",
     "edit_user": "Editar usuario"
+  },
+  "providers": {
+    "create_provider": "Crear Proveedor",
+    "edit_provider": "Editar Proveedor"
   }
 }
