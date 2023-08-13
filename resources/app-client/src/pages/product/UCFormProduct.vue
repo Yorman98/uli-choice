@@ -11,6 +11,7 @@ import CategoryService from '@/services/CategoryService'
 import ProductService from '@/services/ProductService'
 import type { CategoryInterface } from '@/store/types/CategoryInterface'
 import imageUrl from '@images/product/product-img.png'
+import { STORAGE_PATH } from '@/utils/constants'
 
 const route = useRoute()
 
@@ -102,6 +103,7 @@ onMounted(async () => {
 
     Object.assign(product, productResponse.data.data)
     product.categories = productResponse.data.data.categories.map((category: number) => category.id)
+    product.image = STORAGE_PATH + product.image
   }
 })
 
