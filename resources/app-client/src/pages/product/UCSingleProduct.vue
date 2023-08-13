@@ -68,6 +68,9 @@ const headers: any[] = [
     </VCol>
 
     <VCol cols="7">
+      <pre>
+        {{ product }}
+      </pre>
       <div class="product-details">
         <div class="product-details__header">
           <h1 class="product-title">{{ product.name }}</h1>
