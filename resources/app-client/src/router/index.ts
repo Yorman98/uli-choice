@@ -67,6 +67,11 @@ const router = createRouter({
           component: () => import('@/pages/categories/UCCategories.vue'),
         },
         {
+          path: 'users',
+          name: 'users',
+          component: () => import('@/pages/users/UCUsers.vue'),
+        },
+        {
           path: 'category/:category',
           name: 'subCategories',
           component: () => import('@/pages/categories/UCCategories.vue'),
@@ -95,6 +100,11 @@ const router = createRouter({
           path: 'purchase',
           name: 'purchase',
           component: () => import('@/pages/purchases/UCPurchases.vue'),
+        },
+        {
+          path: 'providers',
+          name: 'providers',
+          component: () => import('@/pages/providers/UCProviders.vue'),
         },
       ],
     },

@@ -12,22 +12,26 @@
       "id": "ID",
       "name": "Nombre",
       "options": "Opciones",
+      "last_name": "Apellido",
+      "email": "Correo Electrónico",
+      "password": "Contraseña",
+      "phone_number": "Número de teléfono",
+      "website": "Sitio web",
       "description": "Descripción",
       "provider": "Proveedor",
       "total": "Total",
       "date_created": "Fecha de creación",
       "date_updated": "Fecha de actualización",
       "phone": "Teléfono",
-      "website": "Sitio web",
-      "code": "Código"
+      "code": "Código",
+      "type_user": "Tipo de usuario"
     },
-    "email": "Correo electrónico",
-    "password": "Contraseña",
-    "firstname": "Nombre",
-    "lastname": "Apellido",
-    "phone": "Teléfono",
     "welcome": "Bienvenido",
-    "error": "Ha ocurrido un error."
+    "error": "Ha ocurrido un error.",
+    "roles": {
+      "admin": "Administrador",
+      "client": "Cliente"
+    }
   },
   "registration": {
     "required_field": "Campo requerido",
@@ -44,8 +48,11 @@
     "attributes_groups": "Grupo de atributos",
     "attributes": "Atributos",
     "categories": "Categorias",
+    "users": "Usuarios",
+    "providers": "Proveedores",
     "products": "Productos",
-    "purchases": "Compras"
+    "purchases": "Compras",
+    "configuration": "Configuración"
   },
   "products": {
     "products_list": "Lista de productos",
@@ -89,6 +96,14 @@
       "update_product": "Actualizar producto",
       "delete_product": "Eliminar producto"
     }
+  },
+  "users": {
+    "create_user": "Crear usuario",
+    "edit_user": "Editar usuario"
+  },
+  "providers": {
+    "create_provider": "Crear Proveedor",
+    "edit_provider": "Editar Proveedor"
   },
   "purchases": {
     "store_purchases": "Compras realizadas",

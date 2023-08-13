@@ -28,10 +28,13 @@ const checkLogin = async () => {
 
     await userStore.loadUser()
 
-    if (userStore.getUserInfo.role === ADMIN)
+    /* if (userStore.getUserInfo.role === ADMIN)
       router.push('/dashboard')
     else
-      router.push('/typography')
+      router.push('/') */
+
+    // TODO: Change this to the correct route
+    router.push('/dashboard')
   }
   catch (error) {
     isProgressLogin.value = false
@@ -87,7 +90,7 @@ const isPasswordVisible = ref(false)
             <VCol cols="12">
               <VTextField
                 v-model="form.email"
-                :label="$t('global.email')"
+                :label="$t('global.headers.email')"
                 type="email"
                 :rules="[
                   (val) => validateRequired(val) || $t('registration.required_field'),
@@ -99,7 +102,7 @@ const isPasswordVisible = ref(false)
             <VCol cols="12">
               <VTextField
                 v-model="form.password"
-                :label="$t('global.password')"
+                :label="$t('global.headers.password')"
                 :type="isPasswordVisible ? 'text' : 'password'"
                 :append-inner-icon="isPasswordVisible ? 'bx-hide' : 'bx-show'"
                 :rules="[

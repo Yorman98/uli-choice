@@ -81,10 +81,13 @@ function closePurchase() {
 }
 
 async function savePurchase() {
-  if (isEditPurchase.value)
+  if (isEditPurchase.value) {
     await PurchaseService.updatePurchase(purchaseInfo)
-  else
+    isEditPurchase.value = false
+  }
+  else {
     await PurchaseService.createPurchase(purchaseInfo)
+  }
 
   purchasesList.value = []
   await dataPurchases()
@@ -100,8 +103,6 @@ function editPurchase(purchase: PurchaseInterface) {
   isEditPurchase.value = true
   openPurchase.value = true
   Object.assign(purchaseInfo, purchase)
-
-  isEditPurchase.value = false
 }
 
 async function deletePurchase(payload: number) {

@@ -148,7 +148,7 @@ class ClientController extends Controller
                 
         // Update user
         $client->update([
-            'first_name' => $request->name,
+            'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $request->email,
             'phone_number' => $request->get('phone_number'), // optional
