@@ -3,6 +3,7 @@ import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 import UCHeaderPage from '@/components/helpers/UCHeaderPage.vue'
 import { validateRequired } from '@/services/FormValidationService'
+import ProviderService from '@/services/ProviderService'
 
 const { t } = useI18n()
 
@@ -57,12 +58,13 @@ const validateForm = () => {
     && validateRequired(website)
 }
 
-function getProviderData(id: any) {
-  //AQUI VA EL ENDPOINT PARA TRAERME EL PROVEEDOR
+async function getProviderData(id: any) {
+  const response = await ProviderService.getProviderById(id.value)
+
   form.value = {
-    name: 'Shein',
-    website: 'https://us.shein.com/',
-    phone_number: '+58123456789',
+    name: response.data.data.name,
+    website: response.data.data.website,
+    phone_number: response.data.data.phone_number,
   }
 }
 
@@ -70,8 +72,13 @@ function updatePath() {
   path.value[2].title = t('providers.edit_provider')
 }
 
-function saveProvider() {
-  //AQUI VA EL ENDPOINT PARA GUARDAR O ACTUALIZAR EL USUARIO
+async function saveProvider() {
+  if (id.value !== 'undefined')
+    await ProviderService.updateProvider(id.value, form.value)
+
+  else
+    await ProviderService.createProvider(form.value)
+
   isProgressRegister.value = true
   router.push({
     name: 'providers',

@@ -3,6 +3,7 @@ import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import UCHeaderPage from '@/components/helpers/UCHeaderPage.vue'
 import UCTable from '@/components/helpers/UCTable.vue'
+import ProviderService from '@/services/ProviderService'
 
 const { t } = useI18n()
 
@@ -35,22 +36,10 @@ onMounted(() => {
   getData()
 })
 
-function getData() {
-  // AQUI VA EL ENDPOINT DE TRAER LOS PROVEEDORES
-  providers.value = [
-    {
-      id: 1,
-      name: 'Shein',
-      website: 'https://us.shein.com/',
-      phone_number: '+58123456789',
-    },
-    {
-      id: 2,
-      name: 'Amazon',
-      website: 'https://www.amazon.com/',
-      phone_number: '+58123456789',
-    },
-  ]
+async function getData() {
+  const response = await ProviderService.getProviders()
+
+  providers.value = response.data.providers.data
 }
 
 function editItem(payload: any) {
@@ -62,8 +51,8 @@ function editItem(payload: any) {
   })
 }
 
-function deleteItem(payload: number) {
-  // AQUI VA EL ENDPOINT DE ELIMINAR
+async function deleteItem(payload: number) {
+  await ProviderService.deleteProvider(payload)
   getData()
 }
 
