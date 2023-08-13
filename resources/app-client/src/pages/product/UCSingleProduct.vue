@@ -13,7 +13,6 @@ const selected: any = ref();
 
 const product: Ref<ProductInterface> = ref({} as ProductInterface);
 
-
 onMounted(async () => {
   const id = Number(router.currentRoute.value.params.id);
   if (id) {
@@ -45,90 +44,96 @@ const headers: any[] = [
 </script>
 
 <template>
-  <VRow>
-    <VCol cols="5">
-      <div class="thumbnail-section pa-3">
-        <v-carousel>
-          <v-carousel-item
-            src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
-            cover
-          ></v-carousel-item>
-
-          <v-carousel-item
-            src="https://cdn.vuetifyjs.com/images/cards/hotel.jpg"
-            cover
-          ></v-carousel-item>
-
-          <v-carousel-item
-            src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
-            cover
-          ></v-carousel-item>
-        </v-carousel>
-      </div>
-    </VCol>
-
-    <VCol cols="7">
-      <pre>
-        {{ product }}
-      </pre>
-      <div class="product-details">
-        <div class="product-details__header">
-          <h1 class="product-title">{{ product.name }}</h1>
-          <span class="product-sku">SKU: {{ product.code }}</span>
-        </div>
-
-        <div class="product-details__content mt-3">
-          <div class="product-description">
-            <h3>Description:</h3>
-            <p class="mt-2">{{ product.description }}</p>
+  <VContainer class="pa-0" :fluid="true">
+    <VContainer>
+      <VRow class="pa-4">
+        <VCol cols="12" xs="12" sm="12" md="5">
+          <div class="thumbnail-section pa-3">
+            <v-carousel>
+              <v-carousel-item :src="product.image" cover></v-carousel-item>
+            </v-carousel>
           </div>
+        </VCol>
 
-          <div class="product-pricing">
-            <div class="product-price">
-              <p>{{ $filters.currencyFormat(product.price) }}</p>
+        <VCol cols="12" xs="12" sm="12" md="7">
+          <div class="product-details mt-4">
+            <div class="product-details__header">
+              <h1 class="product-title">{{ product.name }}</h1>
+              <span class="product-sku">SKU: {{ product.code }}</span>
             </div>
 
-            <div class="product-variation">
-              <h3>Talla:</h3>
+            <div class="product-details__content mt-3">
+              <div class="product-description">
+                <h3>Descripción:</h3>
+                <p class="mt-2">{{ product.description }}</p>
+              </div>
 
-              <!-- Radio Variation -->
-              <v-chip-group v-model="selected">
-                <v-chip
-                  v-for="(variation, index) in product.variants"
-                  :value="variation.name"
-                  :key="index"
-                >
-                  {{ variation.name }}
-                </v-chip>
-              </v-chip-group>
+              <div v-if="false" class="product-pricing">
+                <div class="product-price">
+                  <p>{{ $filters.currencyFormat(0) }}</p>
+                </div>
 
-              <!-- Select Variation -->
-              <v-select
-                class="mt-2"
-                label="Talla"
-                :items="product.variants"
-                :item-title="'name'"
-                :item-value="'name'"
-                v-model="selected"
-              >
-              </v-select>
+                <div v-if="false" class="product-variation">
+                  <h3>Talla:</h3>
+
+                  <v-chip-group v-model="selected">
+                    <v-chip
+                      v-for="(variation, index) in product.variants"
+                      :value="variation.name"
+                      :key="index"
+                    >
+                      {{ variation.name }}
+                    </v-chip>
+                  </v-chip-group>
+
+                  <v-select
+                    class="mt-2"
+                    label="Talla"
+                    :items="product.variants"
+                    :item-title="'name'"
+                    :item-value="'name'"
+                    v-model="selected"
+                  >
+                  </v-select>
+                </div>
+              </div>
+            </div>
+
+            <div class="product-details__after_content mt-3">
+              <div class="product-categories">
+                <p>
+                  Categorías:
+                  <span v-for="(category, index) in product.categories" :key="index">
+                    {{ category.name
+                    }}<span v-if="index !== product.categories.length - 1">, </span
+                    ><span v-else>.</span>
+                  </span>
+                </p>
+              </div>
             </div>
           </div>
-        </div>
+        </VCol>
+      </VRow>
+    </VContainer>
 
-        <div class="product-details__after_content mt-3">
-          <div class="product-categories">
-            <p>
-              Categorías:
-              <span v-for="(category, index) in product.categories" :key="index">
-                {{ category.name
-                }}<span v-if="index !== product.categories.length - 1">, </span
-                ><span v-else>.</span>
-              </span>
-            </p>
-          </div>
-        </div>
-      </div>
-    </VCol>
-  </VRow>
+    <VRow class="bg-primary">
+      <VCol cols="12"> <VContainer> 
+        <h2 class="text-white text-center">
+          ¿Te provoca algo? Escoge Uli 
+        </h2> 
+        </VContainer> </VCol>
+    </VRow>
+
+
+    <VContainer>
+      <VRow class="pa-5">
+        <VCol cols="12">
+          <h2 class="mt-2 text-center"> Suscríbete a Nuestro Boletín </h2>
+          <p class="mt-4 text-center"> ¡Suscríbase y sea el primero en conocer todas las ofertas exclusivas, obsequios gratuitos y ofertas únicas en la vida! </p>
+        </VCol>
+
+      </VRow>
+    </VContainer>
+
+  </VContainer>
 </template>
