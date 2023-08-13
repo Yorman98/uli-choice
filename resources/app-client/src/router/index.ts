@@ -72,14 +72,45 @@ const router = createRouter({
           component: () => import('@/pages/categories/UCCategories.vue'),
         },
         {
-          path: 'product/new-product',
-          name: 'formProduct',
-          component: () => import('@/pages/product/UCFormProduct.vue'),
+          path: 'product-list',
+          children: [
+            {
+              name: 'product-list',
+              path: '',
+              component: () => import('@/pages/product/UCProductsList.vue'),
+            },
+            {
+              path: 'new-product',
+              name: 'formProduct',
+              component: () => import('@/pages/product/UCFormProduct.vue'),
+            },
+            {
+              path: 'edit-product/:id',
+              name: 'editFormProduct',
+              component: () => import('@/pages/product/UCFormProduct.vue'),
+            },
+          ],
         },
         {
-          name: 'purchase',
           path: 'purchase',
+          name: 'purchase',
           component: () => import('@/pages/purchases/UCPurchases.vue'),
+        },
+      ],
+    },
+    {
+      path: '/',
+      component: () => import('../layouts/blank.vue'),
+      children: [
+        {
+          path: 'products',
+          children: [
+            {
+              name: 'products',
+              path: '',
+              component: () => import('@/pages/product/UCProductsCard.vue'),
+            },
+          ],
         },
       ],
     },

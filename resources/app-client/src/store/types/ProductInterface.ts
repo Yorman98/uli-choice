@@ -6,10 +6,13 @@ export interface ProductInterface {
     description?: string;
     price: number;
     stock: number;
-    img: string;
-    status: string;
-    variation: string;
+    image: string;
     unit_cost: number;
     unit_price: number;
-    categories: []
+    groups: string[]
+    attributes: string[]
+    categories: [];
+    created_at?: string;
+    updated_at?: string;
+    deleted_at?: string;
 }

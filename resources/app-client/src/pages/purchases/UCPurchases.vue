@@ -95,6 +95,7 @@ function viewPurchase(purchase: PurchaseInterface) {
   isViewPurchase.value = true
   dataPurchase.value = Object.assign(purchaseInfo, purchase)
 }
+
 function editPurchase(purchase: PurchaseInterface) {
   isEditPurchase.value = true
   openPurchase.value = true
