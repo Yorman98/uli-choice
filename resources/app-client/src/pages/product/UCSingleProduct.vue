@@ -3,6 +3,7 @@ import { useI18n } from "vue-i18n";
 import { ProductInterface } from "@/store/types/ProductInterface";
 import { ref, Ref } from "vue";
 import { useRouter } from "vue-router";
+import ProductService from "@/services/ProductService";
 
 const { t } = useI18n();
 
@@ -10,79 +11,15 @@ const router = useRouter();
 
 const selected: any = ref();
 
-const product: Ref<ProductInterface> = ref({
-  id: 0,
-  name: "Top Acuerela Sin Gancho",
-  slug: "",
-  code: "AB-0001",
-  description:
-    "Pellentesque auctor eros sed libero fermentum, eget porttitor nisi venenatis. Duis quis tristique dui, quis semper erat. Quisque venenatis elementum nunc, vitae feugiat turpis facilisis nec. Praesent a pharetra tortor, a placerat erat. Nam lobortis lacus fringilla finibus ultrices. Quisque laoreet ipsum a tortor tempus, ac pretium lorem pharetra.",
-  img: "https://picsum.photos/200/300",
-  price: 24.99,
-  categories: [
-    {
-      id: 1,
-      name: "Ropa",
-      slug: "ropa",
-      description: "Ropa de todo tipo",
-      img: "https://picsum.photos/200/300",
-      parentId: null,
-      children: [],
-    },
-    {
-      id: 2,
-      name: "Mujer",
-      slug: "mujer",
-      description: "Ropa de mujer",
-      img: "https://picsum.photos/200/300",
-      parentId: 1,
-      children: [],
-    },
-    {
-      id: 3,
-      name: "Blusas",
-      slug: "blusas",
-      description: "Blusas de mujer",
-      img: "https://picsum.photos/200/300",
-      parentId: 2,
-      children: [],
-    },
-  ],
-  images: [],
-  variants: [
-    {
-      id: 1,
-      name: "Amarillo",
-      code: "AM",
-      description: "Amarillo",
-      img: "https://picsum.photos/200/300",
-      price: 24.99,
-      productId: 1,
-      attributes: [
-        {
-          id: 1,
-          name: "Amarillo",
-          attributeGroupId: 1,
-        },
-      ],
-    },
-    {
-      id: 2,
-      name: "Rojo",
-      code: "RO",
-      description: "Rojo",
-      img: "https://picsum.photos/200/300",
-      price: 24.99,
-      productId: 1,
-      attributes: [
-        {
-          id: 2,
-          name: "Rojo",
-          attributeGroupId: 1,
-        },
-      ],
-    },
-  ],
+const product: Ref<ProductInterface> = ref({} as ProductInterface);
+
+
+onMounted(async () => {
+  const id = Number(router.currentRoute.value.params.id);
+  if (id) {
+    const response = await ProductService.getProduct(id);
+    product.value = response.data?.data;
+  }
 });
 
 const path: any[] = [
