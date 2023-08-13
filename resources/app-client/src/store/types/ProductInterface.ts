@@ -11,4 +11,5 @@ export interface ProductInterface {
     variation: string;
     unit_cost: number;
     unit_price: number;
+    categories: []
 }
