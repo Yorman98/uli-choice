@@ -21,7 +21,8 @@
       "total": "Total",
       "date_created": "Fecha de creación",
       "date_updated": "Fecha de actualización",
-      "phone": "Teléfono"
+      "phone": "Teléfono",
+      "code": "Código"
     },
     "website": "Website",
     "name": "Nombre",
@@ -54,6 +55,8 @@
     "purchases": "Compras"
   },
   "products": {
+    "products_list": "Lista de productos",
+    "add_product": "Agregar producto",
     "attributes": {
       "attributes_group_title": "Grupo de atributos",
       "create_group_attribute": "Crear grupo de atributos",
@@ -86,7 +89,12 @@
       "product_cost":  "Costo del producto",
       "product_stock": "Stock del producto",
       "product_group": "Grupo de atributos",
-      "product_attributes": "Atributos del producto"
+      "product_attributes": "Atributos del producto",
+      "product_category": "Categoria del producto",
+      "change_photo": "Cambiar foto del producto",
+      "create_product": "Crear producto",
+      "update_product": "Actualizar producto",
+      "delete_product": "Eliminar producto"
     }
   },
   "users": {

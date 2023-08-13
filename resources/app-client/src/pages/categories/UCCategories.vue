@@ -136,7 +136,7 @@ async function saveCategoryData() {
           <UCTable
             :headers="headers"
             :items="categories"
-            :hasSubItems="true"
+            :hasSubItems="false"
             @editItem="editItem"
             @goToItem="goToCategory"
             @deleteItem="deleteItem"
