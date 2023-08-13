@@ -214,7 +214,7 @@ function goToCreateClient() {
               v-model="clientInfo.password"
               class="mb-6"
               density="compact"
-              :label="$t('global.password')"
+              :label="$t('global.headers.password')"
               :type="isPasswordVisible ? 'text' : 'password'"
               :append-inner-icon="isPasswordVisible ? 'bx-hide' : 'bx-show'"
               :rules="[

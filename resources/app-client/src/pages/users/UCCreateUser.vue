@@ -177,7 +177,7 @@ async function saveUser() {
               >
                 <VTextField
                   v-model="form.password"
-                  :label="$t('global.password')"
+                  :label="$t('global.headers.password')"
                   :type="isPasswordVisible ? 'text' : 'password'"
                   :append-inner-icon="isPasswordVisible ? 'bx-hide' : 'bx-show'"
                   :rules="[

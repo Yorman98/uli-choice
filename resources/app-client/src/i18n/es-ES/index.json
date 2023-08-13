@@ -14,6 +14,7 @@
       "options": "Opciones",
       "last_name": "Apellido",
       "email": "Correo Electrónico",
+      "password": "Contraseña",
       "phone_number": "Número de teléfono",
       "website": "Sitio web",
       "description": "Descripción",
@@ -25,7 +26,6 @@
       "code": "Código",
       "type_user": "Tipo de usuario"
     },
-    "password": "Contraseña",
     "welcome": "Bienvenido",
     "error": "Ha ocurrido un error.",
     "roles": {

@@ -74,7 +74,7 @@ const isPasswordVisible = ref(false)
             <VCol cols="12">
               <VTextField
                 v-model="form.first_name"
-                :label="$t('global.firstname')"
+                :label="$t('global.headers.name')"
                 :rules="[
                   (val) => validateRequired(val) || $t('registration.required_field'),
                 ]"
@@ -85,7 +85,7 @@ const isPasswordVisible = ref(false)
             <VCol cols="12">
               <VTextField
                 v-model="form.last_name"
-                :label="$t('global.lastname')"
+                :label="$t('global.headers.last_name')"
                 :rules="[
                   (val) => validateRequired(val) || $t('registration.required_field'),
                 ]"
@@ -96,7 +96,7 @@ const isPasswordVisible = ref(false)
             <VCol cols="12">
               <VTextField
                 v-model="form.phone_number"
-                :label="$t('global.phone')"
+                :label="$t('global.headers.phone_number')"
               />
             </VCol>
 
@@ -104,7 +104,7 @@ const isPasswordVisible = ref(false)
             <VCol cols="12">
               <VTextField
                 v-model="form.email"
-                :label="$t('global.email')"
+                :label="$t('global.headers.email')"
                 type="email"
                 :rules="[
                   (val) => validateRequired(val) || $t('registration.required_field'),
@@ -117,7 +117,7 @@ const isPasswordVisible = ref(false)
             <VCol cols="12">
               <VTextField
                 v-model="form.password"
-                :label="$t('global.password')"
+                :label="$t('global.headers.password')"
                 :type="isPasswordVisible ? 'text' : 'password'"
                 :append-inner-icon="isPasswordVisible ? 'bx-hide' : 'bx-show'"
                 :rules="[
