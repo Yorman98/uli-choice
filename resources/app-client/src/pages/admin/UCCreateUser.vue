@@ -3,6 +3,7 @@ import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 import { validateMatch, validateRequired } from '@/services/FormValidationService'
 import UCHeaderPage from '@/components/helpers/UCHeaderPage.vue'
+import ClientService from '@/services/ClientService'
 
 const { t } = useI18n()
 
@@ -39,6 +40,7 @@ const accountData = {
   email: '',
   phone_number: '',
   password: '',
+  role: 'client',
 }
 
 const form = ref(structuredClone(accountData))
@@ -56,22 +58,30 @@ onMounted(() => {
 const validateForm = () => {
   const { first_name, last_name, email, password } = form.value
 
-  return validateRequired(first_name)
+  if (id.value !== 'undefined') {
+    return validateRequired(first_name)
     && validateRequired(last_name)
     && validateRequired(email)
     && validateMatch(email, 'email')
-    && validateRequired(password)
-    && validateMatch(password, 'password')
+  }
+  else {
+    return validateRequired(first_name)
+      && validateRequired(last_name)
+      && validateRequired(email)
+      && validateMatch(email, 'email')
+      && validateRequired(password)
+      && validateMatch(password, 'password')
+  }
 }
 
-function getUserData(id: any) {
-  //AQUI VA EL ENDPOINT PARA TRAERME EL USUARIO
+async function getUserData(id: any) {
+  const response = await ClientService.getClientById(id.value)
+
   form.value = {
-    first_name: 'Angel',
-    last_name: 'Pico',
-    email: 'angel@email.com',
-    phone_number: '+58123456789',
-    password: 'aurinegro',
+    first_name: response.data.data.first_name,
+    last_name: response.data.data.last_name,
+    email: response.data.data.email,
+    phone_number: response.data.data.phone_number,
   }
 }
 
@@ -79,8 +89,13 @@ function updatePath() {
   path.value[2].title = t('users.edit_user')
 }
 
-function saveUser() {
-  //AQUI VA EL ENDPOINT PARA GUARDAR O ACTUALIZAR EL USUARIO
+async function saveUser() {
+  if (id.value !== 'undefined')
+    await ClientService.updateClient(id.value, form.value)
+
+  else
+    await ClientService.createClient(form.value)
+
   isProgressRegister.value = true
   router.push({
     name: 'users',
@@ -99,7 +114,10 @@ function saveUser() {
 
       <VCard class="pa-4">
         <VCardText>
-          <VForm class="mt-6" @submit.prevent="saveUser">
+          <VForm
+            class="mt-6"
+            @submit.prevent="saveUser"
+          >
             <VRow>
               <VCol
                 md="6"
@@ -153,6 +171,7 @@ function saveUser() {
               </VCol>
 
               <VCol
+                v-if="id === 'undefined'"
                 cols="12"
                 md="6"
               >
@@ -196,4 +215,3 @@ function saveUser() {
   }
 }
 </style>
-letlet

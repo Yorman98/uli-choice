@@ -3,6 +3,7 @@ import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import UCHeaderPage from '@/components/helpers/UCHeaderPage.vue'
 import UCTable from '@/components/helpers/UCTable.vue'
+import ClientService from '@/services/ClientService'
 
 const { t } = useI18n()
 
@@ -23,7 +24,7 @@ const path: any[] = [
 ]
 
 const headers: any[] = [
-  { title: t('global.headers.name'), key: 'name' },
+  { title: t('global.headers.name'), key: 'first_name' },
   { title: t('global.headers.last_name'), key: 'last_name' },
   { title: t('global.headers.email'), key: 'email' },
   { title: t('global.headers.phone_number'), key: 'phone_number' },
@@ -36,24 +37,9 @@ onMounted(() => {
   getData()
 })
 
-function getData() {
-  //AQUI VA EL ENDPOINT DE TRAER LOS USUARIOS
-  users.value = [
-    {
-      id: 1,
-      name: 'Angel',
-      last_name: 'Pico',
-      email: 'angel.j.pico@gmail.com',
-      phone_number: '+584120738575',
-    },
-    {
-      id: 2,
-      name: 'Josue',
-      last_name: 'Arellano',
-      email: 'angel.j.pico@gmail.com',
-      phone_number: '+584120738575',
-    },
-  ]
+async function getData() {
+  const response = await ClientService.getClients()
+  users.value = response.data.data
 }
 
 function editItem(payload: any) {
@@ -65,8 +51,8 @@ function editItem(payload: any) {
   })
 }
 
-function deleteItem(payload: number) {
-  //AQUI VA EL ENDPOINT DE ELIMINAR
+async function deleteItem(payload: number) {
+  await ClientService.deleteClient(payload)
   getData()
 }
 
