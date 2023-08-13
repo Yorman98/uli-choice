@@ -49,13 +49,12 @@ function addProduct() {
 }
 
 function viewProduct(product: ProductInterface) {
-  /* router.push({
-    name: 'viewProduct',
+  router.push({
+    name: 'product',
     params: {
       id: product.id,
     },
-  }) */
-  console.log('viewProduct', product)
+  });
 }
 
 function editProduct(product: ProductInterface) {

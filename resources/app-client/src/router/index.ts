@@ -120,6 +120,11 @@ const router = createRouter({
               path: '',
               component: () => import('@/pages/product/UCProductsCard.vue'),
             },
+            {
+              path: ':id',
+              name: 'product',
+              component: () => import('@/pages/product/UCSingleProduct.vue'),
+            },
           ],
         },
       ],
