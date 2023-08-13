@@ -4,7 +4,6 @@ import { ref } from 'vue'
 import type { ProductInterface } from '@/store/types/ProductInterface'
 import ProductService from '@/services/ProductService'
 import { STORAGE_PATH } from '@/utils/constants'
-import DemoFormLayoutHorizontalForm from "@/views/pages/form-layouts/DemoFormLayoutHorizontalForm.vue";
 
 const productsList: Ref<ProductInterface[]> = ref([])
 
@@ -17,8 +16,8 @@ async function dataProducts() {
   })
 }
 
-function getProductUrl(slug: string) {
-  return `/product/${slug}`
+function getProductUrl(id) {
+  return `/products/${id}`
 }
 
 onMounted(async () => {
@@ -35,7 +34,7 @@ onMounted(async () => {
       >
         <a
           class="cursor-pointer"
-          :href="getProductUrl(product.slug)"
+          :href="getProductUrl(product.id)"
         >
           <VCard
             class="mx-auto"
@@ -48,7 +47,7 @@ onMounted(async () => {
               height="300px"
             />
             <VCardText>
-              <h5 class="text-h5">{{ product.name }}</h5>
+              <h6 class="text-h6">{{ product.name }}</h6>
             </VCardText>
           </VCard>
         </a>
