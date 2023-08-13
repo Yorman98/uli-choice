@@ -110,6 +110,11 @@ const router = createRouter({
               path: '',
               component: () => import('@/pages/product/UCProductsCard.vue'),
             },
+            {
+              path: ':id',
+              name: 'product',
+              component: () => import('@/pages/product/UCSingleProduct.vue'),
+            },
           ],
         },
       ],
@@ -125,11 +130,6 @@ const router = createRouter({
         {
           path: 'register',
           component: () => import('@/pages/auth/UCRegister.vue'),
-        },
-        {
-          path: 'product/:id',
-          name: 'product',
-          component: () => import('@/pages/product/UCSingleProduct.vue'),
         },
         {
           path: '/:pathMatch(.*)*',
