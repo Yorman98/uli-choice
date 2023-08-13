@@ -1,25 +1,27 @@
+import type { AxiosPromise } from 'axios'
+import type { UnwrapNestedRefs } from 'vue'
 import ApiService from '@/services'
 import type { ProviderResponseInterface } from '@/services/types/ProviderTypes'
-import type { AxiosPromise } from 'axios'
+import type { ProviderInterface } from '@/store/types/ProviderInterface'
 
 class ProviderService {
   getProviders(): AxiosPromise<ProviderResponseInterface> {
     return ApiService.get('/provider')
   }
 
-  getProviderById(id: any): AxiosPromise<any> {
+  getProviderById(id: number): AxiosPromise<ProviderResponseInterface> {
     return ApiService.get(`/provider/${id}`)
   }
 
-  createProvider(body: any): AxiosPromise<any> {
-    return ApiService.post('/provider', body)
+  createProvider(payload: UnwrapNestedRefs<ProviderInterface>): AxiosPromise<ProviderResponseInterface> {
+    return ApiService.post('/provider', payload)
   }
 
-  updateProvider(id: any, body: any): AxiosPromise<any> {
-    return ApiService.put(`/provider/${id}`, body)
+  updateProvider(payload: UnwrapNestedRefs<ProviderInterface>): AxiosPromise<ProviderResponseInterface> {
+    return ApiService.put(`/provider/${payload.id}`, payload)
   }
 
-  deleteProvider(id: any): AxiosPromise<any> {
+  deleteProvider(id: number): AxiosPromise<ProviderResponseInterface> {
     return ApiService.delete(`/provider/${id}`)
   }
 }

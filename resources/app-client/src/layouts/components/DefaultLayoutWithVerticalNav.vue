@@ -5,7 +5,7 @@ import VerticalNavLayout from '@layouts/components/VerticalNavLayout.vue'
 import VerticalNavLink from '@layouts/components/VerticalNavLink.vue'
 
 // Components
-import Footer from '@/layouts/components/Footer.vue'
+// import Footer from '@/layouts/components/Footer.vue'
 import NavbarThemeSwitcher from '@/layouts/components/NavbarThemeSwitcher.vue'
 import UserProfile from '@/layouts/components/UserProfile.vue'
 </script>
@@ -35,24 +35,10 @@ import UserProfile from '@/layouts/components/UserProfile.vue'
 
           <span class="d-none d-md-flex align-center text-disabled">
             <span class="me-3">Search</span>
-            <span class="meta-key">&#8984;K</span>
           </span>
         </div>
 
         <VSpacer />
-
-        <IconBtn
-          class="me-2"
-          href="https://github.com/themeselection/sneat-vuetify-vuejs-admin-template-free"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <VIcon icon="bxl-github" />
-        </IconBtn>
-
-        <IconBtn class="me-2">
-          <VIcon icon="bx-bell" />
-        </IconBtn>
 
         <NavbarThemeSwitcher class="me-2" />
 
@@ -68,29 +54,20 @@ import UserProfile from '@/layouts/components/UserProfile.vue'
           to: '/dashboard',
         }"
       />
-
-      <!-- 👉 Products -->
-      <VerticalNavSectionTitle
-        :item="{
-          heading: $t('navbar.products'),
-        }"
-      />
       <VerticalNavLink
         :item="{
           title: $t('navbar.users'),
-          icon: 'mdi-account-cog-outline',
+          icon: 'mdi-account-multiple-outline',
           to: {
             name: 'users',
           },
         }"
       />
-      <VerticalNavLink
+
+      <!-- 👉 Products -->
+      <VerticalNavSectionTitle
         :item="{
-          title: $t('navbar.providers'),
-          icon: 'mdi-account-cog-outline',
-          to: {
-            name: 'providers',
-          },
+          heading: $t('navbar.products'),
         }"
       />
       <VerticalNavLink
@@ -129,6 +106,15 @@ import UserProfile from '@/layouts/components/UserProfile.vue'
       />
       <VerticalNavLink
         :item="{
+          title: $t('navbar.providers'),
+          icon: 'mdi-account-tag-outline',
+          to: {
+            name: 'providers',
+          },
+        }"
+      />
+      <VerticalNavLink
+        :item="{
           title: $t('purchases.store_purchases'),
           icon: 'mdi-shopping-outline',
           to: {
@@ -140,14 +126,7 @@ import UserProfile from '@/layouts/components/UserProfile.vue'
       <!-- 👉 Options theme -->
       <VerticalNavSectionTitle
         :item="{
-          heading: 'Pages of theme',
-        }"
-      />
-      <VerticalNavLink
-        :item="{
-          title: 'Account Settings',
-          icon: 'mdi-account-cog-outline',
-          to: '/account-settings',
+          heading: $t('navbar.configuration'),
         }"
       />
       <VerticalNavLink
@@ -171,50 +150,17 @@ import UserProfile from '@/layouts/components/UserProfile.vue'
           to: '/no-existence',
         }"
       />
-      <VerticalNavLink
-        :item="{
-          title: 'Typography',
-          icon: 'mdi-alpha-t-box-outline',
-          to: '/typography',
-        }"
-      />
-      <VerticalNavLink
-        :item="{
-          title: 'Icons',
-          icon: 'bx-show',
-          to: '/icons',
-        }"
-      />
-      <VerticalNavLink
-        :item="{
-          title: 'Cards',
-          icon: 'bx-credit-card',
-          to: '/cards',
-        }"
-      />
-      <VerticalNavLink
-        :item="{
-          title: 'Tables',
-          icon: 'bx-table',
-          to: '/tables',
-        }"
-      />
-      <VerticalNavLink
-        :item="{
-          title: 'Form Layouts',
-          icon: 'mdi-form-select',
-          to: '/form-layouts',
-        }"
-      />
     </template>
 
     <!-- 👉 Pages -->
     <slot />
 
     <!-- 👉 Footer -->
-    <template #footer>
+    <!--
+      <template #footer>
       <Footer />
-    </template>
+      </template>
+    -->
   </VerticalNavLayout>
 </template>
 

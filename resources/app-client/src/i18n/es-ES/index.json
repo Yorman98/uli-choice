@@ -22,17 +22,16 @@
       "date_created": "Fecha de creación",
       "date_updated": "Fecha de actualización",
       "phone": "Teléfono",
-      "code": "Código"
+      "code": "Código",
+      "type_user": "Tipo de usuario"
     },
-    "website": "Website",
-    "name": "Nombre",
-    "email": "Correo electrónico",
     "password": "Contraseña",
-    "firstname": "Nombre",
-    "lastname": "Apellido",
-    "phone": "Teléfono",
     "welcome": "Bienvenido",
-    "error": "Ha ocurrido un error."
+    "error": "Ha ocurrido un error.",
+    "roles": {
+      "admin": "Administrador",
+      "client": "Cliente"
+    }
   },
   "registration": {
     "required_field": "Campo requerido",
@@ -52,7 +51,8 @@
     "users": "Usuarios",
     "providers": "Proveedores",
     "products": "Productos",
-    "purchases": "Compras"
+    "purchases": "Compras",
+    "configuration": "Configuración"
   },
   "products": {
     "products_list": "Lista de productos",

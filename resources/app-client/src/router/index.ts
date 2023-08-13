@@ -67,34 +67,9 @@ const router = createRouter({
           component: () => import('@/pages/categories/UCCategories.vue'),
         },
         {
-          path: 'admin/users',
+          path: 'users',
           name: 'users',
-          component: () => import('@/pages/admin/UCUsers.vue'),
-        },
-        {
-          path: 'admin/users/create',
-          name: 'createUsers',
-          component: () => import('@/pages/admin/UCCreateUser.vue'),
-        },
-        {
-          path: 'admin/users/edit/:id',
-          name: 'editUsers',
-          component: () => import('@/pages/admin/UCCreateUser.vue'),
-        },
-        {
-          path: 'admin/providers',
-          name: 'providers',
-          component: () => import('@/pages/admin/UCProviders.vue'),
-        },
-        {
-          path: 'admin/providers/create',
-          name: 'createProviders',
-          component: () => import('@/pages/admin/UCCreateProvider.vue'),
-        },
-        {
-          path: 'admin/providers/edit/:id',
-          name: 'editProviders',
-          component: () => import('@/pages/admin/UCCreateProvider.vue'),
+          component: () => import('@/pages/users/UCUsers.vue'),
         },
         {
           path: 'category/:category',
@@ -125,6 +100,11 @@ const router = createRouter({
           path: 'purchase',
           name: 'purchase',
           component: () => import('@/pages/purchases/UCPurchases.vue'),
+        },
+        {
+          path: 'providers',
+          name: 'providers',
+          component: () => import('@/pages/providers/UCProviders.vue'),
         },
       ],
     },

@@ -1,24 +1,27 @@
 import type { AxiosPromise } from 'axios'
+import type { UnwrapNestedRefs } from 'vue'
 import ApiService from '@/services'
+import type { ClientResponseInterface } from '@/services/types/ClientTypes'
+import type { ClientInterface } from '@/store/types/ClientInterface'
 
 class ClientService {
-  getClients(): AxiosPromise<any> {
+  getClients(): AxiosPromise<ClientResponseInterface> {
     return ApiService.get('/clients')
   }
 
-  getClientById(id: any): AxiosPromise<any> {
+  getClientById(id: number): AxiosPromise<ClientResponseInterface> {
     return ApiService.get(`/clients/${id}`)
   }
 
-  createClient(body: any): AxiosPromise<any> {
-    return ApiService.post('/clients', body)
+  createClient(payload: UnwrapNestedRefs<ClientInterface>): AxiosPromise<ClientResponseInterface> {
+    return ApiService.post('/clients', payload)
   }
 
-  updateClient(id: any, body: any): AxiosPromise<any> {
-    return ApiService.put(`/clients/${id}`, body)
+  updateClient(payload: UnwrapNestedRefs<ClientInterface>): AxiosPromise<ClientResponseInterface> {
+    return ApiService.put(`/clients/${payload.id}`, payload)
   }
 
-  deleteClient(id: any): AxiosPromise<any> {
+  deleteClient(id: number): AxiosPromise<ClientResponseInterface> {
     return ApiService.delete(`/clients/${id}`)
   }
 }
