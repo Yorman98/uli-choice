@@ -2,10 +2,15 @@ export interface AttributeGroupInterface {
   id?: number
   name: string
 	group_type: string
+  attributes: AttributeInterface[]
+  updated_at?: string
+  created_at?: string
 }
 
 export interface AttributeInterface {
-  id?: number
+  id: number
   name: string
-  attributeGroupId?: number
+  attribute_group_id?: number
+  updated_at?: string
+  created_at?: string
 }

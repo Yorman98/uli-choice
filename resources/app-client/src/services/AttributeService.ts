@@ -1,40 +1,44 @@
 import type { AxiosPromise } from 'axios'
 import ApiService from '@/services'
+import { AttributeGroupResponseInterface } from "@/services/types/AttributeGroupTypes";
+import { AttributeGroupInterface } from "@/store/types/AttributeInterface";
+import { AttributeInterface } from "@/store/types/AttributeInterface";
+import { AttributeResponseResponse } from "@/services/types/AttributeTypes";
 
 class CategoryService {
-  createAttributeGroup(payload): AxiosPromise<any> {
+  createAttributeGroup(payload: AttributeGroupInterface): AxiosPromise<AttributeGroupResponseInterface> {
     return ApiService.post('/attribute-group', payload)
   }
 
-  getAttributeGroup(): AxiosPromise<any> {
+  getAttributeGroup(): AxiosPromise<AttributeGroupResponseInterface> {
     return ApiService.get('/attribute-group')
   }
 
-  getAttributesGroupById(id): AxiosPromise<any> {
+  getAttributesGroupById(id: number): AxiosPromise<AttributeGroupResponseInterface> {
     return ApiService.get(`/attribute-group/${id}`)
   }
 
-  updateAttributeGroup(payload): AxiosPromise<any> {
+  updateAttributeGroup(payload: AttributeGroupInterface): AxiosPromise<AttributeGroupResponseInterface> {
     return ApiService.put(`/attribute-group/${payload.id}`, payload)
   }
 
-  deleteAttributeGroup(id): AxiosPromise<any> {
+  deleteAttributeGroup(id: number): AxiosPromise<getAttributesGroupById> {
     return ApiService.delete(`/attribute-group/${id}`)
   }
 
-  createAttribute(payload): AxiosPromise<any> {
+  createAttribute(payload: AttributeInterface): AxiosPromise<any> {
     return ApiService.post('/attribute', payload)
   }
 
-  getAttribute(id): AxiosPromise<any> {
+  getAttribute(id: number): AxiosPromise<any> {
     return ApiService.get(`/attribute/${id}`)
   }
 
-  updateAttribute(payload): AxiosPromise<any> {
+  updateAttribute(payload: AttributeInterface): AxiosPromise<AttributeResponseResponse> {
     return ApiService.put(`/attribute/${payload.id}`, payload)
   }
 
-  deleteAttribute(id): AxiosPromise<any> {
+  deleteAttribute(id: number): AxiosPromise<AttributeResponseResponse> {
     return ApiService.delete(`/attribute/${id}`)
   }
 }

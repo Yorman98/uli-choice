@@ -1,8 +1,101 @@
+<template>
+  <VRow>
+    <VCol cols="12">
+      <UCHeaderPage
+        class="mb-5"
+        :title="$t('products.categories.categories_group_title')"
+        :path="path"
+      />
+
+      <VCard class="pa-4">
+        <VCardTitle class="d-flex justify-end mb-4">
+          <VBtn @click="dialog = true">
+            <VIcon
+              color="white pr-2"
+              size="35"
+            >
+              mdi-plus
+            </VIcon>
+            <p class="text-button ma-0">
+              {{ t('products.categories.create_category') }}
+            </p>
+          </VBtn>
+        </VCardTitle>
+
+        <VCardText>
+          <UCTable
+            :headers="headers"
+            :items="categories"
+            :hasSubItems="false"
+            @editItem="editItem"
+            @goToItem="goToCategory"
+            @deleteItem="deleteItem"
+          />
+        </VCardText>
+      </VCard>
+
+      <VDialog
+        v-model="dialog"
+        max-width="700px"
+      >
+        <VCard class="pa-4">
+          <VCardTitle color="red">
+            <h4 class="text-h4 mb-4 white--text">
+              {{ isEdit ? $t('products.categories.edit_category') : $t('products.categories.create_category') }}
+            </h4>
+          </VCardTitle>
+
+          <VCardText>
+            <VTextField
+              v-model="category.name"
+              class="mb-8"
+              :placeholder="$t('products.categories.category_name')"
+              :label="$t('products.categories.category_name')"
+            />
+
+            <VTextField
+              v-model="category.slug"
+              class="mb-8"
+              :placeholder="$t('products.categories.category_slug')"
+              :label="$t('products.categories.category_slug')"
+            />
+
+            <VTextField
+              v-model="category.description"
+              :placeholder="$t('products.categories.category_description')"
+              :label="$t('products.categories.category_description')"
+            />
+          </VCardText>
+
+          <VCardActions class="d-flex justify-end">
+            <VBtn
+              color="primary"
+              outlined
+              @click="closeDialog"
+            >
+              {{ $t('global.cancel') }}
+            </VBtn>
+
+            <VBtn
+              color="primary"
+              flat
+              @click="saveCategoryData"
+            >
+              {{ isEdit ? $t('global.update') : $t('global.save') }}
+            </VBtn>
+          </VCardActions>
+        </VCard>
+      </VDialog>
+    </VCol>
+  </VRow>
+</template>
+
 <script setup lang="ts">
 import UCHeaderPage from '@/components/helpers/UCHeaderPage.vue'
 import UCTable from '@/components/helpers/UCTable.vue'
 import { useI18n } from 'vue-i18n'
 import { CategoryInterface } from '@/store/types/CategoryInterface'
+import { CategoriesResponseInterface } from "@/services/types/CategoriesTypes";
 import { ref, Ref, reactive } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import CategoryService from '@/services/CategoryService'
@@ -38,9 +131,9 @@ const isEdit: Ref<boolean> = ref(false)
 
 const dialog: Ref<boolean> = ref(false)
 
-let categories: Ref<CategoryInterface[]> = ref([])
+let categories: Ref<CategoriesResponseInterface[]> = ref([])
 
-let category: CategoryInterface = reactive({
+let category: Ref<CategoryInterface> = reactive({
   name: '',
   slug: '',
   description: ''
@@ -107,98 +200,6 @@ async function saveCategoryData() {
   closeDialog()
 }
 </script>
-
-<template>
-  <VRow>
-    <VCol cols="12">
-      <UCHeaderPage
-        class="mb-5"
-        :title="$t('products.categories.categories_group_title')"
-        :path="path"
-      />
-
-      <VCard class="pa-4">
-        <VCardTitle class="d-flex justify-end mb-4">
-          <VBtn @click="dialog = true">
-            <VIcon
-              color="white pr-2"
-              size="35"
-            >
-              mdi-plus
-            </VIcon>
-            <p class="text-button ma-0">
-              {{ t('products.categories.create_category') }}
-            </p>
-          </VBtn>
-        </VCardTitle>
-
-        <VCardText>
-          <UCTable
-            :headers="headers"
-            :items="categories"
-            :hasSubItems="false"
-            @editItem="editItem"
-            @goToItem="goToCategory"
-            @deleteItem="deleteItem"
-          />
-        </VCardText>
-      </VCard>
-
-      <VDialog
-        v-model="dialog"
-        max-width="700px"
-        >
-          <VCard class="pa-4">
-            <VCardTitle color="red">
-              <h4 class="text-h4 mb-4 white--text">
-                {{ isEdit ? $t('products.categories.edit_category') : $t('products.categories.create_category') }}
-              </h4>
-            </VCardTitle>
-
-            <VCardText>
-              <VTextField
-                v-model="category.name"
-                class="mb-8"
-                :placeholder="$t('products.categories.category_name')"
-                :label="$t('products.categories.category_name')"
-              />
-
-              <VTextField
-                v-model="category.slug"
-                class="mb-8"
-                :placeholder="$t('products.categories.category_slug')"
-                :label="$t('products.categories.category_slug')"
-              />
-
-              <VTextField
-                v-model="category.description"
-                :placeholder="$t('products.categories.category_description')"
-                :label="$t('products.categories.category_description')"
-              />
-            </VCardText>
-
-            <VCardActions class="d-flex justify-end">
-                <VBtn
-                  color="primary"
-                  outlined
-                  @click="closeDialog"
-                >
-                  {{ $t('global.cancel') }}
-                </VBtn>
-
-                <VBtn
-                  color="primary"
-                  flat
-                  @click="saveCategoryData"
-                >
-                  {{ isEdit ? $t('global.update') : $t('global.save') }}
-                </VBtn>
-            </VCardActions>
-          </VCard>
-        </VDialog>
-    </VCol>
-  </VRow>
-</template>
 
 <style scoped lang="scss">
 .v-btn {

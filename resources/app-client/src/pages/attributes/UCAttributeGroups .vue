@@ -12,15 +12,13 @@ const { t } = useI18n()
 
 const router = useRouter()
 
-const attributeDialog = ref(null)
+const attributeDialog: Ref<boolean>  = ref(false)
 
 const headers: any[] = [
   { title: t('global.headers.id'), align: 'start', sortable: false, key: 'id' },
   { title: t('global.headers.name'), key: 'name' },
   { title: t('global.headers.options'), align: 'end', key: 'actions', sortable: false },
 ]
-
-const attributes: Ref<AttributeGroupInterface[]> = ref([])
 
 const path: any[] = [
   {
@@ -37,6 +35,8 @@ const path: any[] = [
 ]
 
 const isEdit: Ref<boolean> = ref(false)
+
+const attributes: Ref<AttributeGroupInterface[]> = ref([])
 
 let attribute: Ref<AttributeGroupInterface> = reactive({
   name: '',
@@ -82,7 +82,6 @@ function closeDialog() {
 }
 
 async function saveAttributeData(payload: AttributeGroupInterface) {
-  console.log(payload)
 	if (isEdit.value) {
     await AttributeService.updateAttributeGroup({
       id: payload.id,
