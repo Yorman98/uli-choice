@@ -10,6 +10,7 @@ use App\Http\Controllers\ProductCategory\CategoryController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Purchase\PurchaseController;
 use App\Http\Controllers\Provider\ProviderController;
+use App\Http\Controllers\Product\ProductVariationController;
 use App\Http\Controllers\ClientController;
 
 
@@ -92,6 +93,19 @@ Route::middleware('auth:sanctum')->group(static function () {
         Route::post('/', [ProductController::class, 'store']);
         Route::post('/{id}', [ProductController::class, 'update']);
         Route::delete('/{id}', [ProductController::class, 'destroy']);
+
+        /*
+        * Variations for a product
+        */
+        Route::get('/{id}/variations', [ProductVariationController::class, 'index']);
+        Route::get('/{id}/variations/{variation_id}', [ProductVariationController::class, 'show']);
+        Route::post('/{id}/variations', [ProductVariationController::class, 'store']);
+        Route::put('/{id}/variations/{variation_id}', [ProductVariationController::class, 'update']);
+        Route::delete('/{id}/variations/{variation_id}', [ProductVariationController::class, 'destroy']);
+        
+        // Attach/Detach Attribute to Variation
+        Route::post('/{id}/variations/{variation_id}/attributes', [ProductVariationController::class, 'addAttributeToVariation']);
+        Route::delete('/{id}/variations/{variation_id}/attributes/{attribute_id}', [ProductVariationController::class, 'removeAttributeFromVariation']);
     });
 
     /*
