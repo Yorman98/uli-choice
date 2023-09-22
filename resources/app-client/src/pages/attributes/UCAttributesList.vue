@@ -12,7 +12,7 @@ const { t } = useI18n()
 
 const route = useRoute()
 
-const attributeDialog = ref(null)
+const attributeDialog: Ref<boolean> = ref(false)
 
 const path: any[] = [
   {
@@ -45,7 +45,7 @@ const headers: any[] = [
 
 const attributes: Ref<AttributeInterface[]> = ref([])
 
-let attribute: AttributeInterface = reactive({})
+let attribute: Ref<AttributeInterface> = reactive({})
 
 onMounted(async () => {
   await initData()
