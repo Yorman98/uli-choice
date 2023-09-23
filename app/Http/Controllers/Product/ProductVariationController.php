@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\product;
+namespace App\Http\Controllers\Product;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -36,66 +36,49 @@ class ProductVariationController extends Controller
             ], 422);
         }
 
-        $perPage = $request->query('perPage', 10);
+        try {
+            $product = Product::findOrFail($id);
 
-        $product = Product::find($id);
-        $variations = $product->variations()->paginate($perPage)->toArray();
-        $this->removeUnnecessaryPaginationData($variations);
+            $variations = $product->variations()->get()->map(function ($variation) {
+                $variation->attributes = $variation->attributes()->get()->map(function ($attribute) {
+                    $attribute->load('group');
+                    return $attribute;
+                });
 
-        return response()->json([
-            'success' => true,
-            'product_id' => $id,
-            'variations' => $variations
-        ]);
-    }
+                return $variation;
+            });
 
-    /**
-     * Get a variation of a product
-     *
-     * @param Request $request
-     * @param int $id
-     * @param int $variationId
-     * @return JsonResponse
-     */
-    public function show(Request $request, int $id, int $variationId): JsonResponse
-    {
-        $validationRules = [
-            'id' => 'required|integer|min:1|exists:products,id',
-            'variationId' => 'required|integer|min:1|exists:variations,id'
-        ];
-
-        $validator = Validator::make(['id' => $id, 'variationId' => $variationId], $validationRules);
-
-        if ($validator->fails()) {
+            return response()->json([
+                'success' => true,
+                'product_id' => $id,
+                'variations' => $variations ?? []
+            ]);
+        } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'errors' => $validator->errors()
-            ], 422);
+                'errors' => $e->getMessage()
+            ], 404);
         }
-
-        $variation = Variation::find($variationId);
-
-        return response()->json([
-            'success' => true,
-            'data' => $variation
-        ]);
     }
 
     /**
-     * Create a variation of a product
+     * Update or create a variation of a product
      *
      * @param Request $request
      * @param int $id
      * @return JsonResponse
      */
-    public function store(Request $request, int $id): JsonResponse
+    public function updateOrCreate(Request $request, int $id): JsonResponse
     {
         $validationRules = [
+            'id' => 'sometimes|integer|min:1|exists:variations,id',
             'product_id' => 'required|integer|min:1|exists:products,id',
             'sku' => 'required|string|min:1|max:255',
             'price' => 'required|numeric|min:0',
             'cost' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
+            'attributes' => 'required|array|min:1',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
 
         $validator = Validator::make(array_merge($request->all(), ['product_id' => $id]), $validationRules);
@@ -107,60 +90,45 @@ class ProductVariationController extends Controller
             ], 422);
         }
 
-        Variation::create([
-            'product_id' => $id,
-            'sku' => $request->sku,
-            'price' => $request->price,
-            'cost' => $request->cost,
-            'stock' => $request->stock,
-        ]);
+        try {
+            DB::beginTransaction();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Variation created successfully'
-        ]);
-    }
+            $image = null;
+            if ($request->hasFile('image')) {
+                $image = Storage::disk('public')->putFile('images/products', $request->file('image'));
+            }
 
-    /**
-     * Update a variation of a product
-     *
-     * @param Request $request
-     * @param int $id
-     * @param int $variationId
-     * @return JsonResponse
-     */
-    public function update(Request $request, int $id, int $variationId): JsonResponse
-    {
+            $variation = Variation::updateOrCreate(
+                ['id' => $request->id ?? null],
+                [
+                    'product_id' => $id,
+                    'sku' => $request->sku,
+                    'price' => $request->price,
+                    'cost' => $request->cost,
+                    'stock' => $request->stock,
+                    'image' => $image
+                ]
+            );
 
-        $validationRules = [
-            'id' => 'required|integer|min:1|exists:variations,id',
-            'product_id' => 'required|integer|min:1|exists:products,id',
-            'sku' => 'required|string|min:1|max:255',
-            'price' => 'required|numeric|min:0',
-            'cost' => 'required|numeric|min:0',
-            'stock' => 'required|integer|min:0',
-        ];
+            if ($request->has('attributes')) {
+                $variation->attributes()->detach();
+                $variation->attributes()->attach($request->get('attributes'));
+            }
 
-        $validator = Validator::make(array_merge($request->all(), ['id' => $variationId, 'product_id' => $id]), $validationRules);
+            DB::commit();
 
-        if ($validator->fails()) {
+            return response()->json([
+                'success' => true,
+                'variation_id' => $variation->id
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
             return response()->json([
                 'success' => false,
-                'errors' => $validator->errors()
-            ], 422);
+                'errors' => $e->getMessage()
+            ], 500);
         }
-
-        Variation::where('id', $variationId)->update([
-            'sku' => $request->sku,
-            'price' => $request->price,
-            'cost' => $request->cost,
-            'stock' => $request->stock,
-        ]);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Variation updated successfully'
-        ]);
     }
 
     /**
@@ -186,88 +154,24 @@ class ProductVariationController extends Controller
                 'errors' => $validator->errors()
             ], 422);
         }
+        try {
+            DB::beginTransaction();
 
-        Variation::where('id', $variationId)->delete();
+            Variation::where('id', $variationId)->where('product_id', $id)->delete();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Variation deleted successfully'
-        ]);
-    }
+            DB::commit();
 
+            return response()->json([
+                'success' => true
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
 
-    /**
-     * Attach attribute ID to variation
-     */
-    function addAttributeToVariation(Request $request, int $id, int $variationId)
-    {
-        $validationRules = [
-            'id' => 'required|integer|min:1|exists:variations,id',
-            'product_id' => 'required|integer|min:1|exists:products,id',
-            'attribute_id' => 'required|integer|min:1|exists:attributes,id'        ];
-
-        $validator = Validator::make(array_merge($request->all(), ['id' => $variationId, 'product_id' => $id]), $validationRules);
-
-        if ($validator->fails()) {
             return response()->json([
                 'success' => false,
-                'errors' => $validator->errors()
-            ], 422);
+                'errors' => $e->getMessage()
+            ], 500);
         }
-
-        $variation = Variation::find($variationId);
-        $variation->attributes()->attach($request->attribute_id);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Attribute attached successfully'
-        ]);
-    }
-
-    /**
-     * Detach attribute ID from variation
-     */
-    function removeAttributeFromVariation(Request $request, int $id, int $variationId, int $idAttribute)
-    {
-        // Validate Composite for 'variation_attribute' where clause
-        $validationRules = [
-            'product_id' => 'required|integer|min:1|exists:products,id',
-            'variation_id' => [
-                'required',
-                'integer',
-                'min:1',
-                'exists:variations,id'                
-            ],
-            'attribute_id' => [
-                'required',
-                'integer',
-                'min:1',
-                'exists:attributes,id',
-                Rule::exists('variation_attribute')->where(function ($query) use ($variationId, $idAttribute) {
-                    return $query->where('variation_id', $variationId)
-                                 ->where('attribute_id', $idAttribute);
-                }),
-            ]
-        ];
-
-
-        $validator = Validator::make(array_merge($request->all(), ['variation_id' => $variationId, 'product_id' => $id, 'attribute_id' => $idAttribute]), $validationRules);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'errors' => $validator->errors()
-            ], 422);
-        }
-
-        $variation = Variation::find($variationId);
-
-        $variation->attributes()->detach($idAttribute);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Attribute detached successfully'
-        ]);
     }
 
 }

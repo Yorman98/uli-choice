@@ -95,17 +95,11 @@ Route::middleware('auth:sanctum')->group(static function () {
         Route::delete('/{id}', [ProductController::class, 'destroy']);
 
         /*
-        * Variations for a product
-        */
+         * Variations for a product
+         */
         Route::get('/{id}/variations', [ProductVariationController::class, 'index']);
-        Route::get('/{id}/variations/{variation_id}', [ProductVariationController::class, 'show']);
-        Route::post('/{id}/variations', [ProductVariationController::class, 'store']);
-        Route::put('/{id}/variations/{variation_id}', [ProductVariationController::class, 'update']);
+        Route::post('/{id}/variations', [ProductVariationController::class, 'updateOrCreate']);
         Route::delete('/{id}/variations/{variation_id}', [ProductVariationController::class, 'destroy']);
-        
-        // Attach/Detach Attribute to Variation
-        Route::post('/{id}/variations/{variation_id}/attributes', [ProductVariationController::class, 'addAttributeToVariation']);
-        Route::delete('/{id}/variations/{variation_id}/attributes/{attribute_id}', [ProductVariationController::class, 'removeAttributeFromVariation']);
     });
 
     /*
@@ -146,7 +140,7 @@ Route::middleware('auth:sanctum')->group(static function () {
     |--------------------------------------------------------------------------
     | Provider Routes
     |--------------------------------------------------------------------------
-    | 
+    |
     | Here is where you can register provider routes for your application.
     |
     */

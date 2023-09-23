@@ -30,7 +30,7 @@ class Attribute extends Model
      */
     public function group(): BelongsTo
     {
-        return $this->belongsTo(AttributeGroup::class);
+        return $this->belongsTo(AttributeGroup::class, 'attribute_group_id');
     }
 
     /**

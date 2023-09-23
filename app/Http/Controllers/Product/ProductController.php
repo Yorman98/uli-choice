@@ -86,7 +86,6 @@ class ProductController extends Controller
             'slug' => 'required|string|unique:products,slug',
             'code' => 'required|string|unique:products,code',
             'description' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'categories' => 'nullable|array',
         ];
 
@@ -109,11 +108,6 @@ class ProductController extends Controller
                 'description' => $request->description
             ]);
 
-            if ($request->hasFile('image')) {
-                $path = Storage::disk('public')->putFile('images/products', $request->file('image'));
-                $product->image = $path;
-            }
-
             if ($request->has('categories')) {
                 $product->categories()->attach($request->categories);
             }
@@ -123,7 +117,8 @@ class ProductController extends Controller
             DB::commit();
 
             return response()->json([
-                'success' => true
+                'success' => true,
+                'product_id' => $product->id
             ]);
         } catch (\Throwable $th) {
             DB::rollBack();
