@@ -110,6 +110,14 @@ class CartController extends Controller
                     // Get variation
                     $variation = Variation::find($request->variation_id);
 
+                    // Validate if variation belongs to product_id
+                    if ($variation->product_id != $request->product_id) {
+                        return response()->json([
+                            'success' => false,
+                            'errors' => 'Variation does not belong to product'
+                        ], 422);
+                    }
+
                     $product_cart = new ProductCart([
                         'product_id' => $request->product_id,
                         'variation_id' => $request->variation_id,
