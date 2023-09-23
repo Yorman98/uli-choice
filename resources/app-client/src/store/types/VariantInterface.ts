@@ -4,5 +4,6 @@ export interface VariantInterface {
   cost: number
   stock: number
   group?: number
+  image?: string
   attributes: number[]
 }
