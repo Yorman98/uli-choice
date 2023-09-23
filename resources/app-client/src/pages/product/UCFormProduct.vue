@@ -435,8 +435,8 @@ function setGroup (groupId: number, index: number) {
                     :title="$t('products.form_product.variant')"
                   >
                     <v-expansion-panel-text>
-                      <VRow v-for="(group, groupIndex) in attributesGroup" :key="groupIndex">
-                        <p class="text-h6">
+                      <VRow v-for="(group, groupIndex) in attributesGroup" :key="groupIndex" class="pa-4">
+                        <p class="text-subtitle-2">
                           {{ group.name }}
                         </p>
                         <VCol cols="12">
