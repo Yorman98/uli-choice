@@ -24,7 +24,10 @@
       "date_updated": "Fecha de actualización",
       "phone": "Teléfono",
       "code": "Código",
-      "type_user": "Tipo de usuario"
+      "type_user": "Tipo de usuario",
+      "method_payment": "Método de pago",
+      "order": "Orden",
+      "amount": "Monto"
     },
     "welcome": "Bienvenido",
     "error": "Ha ocurrido un error.",
@@ -52,7 +55,10 @@
     "providers": "Proveedores",
     "products": "Productos",
     "purchases": "Compras",
-    "configuration": "Configuración"
+    "configuration": "Configuración",
+    "methods_payment": "Métodos de pago",
+    "transactions": "Transacciones",
+    "sales": "Ventas"
   },
   "products": {
     "products_list": "Lista de productos",
@@ -110,5 +116,10 @@
     "add_purchase": "Agregar compra",
     "purchase_data": "Datos de la compra",
     "provider_data": "Datos del proveedor"
+  },
+  "transaction": {
+    "store_transaction": "Transacciones realizadas",
+    "add_transaction": "Agregar transacción",
+    "add_payment_method": "Agregar método de pago"
   }
 }

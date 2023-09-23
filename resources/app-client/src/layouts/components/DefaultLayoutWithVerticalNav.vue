@@ -123,6 +123,31 @@ import UserProfile from '@/layouts/components/UserProfile.vue'
         }"
       />
 
+      <!-- 👉 Orders -->
+      <VerticalNavSectionTitle
+        :item="{
+          heading: $t('navbar.sales'),
+        }"
+      />
+      <VerticalNavLink
+        :item="{
+          title: $t('navbar.methods_payment'),
+          icon: 'mdi-cash-multiple',
+          to: {
+            name: 'paymentMethods',
+          },
+        }"
+      />
+      <VerticalNavLink
+        :item="{
+          title: $t('navbar.transactions'),
+          icon: 'mdi-account-cash-outline',
+          to: {
+            name: 'transactions',
+          },
+        }"
+      />
+
       <!-- 👉 Options theme -->
       <VerticalNavSectionTitle
         :item="{
