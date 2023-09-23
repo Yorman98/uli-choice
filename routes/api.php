@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Cart\CartController;
+use App\Http\Controllers\Transactions\PaymentMethodsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -45,6 +47,20 @@ Route::group(['prefix' => 'auth'], static function () {
     Route::delete('logout', [AuthController::class, 'logout']);
 });
 
+/*
+|--------------------------------------------------------------------------
+| Cart Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can manage the cart
+|
+*/
+Route::group(['prefix' => 'cart'], static function () {
+    Route::get('/{id}', [CartController::class, 'getCartProducts']);
+    Route::post('/', [CartController::class, 'addProductToCart']);
+    Route::post('/update-quantity', [CartController::class, 'updateQuantityToProduct']);
+    Route::delete('/{id}', [CartController::class, 'removeProductFromCart']);
+});
 
 Route::middleware('auth:sanctum')->group(static function () {
     /*
@@ -95,17 +111,11 @@ Route::middleware('auth:sanctum')->group(static function () {
         Route::delete('/{id}', [ProductController::class, 'destroy']);
 
         /*
-        * Variations for a product
-        */
+         * Variations for a product
+         */
         Route::get('/{id}/variations', [ProductVariationController::class, 'index']);
-        Route::get('/{id}/variations/{variation_id}', [ProductVariationController::class, 'show']);
-        Route::post('/{id}/variations', [ProductVariationController::class, 'store']);
-        Route::put('/{id}/variations/{variation_id}', [ProductVariationController::class, 'update']);
+        Route::post('/{id}/variations', [ProductVariationController::class, 'updateOrCreate']);
         Route::delete('/{id}/variations/{variation_id}', [ProductVariationController::class, 'destroy']);
-        
-        // Attach/Detach Attribute to Variation
-        Route::post('/{id}/variations/{variation_id}/attributes', [ProductVariationController::class, 'addAttributeToVariation']);
-        Route::delete('/{id}/variations/{variation_id}/attributes/{attribute_id}', [ProductVariationController::class, 'removeAttributeFromVariation']);
     });
 
     /*
@@ -146,7 +156,7 @@ Route::middleware('auth:sanctum')->group(static function () {
     |--------------------------------------------------------------------------
     | Provider Routes
     |--------------------------------------------------------------------------
-    | 
+    |
     | Here is where you can register provider routes for your application.
     |
     */
@@ -156,6 +166,20 @@ Route::middleware('auth:sanctum')->group(static function () {
         Route::post('/', [ProviderController::class, 'store']);
         Route::put('/{id}', [ProviderController::class, 'update']);
         Route::delete('/{id}', [ProviderController::class, 'destroy']);
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Payment Methods Routes
+    |--------------------------------------------------------------------------
+    |
+    | Here is where you can register payment methods routes for your application.
+    |
+    */
+    Route::group(['prefix' => 'payment-methods'], static function () {
+        Route::get('/', [PaymentMethodsController::class, 'index']);
+        Route::post('/', [PaymentMethodsController::class, 'store']);
+        Route::delete('/{id}', [PaymentMethodsController::class, 'softDelete']);
     });
 });
 

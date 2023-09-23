@@ -101,7 +101,8 @@
       "change_photo": "Cambiar foto del producto",
       "create_product": "Crear producto",
       "update_product": "Actualizar producto",
-      "delete_product": "Eliminar producto"
+      "delete_product": "Eliminar producto",
+      "change_variant_photo": "Cambiar foto de la variante"
     }
   },
   "users": {
