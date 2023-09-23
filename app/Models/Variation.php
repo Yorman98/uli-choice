@@ -23,7 +23,8 @@ class Variation extends Model
         'sku',
         'price',
         'cost',
-        'stock'
+        'stock',
+        'image'
     ];
 
     /**

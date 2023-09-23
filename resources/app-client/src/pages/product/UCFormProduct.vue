@@ -12,6 +12,7 @@ import ProductService from '@/services/ProductService'
 import type { CategoryInterface } from '@/store/types/CategoryInterface'
 import imageUrl from '@images/product/product-img.png'
 import { STORAGE_PATH } from '@/utils/constants'
+import AttributeService from "@/services/AttributeService";
 
 const route = useRoute()
 
@@ -52,58 +53,51 @@ const product: UnwrapRef<ProductInterface> = reactive({
 
 const categories: Ref<CategoryInterface[]> = ref([])
 
-const groups: AttributeGroupInterface[] = [
-  {
-    id: 1,
-    name: 'Talla',
-    group_type: 'text',
-  },
-  {
-    id: 2,
-    name: 'Color',
-    group_type: 'text',
-  },
-]
-
-const attributes: AttributeInterface[] = [
-  {
-    id: 1,
-    name: 'Amarillo',
-    attributeGroupId: 1,
-  },
-  {
-    id: 2,
-    name: 'Rojo',
-    attributeGroupId: 1,
-  },
-  {
-    id: 3,
-    name: 'Verde',
-    attributeGroupId: 1,
-  },
-  {
-    id: 4,
-    name: 'Azul',
-    attributeGroupId: 1,
-  },
-]
-
 const variants: Ref<VariantInterface[]> = ref([])
 
 const formData = new FormData()
 
 const selectedImage: Ref<any[]> = ref([])
 
+let productId: number = ref(null)
+
+const attributesGroup: Ref<AttributeGroupInterface[]> = ref([])
+
+const attributes: Ref<AttributeInterface[]> = ref([])
+
 onMounted(async () => {
   const response = await CategoryService.getCategories()
+  const attributeGroupResponse = await AttributeService.getAttributeGroup()
 
+  attributesGroup.value = attributeGroupResponse.data.attributeGroups.data
   categories.value = response.data.categories.data
+  attributesGroup.value.forEach((category: CategoryInterface) => {
+    fetchAttributes(category.id)
+  })
+
   if (isEdit) {
     const productResponse = await ProductService.getProduct(Number(route.params.id))
 
     Object.assign(product, productResponse.data.data)
+    variants.value = productResponse.data.data.variations
+    variants.value = variants.value.map(item => {
+      item.image = `${STORAGE_PATH}/${item.image}`;
+      item.group = item.attributes[0].attribute_group_id;
+      return item;
+    });
+    variants.value.forEach((item: any, index: number) => {
+      variants.value[index].group = item.attributes.map(attribute => {
+        return attribute.attribute_group_id
+      });
+    });
+    variants.value.map((item: any, index: number) => {
+      variants.value[index].attributes = item.attributes.map(attribute => {
+        return attribute.id;
+      });
+    });
     product.categories = productResponse.data.data.categories.map((category: number) => category.id)
     product.image = STORAGE_PATH + product.image
+    productId = route.params.id
   }
 })
 
@@ -113,12 +107,20 @@ function addVariant() {
     price: 0,
     cost: 0,
     stock: 0,
+    image: '',
     attributes: [],
+    group: []
   })
 }
 
 const openFileInput = () => {
   const fileInput = document?.querySelector('.img input') as HTMLElement
+  if (fileInput)
+    fileInput.click()
+}
+
+const openVariantFileInput = (index: number) => {
+  const fileInput = document?.querySelector(`.img-${index} input`) as HTMLElement
   if (fileInput)
     fileInput.click()
 }
@@ -129,29 +131,73 @@ const handleFileChange = (event: Event) => {
     product.image = URL.createObjectURL(target.files[0])
 }
 
+const handleVariantFileChange = (event: Event, index: number) => {
+  const target = event.target as HTMLInputElement
+  if (target.files)
+    variants.value[index].image = URL.createObjectURL(target.files[0])
+}
+
 async function deleteProduct() {
   await ProductService.deleteProduct(Number(route.params.id))
   await router.push({
     name: 'product-list',
   })
 }
-function saveProductData() {
+
+async function saveProductData() {
   formData.append('name', product.name)
   formData.append('slug', product.slug)
   formData.append('code', product.code)
   formData.append('description', product.description)
-  formData.append('image', selectedImage.value[0])
+  if (!isEdit) formData.append('image', selectedImage.value[0])
   for (const value of product.categories)
     formData.append('categories[]', String(value))
 
   if (isEdit)
-    ProductService.updateProduct(Number(route.params.id), formData)
-  else
-    ProductService.createProduct(formData)
+    await ProductService.updateProduct(Number(route.params.id), formData)
+  else {
+    const response = await ProductService.createProduct(formData)
+    productId = response.data.product_id
+  }
 
-  router.push({
+  if (variants.value.length > 0) {
+    await saveProductVariant()
+  }
+
+  await router.push({
     name: 'product-list',
   })
+
+}
+
+async function saveProductVariant () {
+
+  await Promise.all(variants.value.map(async (variant) => {
+    const variantData = new FormData()
+    variantData.append('sku', variant.sku)
+    variantData.append('price', String(variant.price))
+    variantData.append('cost', String(variant.cost))
+    variantData.append('stock', String(variant.stock))
+    if (variant?.id) variantData.append('id', String(variant?.id))
+    if (typeof variant.selectedImage === 'object') variantData.append('image', variant.selectedImage[0])
+    for (const value of variant.group)
+      variantData.append('group[]', String(value))
+    for (const value of variant.attributes)
+      variantData.append('attributes[]', String(value))
+    await ProductService.createProductVariant({ productId: productId, data: variantData })
+  }))
+}
+
+async function fetchAttributes (groupId: number) {
+  const attributesResponse = await AttributeService.getAttributesGroupById(groupId)
+  attributes.value.push(attributesResponse.data.attributeGroup.attributes)
+}
+
+function setGroup (groupId: number, index: number) {
+  console.log(index)
+  if (variants.value[index]?.group.indexOf(groupId) === -1) {
+    variants.value[index].group.push(groupId)
+  }
 }
 </script>
 
@@ -311,6 +357,40 @@ function saveProductData() {
           <p class="text-h6">
             {{ $t('products.form_product.variant') }} {{ index + 1 }}
           </p>
+          <VRow>
+            <VCol
+              cols="12"
+              class="d-flex flex-column justify-center align-center mb-4"
+            >
+              <VImg
+                :src="variant.image ? variant.image : imageUrl"
+                class="img-preview"
+                max-width="300"
+                height="200"
+                contain
+                @click="openVariantFileInput(index)"
+              />
+
+              <VBtn
+                class="my-6"
+                @click="openVariantFileInput(index)"
+              >
+                {{ $t('products.form_product.change_variant_photo') }}
+              </VBtn>
+            </VCol>
+
+            <VCol cols="6">
+              <VFileInput
+                v-model="variant.selectedImage"
+                class="hide"
+                :class="`img-${index}`"
+                label="Upload an image"
+                accept="image/*"
+                prepend-icon="mdi-camera"
+                @change="handleVariantFileChange($event, index)"
+              />
+            </VCol>
+          </VRow>
           <VForm>
             <VRow>
               <VCol cols="6">
@@ -349,28 +429,32 @@ function saveProductData() {
                 />
               </VCol>
 
-              <VCol cols="6">
-                <VSelect
-                  v-model="variant.group"
-                  :items="groups"
-                  item-title="name"
-                  item-value="id"
-                  :placeholder="$t('products.form_product.product_group')"
-                  :label="$t('products.form_product.product_group')"
-                  type="number"
-                />
-              </VCol>
-
-              <VCol cols="6">
-                <VSelect
-                  v-model="variant.attributes"
-                  :items="attributes"
-                  item-title="name"
-                  item-value="id"
-                  :placeholder="$t('products.form_product.product_attributes')"
-                  :label="$t('products.form_product.product_attributes')"
-                  type="number"
-                />
+              <VCol cols="12">
+                <v-expansion-panels>
+                  <v-expansion-panel
+                    :title="$t('products.form_product.variant')"
+                  >
+                    <v-expansion-panel-text>
+                      <VRow v-for="(group, groupIndex) in attributesGroup" :key="groupIndex" class="pa-4">
+                        <p class="text-subtitle-2">
+                          {{ group.name }}
+                        </p>
+                        <VCol cols="12">
+                          <VSelect
+                            v-model="variant.attributes[groupIndex]"
+                            :items="attributes[groupIndex]"
+                            item-title="name"
+                            item-value="id"
+                            :placeholder="$t('products.form_product.product_attributes')"
+                            :label="$t('products.form_product.product_attributes')"
+                            type="number"
+                            @update:modelValue="setGroup(group.id, index)"
+                          />
+                        </VCol>
+                      </VRow>
+                    </v-expansion-panel-text>
+                  </v-expansion-panel>
+                </v-expansion-panels>
               </VCol>
             </VRow>
           </VForm>
@@ -387,7 +471,7 @@ function saveProductData() {
   }
 }
 
-.img {
+.img, .hide {
   display: none;
 }
 
