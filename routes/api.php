@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Cart\CartController;
+use App\Http\Controllers\Transactions\PaymentMethodsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -165,6 +166,20 @@ Route::middleware('auth:sanctum')->group(static function () {
         Route::post('/', [ProviderController::class, 'store']);
         Route::put('/{id}', [ProviderController::class, 'update']);
         Route::delete('/{id}', [ProviderController::class, 'destroy']);
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Payment Methods Routes
+    |--------------------------------------------------------------------------
+    |
+    | Here is where you can register payment methods routes for your application.
+    |
+    */
+    Route::group(['prefix' => 'payment-methods'], static function () {
+        Route::get('/', [PaymentMethodsController::class, 'index']);
+        Route::post('/', [PaymentMethodsController::class, 'store']);
+        Route::delete('/{id}', [PaymentMethodsController::class, 'softDelete']);
     });
 });
 
