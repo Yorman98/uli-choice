@@ -16,10 +16,6 @@ return new class extends Migration
         Schema::table('variations', function (Blueprint $table) {
             $table->string('image')->nullable()->after('price');
         });
-
-        Schema::table('products', function (Blueprint $table) {
-            $table->dropColumn('image');
-        });
     }
 
     /**
@@ -31,10 +27,6 @@ return new class extends Migration
     {
         Schema::table('variations', function (Blueprint $table) {
             $table->dropColumn('image');
-        });
-
-        Schema::table('products', function (Blueprint $table) {
-            $table->string('image')->nullable()->after('description');
         });
     }
 };

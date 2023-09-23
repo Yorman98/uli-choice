@@ -86,6 +86,7 @@ class ProductController extends Controller
             'slug' => 'required|string|unique:products,slug',
             'code' => 'required|string|unique:products,code',
             'description' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'categories' => 'nullable|array',
         ];
 
@@ -107,6 +108,11 @@ class ProductController extends Controller
                 'code' => $request->code,
                 'description' => $request->description
             ]);
+
+            if ($request->hasFile('image')) {
+                $path = Storage::disk('public')->putFile('images/products', $request->file('image'));
+                $product->image = $path;
+            }
 
             if ($request->has('categories')) {
                 $product->categories()->attach($request->categories);
