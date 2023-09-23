@@ -3,6 +3,7 @@
 import VerticalNavSectionTitle from '@/@layouts/components/VerticalNavSectionTitle.vue'
 import VerticalNavLayout from '@layouts/components/VerticalNavLayout.vue'
 import VerticalNavLink from '@layouts/components/VerticalNavLink.vue'
+import FloatingCart from '@/components/global/UCFloatingCart.vue'
 
 // Components
 // import Footer from '@/layouts/components/Footer.vue'
@@ -41,6 +42,8 @@ import UserProfile from '@/layouts/components/UserProfile.vue'
         <VSpacer />
 
         <NavbarThemeSwitcher class="me-2" />
+
+        <FloatingCart />
 
         <UserProfile />
       </div>

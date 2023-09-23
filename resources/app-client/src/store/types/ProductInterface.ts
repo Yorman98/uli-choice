@@ -1,3 +1,4 @@
+import { VariantInterface } from './VariantInterface';
 export interface ProductInterface {
     id: number;
     name: string;
@@ -9,5 +10,5 @@ export interface ProductInterface {
     updated_at?: string;
     deleted_at?: string;
     categories: [];
-    variations: [];
+    variations: VariantInterface[];
 }
