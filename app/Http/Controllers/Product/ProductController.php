@@ -238,6 +238,10 @@ class ProductController extends Controller
 
             $product = Product::find($id);
 
+            // Set slug to null to avoid unique slug error
+            $product->slug = null;
+            $product->save();
+
             // Soft delete
             $product->delete();
 
