@@ -10,7 +10,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 
 class ProductVariationController extends Controller
 {
@@ -42,6 +41,7 @@ class ProductVariationController extends Controller
             $variations = $product->variations()->get()->map(function ($variation) {
                 $variation->attributes = $variation->attributes()->get()->map(function ($attribute) {
                     $attribute->load('group');
+                    unset($attribute['attribute_group_id']);
                     return $attribute;
                 });
 
@@ -96,6 +96,12 @@ class ProductVariationController extends Controller
             $image = null;
             if ($request->hasFile('image')) {
                 $image = Storage::disk('public')->putFile('images/products', $request->file('image'));
+            } else {
+                // if variation exists get current image
+                if ($request->has('id')) {
+                    $variation = Variation::findOrFail($request->id);
+                    $image = $variation->image;
+                }
             }
 
             $variation = Variation::updateOrCreate(
@@ -154,6 +160,7 @@ class ProductVariationController extends Controller
                 'errors' => $validator->errors()
             ], 422);
         }
+
         try {
             DB::beginTransaction();
 
