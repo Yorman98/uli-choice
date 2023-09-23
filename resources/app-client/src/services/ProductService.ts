@@ -14,7 +14,7 @@ class ProductService {
       })
   }
 
-  createProductVariant (payload: any): AxiosPromise<ProductResponseInterface> {
+  createProductVariant (payload: { productId: number, data: {} }): AxiosPromise<ProductResponseInterface> {
     return ApiService.post(`/product/${payload.productId}/variations`, payload.data,
       {
         headers: {
