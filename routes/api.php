@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Cart\CartController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -45,6 +46,20 @@ Route::group(['prefix' => 'auth'], static function () {
     Route::delete('logout', [AuthController::class, 'logout']);
 });
 
+/*
+|--------------------------------------------------------------------------
+| Cart Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can manage the cart
+|
+*/
+Route::group(['prefix' => 'cart'], static function () {
+    Route::get('/{id}', [CartController::class, 'getCartProducts']);
+    Route::post('/', [CartController::class, 'addProductToCart']);
+    Route::post('/update-quantity', [CartController::class, 'updateQuantityToProduct']);
+    Route::delete('/{id}', [CartController::class, 'removeProductFromCart']);
+});
 
 Route::middleware('auth:sanctum')->group(static function () {
     /*

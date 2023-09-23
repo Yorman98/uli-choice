@@ -10,7 +10,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 
 class ProductVariationController extends Controller
 {
@@ -42,6 +41,7 @@ class ProductVariationController extends Controller
             $variations = $product->variations()->get()->map(function ($variation) {
                 $variation->attributes = $variation->attributes()->get()->map(function ($attribute) {
                     $attribute->load('group');
+                    unset($attribute['attribute_group_id']);
                     return $attribute;
                 });
 
@@ -154,6 +154,7 @@ class ProductVariationController extends Controller
                 'errors' => $validator->errors()
             ], 422);
         }
+
         try {
             DB::beginTransaction();
 
