@@ -96,6 +96,12 @@ class ProductVariationController extends Controller
             $image = null;
             if ($request->hasFile('image')) {
                 $image = Storage::disk('public')->putFile('images/products', $request->file('image'));
+            } else {
+                // if variation exists get current image
+                if ($request->has('id')) {
+                    $variation = Variation::findOrFail($request->id);
+                    $image = $variation->image;
+                }
             }
 
             $variation = Variation::updateOrCreate(
