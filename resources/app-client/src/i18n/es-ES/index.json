@@ -58,7 +58,8 @@
     "configuration": "Configuración",
     "methods_payment": "Métodos de pago",
     "transactions": "Transacciones",
-    "sales": "Ventas"
+    "sales": "Ventas",
+    "clients": "Clientes"
   },
   "products": {
     "products_list": "Lista de productos",
@@ -121,5 +122,12 @@
     "store_transaction": "Transacciones realizadas",
     "add_transaction": "Agregar transacción",
     "add_payment_method": "Agregar método de pago"
+  },
+  "sales": {
+    "store_orders": "Ordenes realizadas",
+    "add_order": "Agregar orden",
+    "update_order": "Actualizar orden",
+    "order_list": "Lista de ordenes",
+    "order_details": "Detalles de la orden"
   }
 }

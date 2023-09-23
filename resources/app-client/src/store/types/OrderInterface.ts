@@ -1,6 +1,6 @@
 export interface OrderInterface {
   id?: number
-  reference: string
+  reference?: string
   status_id: number
   cart_id: number
   total_price: number

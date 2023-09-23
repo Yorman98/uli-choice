@@ -116,6 +116,21 @@ const router = createRouter({
           name: 'transactions',
           component: () => import('@/pages/transactions/UCTransactions.vue'),
         },
+        {
+          path: 'orders',
+          children: [
+            {
+              path: 'add-order',
+              name: 'addOrderForm',
+              component: () => import('@/pages/orders/UCOrderForm.vue'),
+            },
+            {
+              path: 'edit-order/:id',
+              name: 'editOrderForm',
+              component: () => import('@/pages/orders/UCOrderForm.vue'),
+            },
+          ],
+        },
       ],
     },
     {
