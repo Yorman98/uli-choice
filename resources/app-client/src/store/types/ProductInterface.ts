@@ -1,16 +1,17 @@
-import { VariantInterface } from './VariantInterface';
+import type { VariationInterface } from './VariationInterface'
+
 export interface ProductInterface {
-    id: number;
-    name: string;
-    slug: string;
-    code: string;
-    description?: string;
-    image: string;
-    created_at?: string;
-    updated_at?: string;
-    deleted_at?: string;
-    categories: [];
-    variations: VariantInterface[];
+  id: number
+  name: string
+  slug: string
+  code: string
+  description?: string
+  image: string
+  created_at?: string
+  updated_at?: string
+  deleted_at?: string
+  categories: []
+  variations: VariationInterface[]
 }
 
 export interface productCartInterface {

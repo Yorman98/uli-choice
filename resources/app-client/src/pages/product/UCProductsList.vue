@@ -9,42 +9,7 @@ import ProductService from '@/services/ProductService'
 import router from '@/router'
 import {useUserStore} from "@/store/user";
 
-//************** test **************//
-const products = [
-  {
-    id: 1,
-    name: 'Producto 1',
-    slug: 'Producto-1',
-    code: 'cod001',
-    description: 'descripcion 1',
-    image: 'https://picsum.photos/200/300',
-    categories: [],
-    variations: [],
-  },
-  {
-    id: 2,
-    name: 'Producto 2',
-    slug: 'Producto-2',
-    code: 'cod002',
-    description: 'descripcion 2',
-    image: 'https://picsum.photos/200/300',
-    categories: [],
-    variations: [],
-  },
-  {
-    id: 3,
-    name: 'Producto 3',
-    slug: 'Producto-3',
-    code: 'cod003',
-    description: 'descripcion 3',
-    image: 'https://picsum.photos/200/300',
-    categories: [],
-    variations: [],
-  }
-];
-
 const userStore = useUserStore()
-//************** test **************//
 
 const { t } = useI18n()
 
@@ -160,25 +125,6 @@ async function addToCart(product: ProductInterface) {
             @editItem="editProduct"
             @deleteItem="deleteProduct"
           />
-        </VCardText>
-      </VCard>
-
-      <VCard class="pa-4">
-        <VCardText class="d-flex">
-          <div
-            v-for="(product, index) in products"
-            :key="index"
-            class="mx-4"
-          >
-            <div>
-              <p>{{ product.name }}</p>
-              <p>{{ product.description }}</p>
-            </div>
-
-            <VBtn @click="addToCart(product)">
-              add to cart
-            </VBtn>
-          </div>
         </VCardText>
       </VCard>
     </VCol>
