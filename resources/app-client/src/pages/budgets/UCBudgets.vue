@@ -34,7 +34,7 @@ const search: Ref<string> = ref('')
 const headers: any[] = [
   { title: t('global.headers.id'), key: 'name' },
   { title: t('global.headers.client'), key: 'user_id' },
-  { title: t('global.headers.price'), key: 'price' },
+  { title: t('global.headers.amount'), key: 'price' },
   { title: t('global.headers.date_created'), key: 'created_at' },
   { title: t('global.headers.status'), key: 'status_id' },
   { title: t('global.headers.options'), align: 'end', key: 'actions', sortable: false },
