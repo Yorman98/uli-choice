@@ -98,6 +98,22 @@ import UserProfile from '@/layouts/components/UserProfile.vue'
         }"
       />
 
+      <!-- 👉 Sales -->
+      <VerticalNavSectionTitle
+        :item="{
+          heading: $t('navbar.sales'),
+        }"
+      />
+      <VerticalNavLink
+        :item="{
+          title: $t('navbar.budgets'),
+          icon: 'mdi-cash-multiple',
+          to: {
+            name: 'budgets',
+          },
+        }"
+      />
+
       <!-- 👉 Purchases -->
       <VerticalNavSectionTitle
         :item="{

@@ -106,6 +106,11 @@ const router = createRouter({
           name: 'providers',
           component: () => import('@/pages/providers/UCProviders.vue'),
         },
+        {
+          path: 'budgets',
+          name: 'budgets',
+          component: () => import('@/pages/budgets/UCBudgets.vue'),
+        },
       ],
     },
     {

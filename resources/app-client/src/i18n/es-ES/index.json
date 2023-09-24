@@ -24,13 +24,25 @@
       "date_updated": "Fecha de actualización",
       "phone": "Teléfono",
       "code": "Código",
-      "type_user": "Tipo de usuario"
+      "type_user": "Tipo de usuario",
+      "client": "Cliente",
+      "status": "Estatus",
+      "price": "Precio",
+      "cost": "Costo",
+      "quantity": "Cantidad",
+      "url": "Enlace"
     },
     "welcome": "Bienvenido",
     "error": "Ha ocurrido un error.",
     "roles": {
       "admin": "Administrador",
       "client": "Cliente"
+    },
+    "status": {
+      "sent": "Enviada",
+      "approved": "Aprobada",
+      "rejected": "Rechazada",
+      "to_be_reviewed": "Por revisar"
     }
   },
   "registration": {
@@ -52,7 +64,9 @@
     "providers": "Proveedores",
     "products": "Productos",
     "purchases": "Compras",
-    "configuration": "Configuración"
+    "configuration": "Configuración",
+    "sales": "Ventas",
+    "budgets": "Cotizaciones"
   },
   "products": {
     "products_list": "Lista de productos",
@@ -103,13 +117,19 @@
     "edit_user": "Editar usuario"
   },
   "providers": {
-    "create_provider": "Crear Proveedor",
-    "edit_provider": "Editar Proveedor"
+    "create_provider": "Crear proveedor",
+    "edit_provider": "Editar proveedor"
   },
   "purchases": {
     "store_purchases": "Compras realizadas",
     "add_purchase": "Agregar compra",
     "purchase_data": "Datos de la compra",
     "provider_data": "Datos del proveedor"
+  },
+  "budgets": {
+    "create_budget": "Crear cotización",
+    "add_product_link": "Añadir enlace de producto",
+    "price": "Precio",
+    "search_by_customer": "Buscar por cliente"
   }
 }
