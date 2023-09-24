@@ -7,6 +7,9 @@ import UCTable from '@/components/helpers/UCTable.vue'
 import type { ProductInterface } from '@/store/types/ProductInterface'
 import ProductService from '@/services/ProductService'
 import router from '@/router'
+import {useUserStore} from "@/store/user";
+
+const userStore = useUserStore()
 
 const { t } = useI18n()
 
@@ -75,6 +78,18 @@ async function deleteProduct(productId: number) {
 onMounted(async () => {
   await dataProducts()
 })
+
+async function addToCart(product: ProductInterface) {
+  const response = await userStore.addToCart(
+    {
+      product_id: 27,
+      variation_id: 12,
+      quantity: 3,
+    }
+  )
+
+  await ProductService.getProductsCart(response)
+}
 </script>
 
 <template>

@@ -3,11 +3,16 @@
 import VerticalNavSectionTitle from '@/@layouts/components/VerticalNavSectionTitle.vue'
 import VerticalNavLayout from '@layouts/components/VerticalNavLayout.vue'
 import VerticalNavLink from '@layouts/components/VerticalNavLink.vue'
+import FloatingCart from '@/components/global/UCFloatingCart.vue'
+import ProductService from '@/services/ProductService'
+import { useUserStore } from '@/store/user'
 
 // Components
 // import Footer from '@/layouts/components/Footer.vue'
 import NavbarThemeSwitcher from '@/layouts/components/NavbarThemeSwitcher.vue'
 import UserProfile from '@/layouts/components/UserProfile.vue'
+
+const userStore = useUserStore()
 </script>
 
 <template>
@@ -41,6 +46,8 @@ import UserProfile from '@/layouts/components/UserProfile.vue'
         <VSpacer />
 
         <NavbarThemeSwitcher class="me-2" />
+
+        <FloatingCart />
 
         <UserProfile />
       </div>
@@ -119,6 +126,31 @@ import UserProfile from '@/layouts/components/UserProfile.vue'
           icon: 'mdi-shopping-outline',
           to: {
             name: 'purchase',
+          },
+        }"
+      />
+
+      <!-- 👉 Orders -->
+      <VerticalNavSectionTitle
+        :item="{
+          heading: $t('navbar.sales'),
+        }"
+      />
+      <VerticalNavLink
+        :item="{
+          title: $t('navbar.methods_payment'),
+          icon: 'mdi-cash-multiple',
+          to: {
+            name: 'paymentMethods',
+          },
+        }"
+      />
+      <VerticalNavLink
+        :item="{
+          title: $t('navbar.transactions'),
+          icon: 'mdi-account-cash-outline',
+          to: {
+            name: 'transactions',
           },
         }"
       />

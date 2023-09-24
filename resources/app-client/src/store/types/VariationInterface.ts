@@ -1,4 +1,4 @@
-export interface VariantInterface {
+export interface VariationInterface {
   sku: string
   price: number
   cost: number
@@ -6,4 +6,9 @@ export interface VariantInterface {
   group?: number
   image?: string
   attributes: number[]
+}
+
+export interface VariationSelectInterface {
+  id: number
+  attributes: string
 }

@@ -5,6 +5,10 @@ import UserService from '@/services/UserService'
 import AuthService from '@/services/AuthService'
 import type { LoginResponseInterface, RegisterResponseInterface } from '@/services/types/AuthTypes'
 import type { UserResponseInterface } from '@/services/types/UserTypes'
+import { VariantInterface } from "@/store/types/VariantInterface";
+import { ProductInterface, productCartInterface } from "@/store/types/ProductInterface";
+import { CategoryInterface } from "@/store/types/CategoryInterface";
+import ProductService from "@/services/ProductService";
 
 export const useUserStore = defineStore('user', {
   state: () => {
@@ -16,11 +20,14 @@ export const useUserStore = defineStore('user', {
         role: '',
       } as UserInterface,
       accessToken: '' as string | undefined,
+      productsCart: [] as any,
+      productsCartTotal: 0 as number
     }
   },
   getters: {
     getAccessToken: state => state.accessToken ? state.accessToken : localStorage.getItem('accessToken'),
     getUserInfo: state => state.userInfo,
+    getProductsCart: state => state.productsCart,
   },
   actions: {
     async login(payload: { email: string; password: string }) {
@@ -39,6 +46,7 @@ export const useUserStore = defineStore('user', {
         lastName: response.data.last_name,
         email: response.data.email,
         role: response.data.role,
+        id: response.data.id
       }
     },
     async register(payload: { first_name: string; last_name: string; phone_number: string; email: string; password: string }) {
@@ -53,5 +61,22 @@ export const useUserStore = defineStore('user', {
         }
       }
     },
+    async addToCart(payload: productCartInterface) {
+      const response = await ProductService.addProductCart(payload)
+      this.productsCart = response.data.products
+      this.productsCartTotal = response.data.total_price
+      return response.data.cart_id
+    },
+    async fetchProductsCart(userId: number) {
+      const response = await ProductService.getProductsCart(userId)
+      this.productsCart = response.data.products
+      this.productsCartTotal = response.data.total_price
+    },
+    async removeFromCart(productCartId: number) {
+      await ProductService.removeFromCart(productCartId)
+    },
+    async updateProductQuantity (payload: { productCartId: number, quantity: number }) {
+      await ProductService.updateQuantity(payload)
+    }
   },
 })
