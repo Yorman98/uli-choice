@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\Cart;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -22,7 +23,6 @@ class OrderController extends Controller
     {
         $validationRules = [
             'cart_id' => 'required|integer|min:1|exists:carts,id',
-            'status_id' => 'required|integer|min:1|exists:statuses,id',
         ];
 
         $validator = Validator::make($request->all(), $validationRules);
@@ -36,6 +36,9 @@ class OrderController extends Controller
 
         try {
 
+            // Get status where name is 'Pending'
+            $status = DB::table('statuses')->where('name', 'Pending')->first();
+
             // Get cart
             $cart = Cart::findOrFail($request->cart_id);
 
@@ -46,12 +49,17 @@ class OrderController extends Controller
             $reference = 'ULI' . date('Y') . str_pad(Order::whereYear('created_at', date('Y'))->count() + 1, 3, '0', STR_PAD_LEFT);
 
             $request->merge([
+                'status_id' => $status->id,
                 'reference' => $reference,
                 'total_price' => $total_price,
                 'total_cost' => $total_cost
             ]);
 
             $order = Order::create($request->all());
+
+            // Set cart active status to false
+            $cart->active = false;
+            $cart->save();
 
             return response()->json([
                 'success' => true,
