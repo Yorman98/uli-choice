@@ -1,6 +1,5 @@
 export interface TransactionInterface {
   id?: number
-  order_id: number
   payment_method_id: number
   amount: number
   notes?: string
