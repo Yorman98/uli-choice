@@ -57,7 +57,7 @@ Route::group(['prefix' => 'auth'], static function () {
 |
 */
 Route::group(['prefix' => 'cart'], static function () {
-    Route::get('/{id}', [CartController::class, 'getCartProducts']);
+    Route::get('/{id}', [CartController::class, 'getActiveCartByUserId']);
     Route::post('/', [CartController::class, 'addProductToCart']);
     Route::post('/update-quantity', [CartController::class, 'updateQuantityToProduct']);
     Route::delete('/{id}', [CartController::class, 'removeProductFromCart']);
