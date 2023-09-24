@@ -19,10 +19,10 @@ class CartController extends Controller
      * @param int $id
      * @return JsonResponse
      */
-    public function getCartProducts(Request $request, int $id): JsonResponse
+    public function getActiveCartByUserId(Request $request, int $id): JsonResponse
     {
         $validationRules = [
-            'id' => 'required|integer|min:1|exists:carts,id'
+            'id' => 'required|integer|min:1|exists:users,id'
         ];
 
         $validator = Validator::make(['id' => $id], $validationRules);
@@ -35,7 +35,16 @@ class CartController extends Controller
         }
 
         try {
-            $cart = Cart::findOrFail($id);
+            $cart = Cart::where('user_id', $id)->where('active', true)->first();
+
+            if (!$cart) {
+                return response()->json([
+                    'success' => true,
+                    'cart_id' => null,
+                    'products' => [],
+                    'total_price' => 0
+                ]);
+            }
 
             $products = $this->mapProducts($cart->products()->get()) ?? [];
 
@@ -110,6 +119,14 @@ class CartController extends Controller
                     // Get variation
                     $variation = Variation::find($request->variation_id);
 
+                    // Validate if variation belongs to product_id
+                    if ($variation->product_id != $request->product_id) {
+                        return response()->json([
+                            'success' => false,
+                            'errors' => 'Variation does not belong to product'
+                        ], 422);
+                    }
+
                     $product_cart = new ProductCart([
                         'product_id' => $request->product_id,
                         'variation_id' => $request->variation_id,
@@ -156,8 +173,15 @@ class CartController extends Controller
     private function mapProducts($products): mixed
     {
         return $products->map(function ($productCart) {
-            $productCart->load('variation');
+            $productCart->load('variation.attributes.group');
             $productCart->load('product');
+
+            // Map variation attributes
+            if ($productCart->variation) {
+                $productCart->variation->attributes = $productCart->variation->attributes->map(function ($attribute) {
+                    return $attribute->group->name . ': ' . $attribute->name;
+                });
+            }
 
             return [
                 'id' => $productCart->id,
@@ -168,6 +192,7 @@ class CartController extends Controller
                 'unit_cost' => $productCart->unit_cost,
                 'image' => $productCart->variation ? $productCart->variation->image : $productCart->product->image,
                 'name'  => $productCart->product->name,
+                'attributes' => $productCart->variation ? $productCart->variation->attributes : null
             ];
         });
     }

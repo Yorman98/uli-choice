@@ -25,12 +25,18 @@
       "phone": "Teléfono",
       "code": "Código",
       "type_user": "Tipo de usuario",
+<<<<<<< HEAD
       "client": "Cliente",
       "status": "Estatus",
       "price": "Precio",
       "cost": "Costo",
       "quantity": "Cantidad",
       "url": "Enlace"
+=======
+      "method_payment": "Método de pago",
+      "order": "Orden",
+      "amount": "Monto"
+>>>>>>> dev/front
     },
     "welcome": "Bienvenido",
     "error": "Ha ocurrido un error.",
@@ -65,8 +71,17 @@
     "products": "Productos",
     "purchases": "Compras",
     "configuration": "Configuración",
+<<<<<<< HEAD
     "sales": "Ventas",
     "budgets": "Cotizaciones"
+=======
+    "methods_payment": "Métodos de pago",
+    "transactions": "Transacciones",
+    "sales": "Ventas",
+    "clients": "Clientes",
+    "variation": "Variaciones",
+    "quantity": "Cantidad"
+>>>>>>> dev/front
   },
   "products": {
     "products_list": "Lista de productos",
@@ -131,5 +146,22 @@
     "add_product_link": "Añadir enlace de producto",
     "price": "Precio",
     "search_by_customer": "Buscar por cliente"
+  },
+  "transaction": {
+    "store_transaction": "Transacciones realizadas",
+    "add_transaction": "Agregar transacción",
+    "add_payment_method": "Agregar método de pago"
+  },
+  "sales": {
+    "store_orders": "Ordenes realizadas",
+    "add_order": "Agregar orden",
+    "update_order": "Actualizar orden",
+    "order_list": "Lista de ordenes",
+    "order_details": "Detalles de la orden"
+  },
+  "cart": {
+    "my_products": "Mis productos",
+    "no_products": "No hay productos en el carrito",
+    "total": "Total"
   }
 }

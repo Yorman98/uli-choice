@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import type { Ref } from 'vue'
-import {ref, UnwrapNestedRefs} from 'vue'
+import type { Ref, UnwrapNestedRefs } from 'vue'
+import { ref } from 'vue'
 import UCHeaderPage from '@/components/helpers/UCHeaderPage.vue'
 import UCTable from '@/components/helpers/UCTable.vue'
 import ClientService from '@/services/ClientService'

@@ -1,8 +1,8 @@
 import type { AxiosPromise } from 'axios'
 import type { UnwrapNestedRefs } from 'vue/dist/vue'
 import ApiService from '@/services'
-import type { ProductResponseInterface } from '@/services/types/ProductTypes'
-import type { ProductInterface } from '@/store/types/ProductInterface'
+import type { ProductResponseInterface, ProductCartResponseInterface } from '@/services/types/ProductTypes'
+import type { ProductInterface, productCartInterface } from '@/store/types/ProductInterface'
 
 class ProductService {
   createProduct(payload: UnwrapNestedRefs<ProductInterface>): AxiosPromise<ProductResponseInterface> {
@@ -31,6 +31,10 @@ class ProductService {
     return ApiService.get(`/product/${id}`)
   }
 
+  getProductsCart (userId): AxiosPromise<ProductCartResponseInterface> {
+    return ApiService.get(`/cart/${userId}`)
+  }
+
   updateProduct(id: number, payload: UnwrapNestedRefs<ProductInterface>): AxiosPromise<ProductResponseInterface> {
     return ApiService.post(`/product/${id}`, payload,
       {
@@ -42,6 +46,18 @@ class ProductService {
 
   deleteProduct(id: number): AxiosPromise<ProductResponseInterface> {
     return ApiService.delete(`/product/${id}`)
+  }
+
+  addProductCart(payload: productCartInterface): AxiosPromise<ProductCartResponseInterface> {
+    return ApiService.post(`/cart`, payload)
+  }
+
+  removeFromCart (productCartId: number): AxiosPromise<ProductCartResponseInterface> {
+    return ApiService.delete(`/cart/${productCartId}`)
+  }
+
+  updateQuantity (payload: { productCartId: number, quantity: number }): AxiosPromise<ProductCartResponseInterface> {
+    return ApiService.post('/cart/update-quantity', payload)
   }
 }
 

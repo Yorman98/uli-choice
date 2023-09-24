@@ -14,6 +14,7 @@ use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Purchase\PurchaseController;
 use App\Http\Controllers\Provider\ProviderController;
 use App\Http\Controllers\Product\ProductVariationController;
+use App\Http\Controllers\Order\OrderController;
 use App\Http\Controllers\ClientController;
 
 
@@ -57,7 +58,7 @@ Route::group(['prefix' => 'auth'], static function () {
 |
 */
 Route::group(['prefix' => 'cart'], static function () {
-    Route::get('/{id}', [CartController::class, 'getCartProducts']);
+    Route::get('/{id}', [CartController::class, 'getActiveCartByUserId']);
     Route::post('/', [CartController::class, 'addProductToCart']);
     Route::post('/update-quantity', [CartController::class, 'updateQuantityToProduct']);
     Route::delete('/{id}', [CartController::class, 'removeProductFromCart']);
@@ -196,6 +197,22 @@ Route::middleware('auth:sanctum')->group(static function () {
         Route::post('/', [TransactionsController::class, 'store']);
         Route::put('/{id}', [TransactionsController::class, 'update']);
         Route::delete('/{id}', [TransactionsController::class, 'destroy']);
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Orders Routes
+    |--------------------------------------------------------------------------
+    |
+    | Here is where you can register orders routes for your application.
+    |
+    */
+    Route::group(['prefix' => 'orders'], static function () {
+        Route::get('/', [OrderController::class, 'getOrders']);
+        Route::get('/{id}', [OrderController::class, 'getOrder']);
+        Route::post('/', [OrderController::class, 'createOrder']);
+        Route::put('/{id}', [OrderController::class, 'updateOrder']);
+        Route::delete('/{id}', [OrderController::class, 'deleteOrder']);
     });
 });
 
