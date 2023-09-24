@@ -136,6 +136,14 @@
   "cart": {
     "my_products": "Mis productos",
     "no_products": "No hay productos en el carrito",
-    "total": "Total"
+    "total": "Total",
+    "my_product_list": "Mi lista de productos",
+    "product": "Producto",
+    "price": "Precio",
+    "options": "Opciones",
+    "summary": "Resumen",
+    "articles": "{article} Artículos",
+    "generate_order": "Generar orden",
+    "see_cart": "Ver carrito"
   }
 }

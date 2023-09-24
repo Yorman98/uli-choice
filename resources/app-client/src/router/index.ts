@@ -131,6 +131,11 @@ const router = createRouter({
             },
           ],
         },
+        {
+          path: 'cart',
+          name: 'cartPage',
+          component: () => import('@/pages/cart/UCCartPage.vue'),
+        },
       ],
     },
     {

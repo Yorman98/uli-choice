@@ -1,15 +1,16 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
-import { useUserStore } from "@/store/user";
+import { useUserStore } from '@/store/user'
 import { STORAGE_PATH } from '@/utils/constants'
+import { useRouter } from 'vue-router';
 
-
+const router = useRouter()
 
 let menu: Ref<boolean> = ref(false)
 
 const cartStore = useUserStore()
 
-async function removeProductCart (productId) {
+async function removeProductCart (productId: number) {
   await cartStore.removeFromCart(productId)
   await cartStore.fetchProductsCart(cartStore.userInfo.id)
 }
@@ -49,7 +50,7 @@ async function increaseProduct (quantity: number, productId: number) {
           </p>
           <v-virtual-scroll
             v-else
-            :height="100"
+            :height="200"
             :items="cartStore.productsCart"
           >
             <template v-slot:default="{ item }">
@@ -62,7 +63,7 @@ async function increaseProduct (quantity: number, productId: number) {
                   <p class="ma-0">{{ item.name }}</p>
                   <VTextField
                     v-model="item.quantity"
-                    class="ma-0"
+                    class="ma-0 text-center"
                     prepend-icon="mdi-minus"
                     append-icon="mdi-plus"
                     @click:prepend="decreaseProduct(item.quantity - 1, item.id)"
@@ -74,7 +75,25 @@ async function increaseProduct (quantity: number, productId: number) {
             </template>
           </v-virtual-scroll>
         </VCardText>
-        <VCardActions>
+        <VCardActions class="d-flex flex-column">
+          <div>
+            <VBtn
+              color="primary"
+              class="mb-4"
+              @click="menu = false; router.push({ name: 'cartPage' })"
+              variant="flat"
+            >
+              {{ $t('cart.see_cart') }}
+            </VBtn>
+
+            <VBtn
+              color="primary"
+              class="mb-4"
+              variant="outlined"
+            >
+              {{ $t('cart.generate_order') }}
+            </VBtn>
+          </div>
           <div class="d-flex justify-space-between align-center w-100">
             <p class="ma-0">
               {{ $t('cart.total') }}
