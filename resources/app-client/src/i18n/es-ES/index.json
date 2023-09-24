@@ -137,6 +137,7 @@
     "my_products": "Mis productos",
     "no_products": "No hay productos en el carrito",
     "details_cart": "Detalles del carrito",
-    "total": "Total"
+    "total": "Total",
+    "price_unit": "Precio unitario"
   }
 }
