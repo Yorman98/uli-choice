@@ -12,3 +12,14 @@ export interface ProductResponseInterface {
     total?: number
   }
 }
+
+export interface ProductCartResponseInterface {
+  success: boolean
+  data?: {
+    current_page?: number
+    last_page?: number
+    per_page?: number
+    total: number
+    data: ProductInterface | ProductInterface[]
+  }
+}

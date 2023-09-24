@@ -132,5 +132,9 @@
     "update_order": "Actualizar orden",
     "order_list": "Lista de ordenes",
     "order_details": "Detalles de la orden"
+  },
+  "cart": {
+    "my_products": "Mis productos",
+    "no_products": "No hay productos en el carrito"
   }
 }

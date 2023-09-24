@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Cart\CartController;
 use App\Http\Controllers\Transactions\PaymentMethodsController;
+use App\Http\Controllers\Transactions\TransactionsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -56,7 +57,7 @@ Route::group(['prefix' => 'auth'], static function () {
 |
 */
 Route::group(['prefix' => 'cart'], static function () {
-    Route::get('/{id}', [CartController::class, 'getCartProducts']);
+    Route::get('/{id}', [CartController::class, 'getActiveCartByUserId']);
     Route::post('/', [CartController::class, 'addProductToCart']);
     Route::post('/update-quantity', [CartController::class, 'updateQuantityToProduct']);
     Route::delete('/{id}', [CartController::class, 'removeProductFromCart']);
@@ -180,6 +181,21 @@ Route::middleware('auth:sanctum')->group(static function () {
         Route::get('/', [PaymentMethodsController::class, 'index']);
         Route::post('/', [PaymentMethodsController::class, 'store']);
         Route::delete('/{id}', [PaymentMethodsController::class, 'softDelete']);
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Transactions Routes
+    |--------------------------------------------------------------------------
+    |
+    | Here is where you can register transactions routes for your application.
+    |
+    */
+    Route::group(['prefix' => 'transactions'], static function () {
+        Route::get('/{id}', [TransactionsController::class, 'getTransactionsByOrderId']);
+        Route::post('/', [TransactionsController::class, 'store']);
+        Route::put('/{id}', [TransactionsController::class, 'update']);
+        Route::delete('/{id}', [TransactionsController::class, 'destroy']);
     });
 });
 
