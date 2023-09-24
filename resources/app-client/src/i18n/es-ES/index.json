@@ -111,5 +111,9 @@
     "add_purchase": "Agregar compra",
     "purchase_data": "Datos de la compra",
     "provider_data": "Datos del proveedor"
+  },
+  "cart": {
+    "my_products": "Mis productos",
+    "no_products": "No hay productos en el carrito"
   }
 }
