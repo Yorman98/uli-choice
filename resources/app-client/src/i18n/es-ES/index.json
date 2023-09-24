@@ -59,7 +59,9 @@
     "methods_payment": "Métodos de pago",
     "transactions": "Transacciones",
     "sales": "Ventas",
-    "clients": "Clientes"
+    "clients": "Clientes",
+    "variation": "Variaciones",
+    "quantity": "Cantidad"
   },
   "products": {
     "products_list": "Lista de productos",

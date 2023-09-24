@@ -6,23 +6,15 @@ import type { PaymentMethodInterface } from '@/store/types/PaymentMethodInterfac
 
 class PaymentMethodService {
   createPaymentMethod(payload: UnwrapNestedRefs<PaymentMethodInterface>): AxiosPromise<PaymentMethodResponseInterface> {
-    return ApiService.post('/payment-method', payload)
+    return ApiService.post('/payment-methods', payload)
   }
 
   getPaymentMethods(): AxiosPromise<PaymentMethodResponseInterface> {
-    return ApiService.get('/payment-method')
-  }
-
-  getPaymentMethod(id: number): AxiosPromise<PaymentMethodResponseInterface> {
-    return ApiService.get(`/payment-method/${id}`)
-  }
-
-  updatePaymentMethod(payload: UnwrapNestedRefs<PaymentMethodInterface>): AxiosPromise<PaymentMethodResponseInterface> {
-    return ApiService.put(`/payment-method/${payload.id}`, payload)
+    return ApiService.get('/payment-methods')
   }
 
   deletePaymentMethod(id: number): AxiosPromise<PaymentMethodResponseInterface> {
-    return ApiService.delete(`/payment-method/${id}`)
+    return ApiService.delete(`/payment-methods/${id}`)
   }
 }
 

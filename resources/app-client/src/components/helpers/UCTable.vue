@@ -17,20 +17,20 @@ defineProps({
   hasSubItems: {
     type: Boolean,
     default: false,
-  }
+  },
 })
 
 const emit = defineEmits(['editItem', 'deleteItem', 'goToItem'])
 
-function editItem(item: Object) {
+function editItem(item: NonNullable<unknown>) {
   emit('editItem', item.selectable)
 }
 
-function goToItem(item: Object) {
+function goToItem(item: NonNullable<unknown>) {
   emit('goToItem', item.selectable)
 }
 
-function deleteItem(item: Object) {
+function deleteItem(item: NonNullable<unknown>) {
   emit('deleteItem', item.selectable.id)
 }
 </script>
@@ -62,7 +62,10 @@ function deleteItem(item: Object) {
             <VListItemTitle v-text="$t('global.see')" />
           </VListItem>
 
-          <VListItem @click="editItem(item)">
+          <VListItem
+            v-if="hasSubItems"
+            @click="editItem(item)"
+          >
             <template #prepend>
               <VIcon icon="mdi-pencil-outline" />
             </template>

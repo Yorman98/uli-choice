@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n'
 import UCHeaderPage from '@/components/helpers/UCHeaderPage.vue'
 import UCTable from '@/components/helpers/UCTable.vue'
 import type { PaymentMethodInterface } from '@/store/types/PaymentMethodInterface'
+import PaymentMethodService from '@/services/PaymentMethodService'
 
 const { t } = useI18n()
 
@@ -24,10 +25,9 @@ const path: Ref<any[]> = ref([
 
 const openPaymentMethod: Ref<boolean> = ref(false)
 
-// TODO: Actualize headers keys
 const headers: any[] = [
   { title: t('global.headers.id'), align: 'start', sortable: false, key: 'id' },
-  { title: t('global.headers.name'), key: 'provider.name' },
+  { title: t('global.headers.name'), key: 'name' },
   { title: t('global.headers.options'), align: 'end', key: 'actions', sortable: false },
 ]
 
@@ -37,8 +37,13 @@ const paymentMethodsInfo: UnwrapNestedRefs<PaymentMethodInterface> = reactive({
   name: '',
 } as PaymentMethodInterface)
 
-function dataPaymentMethods() {
-  // TODO: Get data from API
+async function dataPaymentMethods() {
+  const { data } = await PaymentMethodService.getPaymentMethods()
+  const response = data?.data ?? []
+
+  response.forEach((method: PaymentMethodInterface) => {
+    paymentMethodsList.value.push(method)
+  })
 }
 
 onMounted(async () => {
@@ -53,17 +58,14 @@ function closePaymentMethod() {
 }
 
 async function savePaymentMethod() {
-  // TODO: Save data from API
-
+  await PaymentMethodService.createPaymentMethod(paymentMethodsInfo)
   paymentMethodsList.value = []
   await dataPaymentMethods()
   closePaymentMethod()
 }
 
 async function deletePaymentMethod(payload: number) {
-  // TODO: Delete data from API
-  console.log(payload)
-
+  await PaymentMethodService.deletePaymentMethod(payload)
   paymentMethodsList.value = []
   await dataPaymentMethods()
 }
@@ -100,7 +102,6 @@ function addPaymentMethod() {
           <UCTable
             :headers="headers"
             :items="paymentMethodsList"
-            has-sub-items
             @deleteItem="deletePaymentMethod"
           />
         </VCardText>

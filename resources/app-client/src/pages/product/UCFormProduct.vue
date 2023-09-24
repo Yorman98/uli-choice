@@ -5,7 +5,7 @@ import { reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import UCHeaderPage from '@/components/helpers/UCHeaderPage.vue'
 import type { ProductInterface } from '@/store/types/ProductInterface'
-import type { VariantInterface } from '@/store/types/VariantInterface'
+import type { VariationInterface } from '@/store/types/VariationInterface'
 import type { AttributeGroupInterface, AttributeInterface } from '@/store/types/AttributeInterface'
 import CategoryService from '@/services/CategoryService'
 import ProductService from '@/services/ProductService'
@@ -53,7 +53,7 @@ const product: UnwrapRef<ProductInterface> = reactive({
 
 const categories: Ref<CategoryInterface[]> = ref([])
 
-const variants: Ref<VariantInterface[]> = ref([])
+const variants: Ref<VariationInterface[]> = ref([])
 
 const formData = new FormData()
 
