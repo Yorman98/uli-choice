@@ -1,10 +1,11 @@
 import type { AxiosPromise } from 'axios'
 import type { UnwrapNestedRefs } from 'vue/dist/vue'
 import ApiService from '@/services'
-import type { ProductResponseInterface, ProductCartResponseInterface } from '@/services/types/ProductTypes'
-import type { ProductInterface, productCartInterface } from '@/store/types/ProductInterface'
+import type { CartResponseInterface, ProductResponseInterface, VariationResponseInterface } from '@/services/types/ProductTypes'
+import type { ProductCartRequestInterface, ProductInterface } from '@/store/types/ProductInterface'
 
 class ProductService {
+  /* Products */
   createProduct(payload: UnwrapNestedRefs<ProductInterface>): AxiosPromise<ProductResponseInterface> {
     return ApiService.post('/product', payload,
       {
@@ -14,25 +15,12 @@ class ProductService {
       })
   }
 
-  createProductVariant (payload: { productId: number, data: {} }): AxiosPromise<ProductResponseInterface> {
-    return ApiService.post(`/product/${payload.productId}/variations`, payload.data,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
-  }
-
-  getProducts(): Promise<ProductResponseInterface> {
-    return ApiService.get('/product')
-  }
-
   getProduct(id: number): AxiosPromise<ProductResponseInterface> {
     return ApiService.get(`/product/${id}`)
   }
 
-  getProductsCart (cart_id): AxiosPromise<ProductCartResponseInterface> {
-    return ApiService.get(`/cart/${cart_id}`)
+  getProducts(): Promise<ProductResponseInterface> {
+    return ApiService.get('/product')
   }
 
   updateProduct(id: number, payload: UnwrapNestedRefs<ProductInterface>): AxiosPromise<ProductResponseInterface> {
@@ -48,8 +36,27 @@ class ProductService {
     return ApiService.delete(`/product/${id}`)
   }
 
-  addProductCart(payload: productCartInterface): AxiosPromise<ProductCartResponseInterface> {
-    return ApiService.post(`/cart`, payload)
+  /* Products Variation */
+  createProductVariant(payload: { productId: number; data: {} }): AxiosPromise<ProductResponseInterface> {
+    return ApiService.post(`/product/${payload.productId}/variations`, payload.data,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+  }
+
+  getVariationByProduct(productId: number): AxiosPromise<VariationResponseInterface> {
+    return ApiService.get(`/product/${productId}/variations`)
+  }
+
+  /* Products card */
+  getProductsCart(userId: number): AxiosPromise<CartResponseInterface> {
+    return ApiService.get(`/cart/${userId}`)
+  }
+
+  addProductCart(payload: UnwrapNestedRefs<ProductCartRequestInterface>): AxiosPromise<CartResponseInterface> {
+    return ApiService.post('/cart', payload)
   }
 }
 

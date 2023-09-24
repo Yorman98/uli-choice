@@ -6,7 +6,7 @@ import AuthService from '@/services/AuthService'
 import type { LoginResponseInterface, RegisterResponseInterface } from '@/services/types/AuthTypes'
 import type { UserResponseInterface } from '@/services/types/UserTypes'
 import { VariantInterface } from "@/store/types/VariantInterface";
-import { ProductInterface, productCartInterface } from "@/store/types/ProductInterface";
+import { ProductInterface, ProductCartRequestInterface } from "@/store/types/ProductInterface";
 import { CategoryInterface } from "@/store/types/CategoryInterface";
 import ProductService from "@/services/ProductService";
 
@@ -60,7 +60,7 @@ export const useUserStore = defineStore('user', {
         }
       }
     },
-    async addToCart(payload: productCartInterface) {
+    async addToCart(payload: ProductCartRequestInterface) {
       const response = await ProductService.addProductCart(payload)
       this.productsCart = response.data.products
       this.productsCartTotal = response.data.total_price

@@ -2,16 +2,17 @@
 import type { Ref, UnwrapNestedRefs } from 'vue'
 import { reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import type { ProductInterface } from '@/store/types/ProductInterface'
+import type { ProductCartRequestInterface, ProductInterface } from '@/store/types/ProductInterface'
 import type { ClientInterface } from '@/store/types/ClientInterface'
 import type { VariationInterface, VariationSelectInterface } from '@/store/types/VariationInterface'
 import UCHeaderPage from '@/components/helpers/UCHeaderPage.vue'
 import ProductService from '@/services/ProductService'
 import ClientService from '@/services/ClientService'
-import VariationService from '@/services/VariationService'
 import UCAdminCart from '@/components/adminCart/UCAdminCart.vue'
 
 const { t } = useI18n()
+
+const adminCart = ref(null)
 
 const path: Ref<any[]> = ref([
   {
@@ -38,12 +39,12 @@ const clientList: Ref<ClientInterface[]> = ref([])
 const productsList: Ref<ProductInterface[]> = ref([])
 const variationsList: Ref<VariationSelectInterface[]> = ref([])
 
-const cartInfo: UnwrapNestedRefs<any> = reactive({
+const cartInfo: UnwrapNestedRefs<ProductCartRequestInterface> = reactive({
   user_id: null,
   product_id: null,
   variation_id: null,
   quantity: null,
-})
+} as ProductCartRequestInterface)
 
 async function dataProducts() {
   const response = await ProductService.getProducts()
@@ -68,11 +69,11 @@ onMounted(async () => {
   await dataProducts()
 })
 
-async function variationProduct(id: number) {
+async function variationProduct() {
   cartInfo.variation_id = null
   variationsList.value = []
 
-  const { data } = await VariationService.getVariationByProduct(id)
+  const { data } = await ProductService.getVariationByProduct(cartInfo.product_id)
   const response = data.variations ?? []
 
   response.forEach((variation: VariationInterface) => {
@@ -82,9 +83,20 @@ async function variationProduct(id: number) {
   })
 }
 
-// TODO: Add cartInfo to API cart
-function saveOrder() {
-  console.log('Save order: ', cartInfo)
+async function saveProductsCart() {
+  await ProductService.addProductCart(cartInfo)
+  adminCart.value.updateCart(cartInfo.user_id)
+
+  Object.assign(cartInfo, {
+    user_id: null,
+    product_id: null,
+    variation_id: null,
+    quantity: null,
+  })
+}
+
+function updateCartByClient() {
+  adminCart.value.updateCart(cartInfo.user_id)
 }
 </script>
 
@@ -116,6 +128,7 @@ function saveOrder() {
                   :label="$t('navbar.clients')"
                   class="mb-6"
                   density="compact"
+                  @update:model-value="updateCartByClient"
                 />
 
                 <VSelect
@@ -126,7 +139,7 @@ function saveOrder() {
                   :label="$t('navbar.products')"
                   class="mb-6"
                   density="compact"
-                  @update:model-value="variationProduct(cartInfo.product_id)"
+                  @update:model-value="variationProduct"
                 />
 
                 <VSelect
@@ -145,12 +158,13 @@ function saveOrder() {
                   type="number"
                   class="mb-6"
                   density="compact"
+                  @update:model-value="cartInfo.quantity = parseInt(cartInfo.quantity as string)"
                 />
 
                 <div class="text-end">
                   <VBtn
-                    :disabled="!cartInfo.user_id || !cartInfo.product_id || !cartInfo.variation_id || cartInfo.quantity > 0"
-                    @click="saveOrder"
+                    :disabled="!cartInfo.user_id || !cartInfo.product_id || !cartInfo.variation_id || cartInfo.quantity < 1"
+                    @click="saveProductsCart"
                   >
                     <VIcon size="30">
                       mdi-content-save-outline
@@ -182,10 +196,7 @@ function saveOrder() {
         </VCard>
       </div>
 
-      <UCAdminCart
-        v-if="cartInfo.user_id"
-        :client-id="cartInfo.user_id"
-      />
+      <UCAdminCart ref="adminCart" />
     </VCol>
   </VRow>
 </template>
