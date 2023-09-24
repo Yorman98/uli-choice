@@ -46,6 +46,7 @@ export const useUserStore = defineStore('user', {
         lastName: response.data.last_name,
         email: response.data.email,
         role: response.data.role,
+        id: response.data.id
       }
     },
     async register(payload: { first_name: string; last_name: string; phone_number: string; email: string; password: string }) {
@@ -65,6 +66,17 @@ export const useUserStore = defineStore('user', {
       this.productsCart = response.data.products
       this.productsCartTotal = response.data.total_price
       return response.data.cart_id
+    },
+    async fetchProductsCart(userId: number) {
+      const response = await ProductService.getProductsCart(userId)
+      this.productsCart = response.data.products
+      this.productsCartTotal = response.data.total_price
+    },
+    async removeFromCart(productCartId: number) {
+      await ProductService.removeFromCart(productCartId)
+    },
+    async updateProductQuantity (payload: { productCartId: number, quantity: number }) {
+      await ProductService.updateQuantity(payload)
     }
   },
 })

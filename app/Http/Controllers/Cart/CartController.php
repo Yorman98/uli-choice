@@ -173,8 +173,15 @@ class CartController extends Controller
     private function mapProducts($products): mixed
     {
         return $products->map(function ($productCart) {
-            $productCart->load('variation');
+            $productCart->load('variation.attributes.group');
             $productCart->load('product');
+
+            // Map variation attributes
+            if ($productCart->variation) {
+                $productCart->variation->attributes = $productCart->variation->attributes->map(function ($attribute) {
+                    return $attribute->group->name . ': ' . $attribute->name;
+                });
+            }
 
             return [
                 'id' => $productCart->id,
@@ -185,6 +192,7 @@ class CartController extends Controller
                 'unit_cost' => $productCart->unit_cost,
                 'image' => $productCart->variation ? $productCart->variation->image : $productCart->product->image,
                 'name'  => $productCart->product->name,
+                'attributes' => $productCart->variation ? $productCart->variation->attributes : null
             ];
         });
     }

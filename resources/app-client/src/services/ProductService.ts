@@ -58,6 +58,14 @@ class ProductService {
   addProductCart(payload: UnwrapNestedRefs<ProductCartRequestInterface>): AxiosPromise<CartResponseInterface> {
     return ApiService.post('/cart', payload)
   }
+
+  removeFromCart(productCartId: number): AxiosPromise<CartResponseInterface> {
+    return ApiService.delete(`/cart/${productCartId}`)
+  }
+
+  updateQuantity(payload: { productCartId: number; quantity: number }): AxiosPromise<CartResponseInterface> {
+    return ApiService.post('/cart/update-quantity', payload)
+  }
 }
 
 export default new ProductService()
