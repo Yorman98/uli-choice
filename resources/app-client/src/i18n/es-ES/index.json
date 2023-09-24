@@ -25,18 +25,15 @@
       "phone": "Teléfono",
       "code": "Código",
       "type_user": "Tipo de usuario",
-<<<<<<< HEAD
       "client": "Cliente",
       "status": "Estatus",
       "price": "Precio",
       "cost": "Costo",
       "quantity": "Cantidad",
-      "url": "Enlace"
-=======
+      "url": "Enlace",
       "method_payment": "Método de pago",
       "order": "Orden",
       "amount": "Monto"
->>>>>>> dev/front
     },
     "welcome": "Bienvenido",
     "error": "Ha ocurrido un error.",
@@ -71,17 +68,13 @@
     "products": "Productos",
     "purchases": "Compras",
     "configuration": "Configuración",
-<<<<<<< HEAD
-    "sales": "Ventas",
-    "budgets": "Cotizaciones"
-=======
+    "budgets": "Cotizaciones",
     "methods_payment": "Métodos de pago",
     "transactions": "Transacciones",
     "sales": "Ventas",
     "clients": "Clientes",
     "variation": "Variaciones",
     "quantity": "Cantidad"
->>>>>>> dev/front
   },
   "products": {
     "products_list": "Lista de productos",
