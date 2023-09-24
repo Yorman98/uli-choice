@@ -114,13 +114,16 @@ onMounted(async () => {
   await dataProducts()
 })
 
-function addToCart(product: ProductInterface) {
-  userStore.addToCart(
+async function addToCart(product: ProductInterface) {
+  const response = await userStore.addToCart(
     {
-      product: product,
-      quantity: 1,
+      product_id: 27,
+      variation_id: 12,
+      quantity: 3,
     }
   )
+
+  await ProductService.getProductsCart(response)
 }
 </script>
 

@@ -6,8 +6,9 @@ import AuthService from '@/services/AuthService'
 import type { LoginResponseInterface, RegisterResponseInterface } from '@/services/types/AuthTypes'
 import type { UserResponseInterface } from '@/services/types/UserTypes'
 import { VariantInterface } from "@/store/types/VariantInterface";
-import { ProductInterface } from "@/store/types/ProductInterface";
+import { ProductInterface, productCartInterface } from "@/store/types/ProductInterface";
 import { CategoryInterface } from "@/store/types/CategoryInterface";
+import ProductService from "@/services/ProductService";
 
 export const useUserStore = defineStore('user', {
   state: () => {
@@ -19,7 +20,8 @@ export const useUserStore = defineStore('user', {
         role: '',
       } as UserInterface,
       accessToken: '' as string | undefined,
-      productsCart: []
+      productsCart: [] as any,
+      productsCartTotal: 0 as number
     }
   },
   getters: {
@@ -58,20 +60,11 @@ export const useUserStore = defineStore('user', {
         }
       }
     },
-    async addToCart(payload: { product: ProductInterface; quantity: number }) {
-      if (this.productsCart.indexOf(payload.product) === -1) {
-        this.productsCart.push(
-          {
-            product: payload.product,
-            quantity: payload.quantity
-          })
-      } else {
-        this.productsCart[this.productsCart.indexOf(payload)].quantity += payload.quantity
-      }
-
-    },
-    async removeFromCart(payload: { product: ProductInterface; quantity: number }) {
-      this.productsCart.splice(this.productsCart.indexOf(payload), 1)
+    async addToCart(payload: productCartInterface) {
+      const response = await ProductService.addProductCart(payload)
+      this.productsCart = response.data.products
+      this.productsCartTotal = response.data.total_price
+      return response.data.cart_id
     }
   },
 })

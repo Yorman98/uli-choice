@@ -12,3 +12,9 @@ export interface ProductInterface {
     categories: [];
     variations: VariantInterface[];
 }
+
+export interface productCartInterface {
+  product_id: number
+  variation_id: number
+  quantity: number
+}
