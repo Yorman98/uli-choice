@@ -65,7 +65,7 @@ class ProductController extends Controller
             ], 422);
         }
 
-        $product = Product::with(['categories'])->find($id);
+        $product = Product::with(['categories', 'variations.attributes'])->find($id);
 
         return response()->json([
             'success' => true,
@@ -123,7 +123,8 @@ class ProductController extends Controller
             DB::commit();
 
             return response()->json([
-                'success' => true
+                'success' => true,
+                'product_id' => $product->id
             ]);
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -236,6 +237,10 @@ class ProductController extends Controller
             DB::beginTransaction();
 
             $product = Product::find($id);
+
+            // Set slug to null to avoid unique slug error
+            $product->slug = null;
+            $product->save();
 
             // Soft delete
             $product->delete();

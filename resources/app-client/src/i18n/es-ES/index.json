@@ -1,0 +1,171 @@
+{
+  "global": {
+    "home": "Inicio",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "update": "Actualizar",
+    "see": "Ver",
+    "close": "Cerrar",
+    "headers": {
+      "id": "ID",
+      "name": "Nombre",
+      "options": "Opciones",
+      "last_name": "Apellido",
+      "email": "Correo Electrónico",
+      "password": "Contraseña",
+      "phone_number": "Número de teléfono",
+      "website": "Sitio web",
+      "description": "Descripción",
+      "provider": "Proveedor",
+      "total": "Total",
+      "date_created": "Fecha de creación",
+      "date_updated": "Fecha de actualización",
+      "phone": "Teléfono",
+      "code": "Código",
+      "type_user": "Tipo de usuario",
+      "client": "Cliente",
+      "status": "Estatus",
+      "price": "Precio",
+      "cost": "Costo",
+      "quantity": "Cantidad",
+      "url": "Enlace",
+      "method_payment": "Método de pago",
+      "order": "Orden",
+      "amount": "Monto"
+    },
+    "welcome": "Bienvenido",
+    "error": "Ha ocurrido un error.",
+    "roles": {
+      "admin": "Administrador",
+      "client": "Cliente"
+    },
+    "status": {
+      "sent": "Enviada",
+      "approved": "Aprobada",
+      "rejected": "Rechazada",
+      "to_be_reviewed": "Por revisar"
+    }
+  },
+  "registration": {
+    "required_field": "Campo requerido",
+    "incorrect_email": "Dirección de correo electrónico incorrecto",
+    "incorrect_password": "La contraseña debe contener mínimo 8 caracteres incluyendo: una mayúscula, un número y un carácter especial.",
+    "register_message": "Debes completar el siguiente formulario para registrarte en UliChoice y ser parte de nuestros clientes.",
+    "login": "Iniciar sesión",
+    "register": "Registrarse",
+    "new_register_message": "¿Eres nuevo en nuestra plataforma?",
+    "sign_up": "Regístrate",
+    "login_message": "¿Ya tienes una cuenta?"
+  },
+  "navbar": {
+    "attributes_groups": "Grupo de atributos",
+    "attributes": "Atributos",
+    "categories": "Categorias",
+    "users": "Usuarios",
+    "providers": "Proveedores",
+    "products": "Productos",
+    "purchases": "Compras",
+    "configuration": "Configuración",
+    "budgets": "Cotizaciones",
+    "methods_payment": "Métodos de pago",
+    "transactions": "Transacciones",
+    "sales": "Ventas",
+    "clients": "Clientes",
+    "variation": "Variaciones",
+    "quantity": "Cantidad",
+    "orders": "Ordenes"
+  },
+  "products": {
+    "products_list": "Lista de productos",
+    "add_product": "Agregar producto",
+    "attributes": {
+      "attributes_group_title": "Grupo de atributos",
+      "create_group_attribute": "Crear grupo de atributos",
+      "edit_attribute": "Editar atributo",
+      "attribute_name": "Nombre del atributo",
+      "attribute_list_title": "Lista de atributos",
+      "create_attribute": "Crear atributo",
+      "attribute_type": "Tipo de atributo"
+    },
+    "categories": {
+      "categories_group_title": "Categorias",
+      "create_category": "Crear categoria",
+      "edit_category": "Editar categoria",
+      "category_name": "Nombre de la categoria",
+      "category_slug": "Slug de la categoria",
+      "category_description": "Descripción de la categoria"
+    },
+    "form_product": {
+      "create_product_title": "Crear un nuevo producto",
+      "product_name": "Nombre del producto",
+      "product_details": "Detalles del producto",
+      "product_slug": "Slug del producto",
+      "product_code": "Codigo del producto",
+      "product_description": "Descripción del producto",
+      "product_variant": "Variantes del producto",
+      "add_variant": "Agregar variante",
+      "variant": "Variante",
+      "product_sku": "SKU del producto",
+      "product_price": "Precio del producto",
+      "product_cost":  "Costo del producto",
+      "product_stock": "Stock del producto",
+      "product_group": "Grupo de atributos",
+      "product_attributes": "Atributos del producto",
+      "product_category": "Categoria del producto",
+      "change_photo": "Cambiar foto del producto",
+      "create_product": "Crear producto",
+      "update_product": "Actualizar producto",
+      "delete_product": "Eliminar producto",
+      "change_variant_photo": "Cambiar foto de la variante"
+    }
+  },
+  "users": {
+    "create_user": "Crear usuario",
+    "edit_user": "Editar usuario"
+  },
+  "providers": {
+    "create_provider": "Crear proveedor",
+    "edit_provider": "Editar proveedor"
+  },
+  "purchases": {
+    "store_purchases": "Compras realizadas",
+    "add_purchase": "Agregar compra",
+    "purchase_data": "Datos de la compra",
+    "provider_data": "Datos del proveedor"
+  },
+  "budgets": {
+    "create_budget": "Crear cotización",
+    "add_product_link": "Añadir enlace de producto",
+    "price": "Monto",
+    "search_by_customer": "Buscar por cliente"
+  },
+  "transaction": {
+    "store_transaction": "Transacciones realizadas",
+    "add_transaction": "Agregar transacción",
+    "add_payment_method": "Agregar método de pago"
+  },
+  "sales": {
+    "store_orders": "Ordenes realizadas",
+    "add_order": "Agregar orden",
+    "update_order": "Actualizar orden",
+    "order_list": "Lista de ordenes",
+    "order_details": "Detalles de la orden"
+  },
+  "cart": {
+    "my_products": "Mis productos",
+    "no_products": "No hay productos en el carrito",
+    "total": "Total",
+    "my_product_list": "Mi lista de productos",
+    "product": "Producto",
+    "price": "Precio",
+    "options": "Opciones",
+    "summary": "Resumen",
+    "articles": "{article} Artículos",
+    "generate_order": "Generar orden",
+    "see_cart": "Ver carrito",
+    "details_cart": "Detalles del carrito",
+    "price_unit": "Precio unitario"
+  }
+}
