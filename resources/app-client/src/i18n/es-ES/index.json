@@ -74,7 +74,8 @@
     "sales": "Ventas",
     "clients": "Clientes",
     "variation": "Variaciones",
-    "quantity": "Cantidad"
+    "quantity": "Cantidad",
+    "orders": "Ordenes"
   },
   "products": {
     "products_list": "Lista de productos",
@@ -155,8 +156,16 @@
   "cart": {
     "my_products": "Mis productos",
     "no_products": "No hay productos en el carrito",
-    "details_cart": "Detalles del carrito",
     "total": "Total",
+    "my_product_list": "Mi lista de productos",
+    "product": "Producto",
+    "price": "Precio",
+    "options": "Opciones",
+    "summary": "Resumen",
+    "articles": "{article} Artículos",
+    "generate_order": "Generar orden",
+    "see_cart": "Ver carrito",
+    "details_cart": "Detalles del carrito",
     "price_unit": "Precio unitario"
   }
 }
