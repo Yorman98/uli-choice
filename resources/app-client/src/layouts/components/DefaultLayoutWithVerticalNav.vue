@@ -154,6 +154,15 @@ const userStore = useUserStore()
           },
         }"
       />
+      <VerticalNavLink
+        :item="{
+          title: $t('navbar.budgets'),
+          icon: 'mdi-currency-usd',
+          to: {
+            name: 'budgets',
+          },
+        }"
+      />
 
       <!-- 👉 Options theme -->
       <VerticalNavSectionTitle
