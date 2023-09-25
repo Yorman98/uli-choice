@@ -25,6 +25,12 @@
       "phone": "Teléfono",
       "code": "Código",
       "type_user": "Tipo de usuario",
+      "client": "Cliente",
+      "status": "Estatus",
+      "price": "Precio",
+      "cost": "Costo",
+      "quantity": "Cantidad",
+      "url": "Enlace",
       "method_payment": "Método de pago",
       "order": "Orden",
       "amount": "Monto"
@@ -34,6 +40,12 @@
     "roles": {
       "admin": "Administrador",
       "client": "Cliente"
+    },
+    "status": {
+      "sent": "Enviada",
+      "approved": "Aprobada",
+      "rejected": "Rechazada",
+      "to_be_reviewed": "Por revisar"
     }
   },
   "registration": {
@@ -56,12 +68,14 @@
     "products": "Productos",
     "purchases": "Compras",
     "configuration": "Configuración",
+    "budgets": "Cotizaciones",
     "methods_payment": "Métodos de pago",
     "transactions": "Transacciones",
     "sales": "Ventas",
     "clients": "Clientes",
     "variation": "Variaciones",
-    "quantity": "Cantidad"
+    "quantity": "Cantidad",
+    "orders": "Ordenes"
   },
   "products": {
     "products_list": "Lista de productos",
@@ -112,14 +126,20 @@
     "edit_user": "Editar usuario"
   },
   "providers": {
-    "create_provider": "Crear Proveedor",
-    "edit_provider": "Editar Proveedor"
+    "create_provider": "Crear proveedor",
+    "edit_provider": "Editar proveedor"
   },
   "purchases": {
     "store_purchases": "Compras realizadas",
     "add_purchase": "Agregar compra",
     "purchase_data": "Datos de la compra",
     "provider_data": "Datos del proveedor"
+  },
+  "budgets": {
+    "create_budget": "Crear cotización",
+    "add_product_link": "Añadir enlace de producto",
+    "price": "Monto",
+    "search_by_customer": "Buscar por cliente"
   },
   "transaction": {
     "store_transaction": "Transacciones realizadas",
@@ -136,8 +156,16 @@
   "cart": {
     "my_products": "Mis productos",
     "no_products": "No hay productos en el carrito",
-    "details_cart": "Detalles del carrito",
     "total": "Total",
+    "my_product_list": "Mi lista de productos",
+    "product": "Producto",
+    "price": "Precio",
+    "options": "Opciones",
+    "summary": "Resumen",
+    "articles": "{article} Artículos",
+    "generate_order": "Generar orden",
+    "see_cart": "Ver carrito",
+    "details_cart": "Detalles del carrito",
     "price_unit": "Precio unitario"
   }
 }

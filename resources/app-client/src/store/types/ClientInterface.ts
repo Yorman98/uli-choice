@@ -8,4 +8,5 @@ export interface ClientInterface {
   role?: string
   created_at?: string
   updated_at?: string
+  full_name?: string
 }

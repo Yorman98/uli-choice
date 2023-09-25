@@ -4,13 +4,17 @@ import ApiService from '@/services'
 import type { OrderResponseInterface } from '@/services/types/OrderTypes'
 import type { OrderInterface } from '@/store/types/OrderInterface'
 
-class OrderService {
+export class OrderService {
   createOrder(payload: UnwrapNestedRefs<OrderInterface>): AxiosPromise<OrderResponseInterface> {
     return ApiService.post('/orders', payload)
   }
 
   getOrder(id: number): AxiosPromise<OrderResponseInterface> {
-    return ApiService.get(`/purchase/${id}`)
+    return ApiService.get(`/orders/${id}`)
+  }
+
+  getOrders(): AxiosPromise<OrderResponseInterface> {
+    return ApiService.get('/orders')
   }
 }
 
