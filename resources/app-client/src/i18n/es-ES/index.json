@@ -25,6 +25,12 @@
       "phone": "Teléfono",
       "code": "Código",
       "type_user": "Tipo de usuario",
+      "client": "Cliente",
+      "status": "Estatus",
+      "price": "Precio",
+      "cost": "Costo",
+      "quantity": "Cantidad",
+      "url": "Enlace",
       "method_payment": "Método de pago",
       "order": "Orden",
       "amount": "Monto"
@@ -34,6 +40,12 @@
     "roles": {
       "admin": "Administrador",
       "client": "Cliente"
+    },
+    "status": {
+      "sent": "Enviada",
+      "approved": "Aprobada",
+      "rejected": "Rechazada",
+      "to_be_reviewed": "Por revisar"
     }
   },
   "registration": {
@@ -56,6 +68,7 @@
     "products": "Productos",
     "purchases": "Compras",
     "configuration": "Configuración",
+    "budgets": "Cotizaciones",
     "methods_payment": "Métodos de pago",
     "transactions": "Transacciones",
     "sales": "Ventas",
@@ -113,14 +126,20 @@
     "edit_user": "Editar usuario"
   },
   "providers": {
-    "create_provider": "Crear Proveedor",
-    "edit_provider": "Editar Proveedor"
+    "create_provider": "Crear proveedor",
+    "edit_provider": "Editar proveedor"
   },
   "purchases": {
     "store_purchases": "Compras realizadas",
     "add_purchase": "Agregar compra",
     "purchase_data": "Datos de la compra",
     "provider_data": "Datos del proveedor"
+  },
+  "budgets": {
+    "create_budget": "Crear cotización",
+    "add_product_link": "Añadir enlace de producto",
+    "price": "Monto",
+    "search_by_customer": "Buscar por cliente"
   },
   "transaction": {
     "store_transaction": "Transacciones realizadas",

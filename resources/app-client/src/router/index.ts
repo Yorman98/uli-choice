@@ -107,6 +107,11 @@ const router = createRouter({
           component: () => import('@/pages/providers/UCProviders.vue'),
         },
         {
+          path: 'budgets',
+          name: 'budgets',
+          component: () => import('@/pages/budgets/UCBudgets.vue'),
+        },
+        {
           path: 'payment-methods',
           name: 'paymentMethods',
           component: () => import('@/pages/transactions/UCPaymentMethods.vue'),
