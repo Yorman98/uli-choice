@@ -61,7 +61,8 @@
     "sales": "Ventas",
     "clients": "Clientes",
     "variation": "Variaciones",
-    "quantity": "Cantidad"
+    "quantity": "Cantidad",
+    "orders": "Ordenes"
   },
   "products": {
     "products_list": "Lista de productos",
@@ -144,6 +145,8 @@
     "summary": "Resumen",
     "articles": "{article} Artículos",
     "generate_order": "Generar orden",
-    "see_cart": "Ver carrito"
+    "see_cart": "Ver carrito",
+    "details_cart": "Detalles del carrito",
+    "price_unit": "Precio unitario"
   }
 }

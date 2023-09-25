@@ -136,6 +136,11 @@ const router = createRouter({
           name: 'cartPage',
           component: () => import('@/pages/cart/UCCartPage.vue'),
         },
+        {
+          path: 'orders',
+          name: 'ordersList',
+          component: () => import('@/pages/orders/UCAdminOrdersList.vue'),
+        },
       ],
     },
     {

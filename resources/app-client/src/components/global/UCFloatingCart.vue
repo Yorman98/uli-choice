@@ -3,6 +3,7 @@ import type { Ref } from 'vue'
 import { useUserStore } from '@/store/user'
 import { STORAGE_PATH } from '@/utils/constants'
 import { useRouter } from 'vue-router';
+import OrderService from "@/services/OrderService";
 
 const router = useRouter()
 
@@ -24,6 +25,13 @@ async function decreaseProduct (quantity: number, productId: number) {
 
 async function increaseProduct (quantity: number, productId: number) {
   await cartStore.updateProductQuantity({ id: productId, quantity: quantity })
+  await cartStore.fetchProductsCart(cartStore.userInfo.id)
+}
+
+async function generateOrder() {
+  await OrderService.createOrder({
+    cart_id: cartStore.cartId
+  })
   await cartStore.fetchProductsCart(cartStore.userInfo.id)
 }
 </script>
@@ -75,7 +83,7 @@ async function increaseProduct (quantity: number, productId: number) {
             </template>
           </v-virtual-scroll>
         </VCardText>
-        <VCardActions class="d-flex flex-column">
+        <VCardActions v-if="cartStore.productsCart.length > 0" class="d-flex flex-column">
           <div>
             <VBtn
               color="primary"
@@ -90,6 +98,7 @@ async function increaseProduct (quantity: number, productId: number) {
               color="primary"
               class="mb-4"
               variant="outlined"
+              @click="generateOrder"
             >
               {{ $t('cart.generate_order') }}
             </VBtn>

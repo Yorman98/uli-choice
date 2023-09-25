@@ -5,6 +5,7 @@ import type { Ref } from 'vue'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { STORAGE_PATH } from '@/utils/constants'
+import OrderService from "@/services/OrderService";
 
 
 const cartStore = useUserStore()
@@ -39,6 +40,13 @@ async function increaseProduct (quantity: number, productId: number) {
 
 async function removeProductCart (productId: number) {
   await cartStore.removeFromCart(productId)
+  await cartStore.fetchProductsCart(cartStore.userInfo.id)
+}
+
+async function generateOrder() {
+  await OrderService.createOrder({
+    cart_id: cartStore.cartId
+  })
   await cartStore.fetchProductsCart(cartStore.userInfo.id)
 }
 </script>
@@ -120,6 +128,7 @@ async function removeProductCart (productId: number) {
             color="primary"
             class="text-none w-100"
             variant="flat"
+            @click="generateOrder"
           >
             {{ $t('cart.generate_order') }}
           </VBtn>

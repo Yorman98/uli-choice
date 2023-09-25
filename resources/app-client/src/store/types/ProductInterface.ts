@@ -14,8 +14,20 @@ export interface ProductInterface {
   variations: VariationInterface[]
 }
 
-export interface productCartInterface {
+export interface ProductCartRequestInterface {
+  user_id: number
   product_id: number
-  variation_id: number
+  variation_id: number | null
   quantity: number
+}
+
+export interface ProductCartInterface {
+  id: number
+  image: string
+  name: string
+  product_id: number
+  quantity: number
+  unit_cost: number
+  unit_price: number
+  variation_id: number
 }
