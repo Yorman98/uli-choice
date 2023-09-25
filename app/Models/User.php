@@ -44,4 +44,13 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Get the budgets associated with the user.
+     * Using the user_budget table
+    */
+    public function budgets()
+    {
+        return $this->belongsToMany(Budget::class, 'user_budget');
+    }
 }
