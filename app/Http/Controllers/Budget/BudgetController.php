@@ -23,7 +23,7 @@ class BudgetController extends Controller
     public function index(Request $request): JsonResponse 
     {
         $search = $request->query('search');
-        if($search){
+        if($search) {
             // search by date, product_links (json), or user_id
             $budgets = Budget::join('user_budget', 'budgets.id', '=', 'user_budget.budget_id')
                 ->join('users', 'user_budget.user_id', '=', 'users.id')
@@ -154,7 +154,7 @@ class BudgetController extends Controller
 
         // Update budget
         $budget->update([
-            'status_id' => $request->get('status_id'), // optional
+            'status_id' => $request->get('status_id'),
             'product_links' => $request->get('product_links'), // optional
             'price' => $request->get('price'), // optional
             'cost' => $request->get('cost'), // optional
@@ -164,7 +164,7 @@ class BudgetController extends Controller
         $budget->user()->sync([$request->user_id]);
 
         // If msg param is true, send an email to the user
-        if($request->msg){
+        if($request->get('msg')) {
             // Get user
             $user = $budget->user()->first();
 
@@ -236,7 +236,6 @@ class BudgetController extends Controller
         ], 200);
     }
     
-
     /**
      * Remove the specified resource from storage.
      * 
