@@ -16,6 +16,10 @@ export class OrderService {
   getOrders(): AxiosPromise<OrderResponseInterface> {
     return ApiService.get('/orders')
   }
+
+  deleteOrder(id: number): AxiosPromise<OrderResponseInterface> {
+    return ApiService.delete(`/orders/${id}`)
+  }
 }
 
 export default new OrderService()

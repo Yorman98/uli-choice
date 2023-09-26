@@ -33,7 +33,8 @@
       "url": "Enlace",
       "method_payment": "Método de pago",
       "order": "Orden",
-      "amount": "Monto"
+      "amount": "Monto",
+      "reference": "Referencia"
     },
     "welcome": "Bienvenido",
     "error": "Ha ocurrido un error.",
@@ -167,5 +168,10 @@
     "see_cart": "Ver carrito",
     "details_cart": "Detalles del carrito",
     "price_unit": "Precio unitario"
+  },
+  "orders": {
+    "orders_list": "Lista de ordenes",
+    "orders_title": "Ordenes",
+    "add_order": "Agregar orden"
   }
 }

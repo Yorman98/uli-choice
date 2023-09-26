@@ -1,15 +1,94 @@
 <script setup lang="ts">
-import OrderService from "@/services/OrderService";
+import UCTable from "@/components/helpers/UCTable.vue";
+import UCHeaderPage from '@/components/helpers/UCHeaderPage.vue'
+
+import { useUserStore } from '@/store/user'
+import { useI18n } from 'vue-i18n'
+import { OrderInterface } from '@/store/types/OrderInterface'
+import { useRouter } from 'vue-router'
+import OrderService from '@/services/OrderService'
+
+const { t } = useI18n()
+
+const ordersStore = useUserStore()
+
+const router = useRouter()
+
+const headers: any[] = [
+  { title: t('global.headers.reference'), align: 'start', sortable: false, key: 'reference' },
+  { title: t('global.headers.status'), key: 'status.name' },
+  { title: t('cart.total'), key: 'total_price' },
+  { title: t('global.headers.options'), align: 'end', key: 'actions', sortable: false },
+]
+
+const path: any[] = [
+  {
+    title: t('global.home'),
+    disabled: false,
+    to: {
+      name: 'adminDashboard',
+    },
+  },
+  {
+    title: t('orders.orders_title'),
+    disabled: true,
+  },
+]
+
+let orders: Ref<OrderInterface[]> = ref([])
 
 onMounted(async () => {
-  await OrderService.getOrders()
+  await initData()
 })
+
+async function initData () {
+  const response = await ordersStore.fetchOrders()
+  orders.value = response.data.data
+}
+
+async function deleteItem (orderId) {
+  await OrderService.deleteOrder(orderId)
+}
 </script>
 
 <template>
-<div>
-  test
-</div>
+<VRow>
+  <VCol cols=12>
+    <UCHeaderPage
+      class="mb-5"
+      :title="$t('orders.orders_list')"
+      :path="path"
+    />
+
+    <VCard class="pa-4">
+      <VCardTitle class="d-flex justify-end mb-4">
+        <VBtn @click="router.push({ name: 'addOrderForm' })">
+          <VIcon
+            color="white pr-2"
+            size="35"
+          >
+            mdi-plus
+          </VIcon>
+          <p class="text-white text-button ma-0">
+            {{ t('orders.add_order') }}
+          </p>
+        </VBtn>
+      </VCardTitle>
+
+      <VCardText>
+        <UCTable
+          :headers="headers"
+          :hasSubItems="true"
+          :items="orders"
+          @editItem="editItem"
+          @goToItem="goToGroup"
+          @deleteItem="deleteItem"
+        />
+      </VCardText>
+    </VCard>
+
+  </VCol>
+</VRow>
 </template>
 
 <style scoped lang="scss">
