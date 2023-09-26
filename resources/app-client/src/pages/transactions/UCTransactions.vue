@@ -4,7 +4,6 @@ import { reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { TransactionInterface } from '@/store/types/TransactionInterface'
 import type { PaymentMethodInterface } from '@/store/types/PaymentMethodInterface'
-import type { OrderInterface } from '@/store/types/OrderInterface'
 import UCHeaderPage from '@/components/helpers/UCHeaderPage.vue'
 import UCTable from '@/components/helpers/UCTable.vue'
 
@@ -31,17 +30,14 @@ const isEditTransaction: Ref<boolean> = ref(false)
 const headers: any[] = [
   { title: t('global.headers.id'), align: 'start', sortable: false, key: 'id' },
   { title: t('global.headers.method_payment'), key: 'provider.name' },
-  { title: t('global.headers.order'), key: 'description' },
   { title: t('global.headers.amount'), key: 'total' },
   { title: t('global.headers.options'), align: 'end', key: 'actions', sortable: false },
 ]
 
 const transactionsList: Ref<TransactionInterface[]> = ref([])
 const paymentMethodsList: Ref<PaymentMethodInterface[]> = ref([])
-const ordersList: Ref<OrderInterface[]> = ref([])
 
 const transactionInfo: UnwrapNestedRefs<TransactionInterface> = reactive({
-  order_id: null,
   payment_method_id: null,
   amount: null,
   notes: '',
@@ -63,7 +59,6 @@ onMounted(async () => {
 function closeTransaction() {
   openTransaction.value = false
   Object.assign(transactionInfo, {
-    order_id: null,
     payment_method_id: null,
     amount: null,
     notes: '',
@@ -100,7 +95,6 @@ async function deleteTransaction(payload: number) {
 function addTransaction() {
   if (!isEditTransaction.value) {
     Object.assign(transactionInfo, {
-      order_id: null,
       payment_method_id: null,
       amount: null,
       notes: '',
@@ -163,16 +157,6 @@ function addTransaction() {
               item-title="name"
               item-value="id"
               :label="$t('global.headers.method_payment')"
-              class="mb-6"
-              density="compact"
-            />
-
-            <VSelect
-              v-model="transactionInfo.order_id"
-              :items="ordersList"
-              item-title="reference"
-              item-value="id"
-              :label="$t('global.headers.order')"
               class="mb-6"
               density="compact"
             />

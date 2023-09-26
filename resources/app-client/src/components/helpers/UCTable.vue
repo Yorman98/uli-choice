@@ -18,6 +18,10 @@ defineProps({
     type: Boolean,
     default: false,
   },
+  onlyEdit: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 const emit = defineEmits(['editItem', 'deleteItem', 'goToItem'])
@@ -63,7 +67,7 @@ function deleteItem(item: NonNullable<unknown>) {
           </VListItem>
 
           <VListItem
-            v-if="hasSubItems"
+            v-if="hasSubItems || onlyEdit"
             @click="editItem(item)"
           >
             <template #prepend>

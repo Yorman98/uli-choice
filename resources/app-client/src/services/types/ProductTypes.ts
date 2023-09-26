@@ -1,4 +1,5 @@
-import type { ProductInterface } from '@/store/types/ProductInterface'
+import type { ProductCartInterface, ProductInterface } from '@/store/types/ProductInterface'
+import type { VariationInterface } from '@/store/types/VariationInterface'
 
 export interface ProductResponseInterface {
   success: boolean
@@ -13,13 +14,17 @@ export interface ProductResponseInterface {
   }
 }
 
-export interface ProductCartResponseInterface {
+export interface CartResponseInterface {
   success: boolean
-  data?: {
-    current_page?: number
-    last_page?: number
-    per_page?: number
-    total: number
-    data: ProductInterface | ProductInterface[]
-  }
+  error?: never
+  cart_id?: number
+  products?: ProductCartInterface | ProductCartInterface[]
+  total_price?: number
+}
+
+export interface VariationResponseInterface {
+  success: boolean
+  error?: never
+  product_id?: number
+  variations?: VariationInterface[]
 }

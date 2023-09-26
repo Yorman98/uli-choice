@@ -107,6 +107,11 @@ const router = createRouter({
           component: () => import('@/pages/providers/UCProviders.vue'),
         },
         {
+          path: 'budgets',
+          name: 'budgets',
+          component: () => import('@/pages/budgets/UCBudgets.vue'),
+        },
+        {
           path: 'payment-methods',
           name: 'paymentMethods',
           component: () => import('@/pages/transactions/UCPaymentMethods.vue'),
@@ -130,6 +135,16 @@ const router = createRouter({
               component: () => import('@/pages/orders/UCOrderForm.vue'),
             },
           ],
+        },
+        {
+          path: 'cart',
+          name: 'cartPage',
+          component: () => import('@/pages/cart/UCCartPage.vue'),
+        },
+        {
+          path: 'orders',
+          name: 'ordersList',
+          component: () => import('@/pages/orders/UCAdminOrdersList.vue'),
         },
       ],
     },

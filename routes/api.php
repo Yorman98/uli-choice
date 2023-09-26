@@ -16,6 +16,7 @@ use App\Http\Controllers\Provider\ProviderController;
 use App\Http\Controllers\Product\ProductVariationController;
 use App\Http\Controllers\Order\OrderController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\Budget\BudgetController;
 
 
 /*
@@ -214,9 +215,26 @@ Route::middleware('auth:sanctum')->group(static function () {
         Route::put('/{id}', [OrderController::class, 'updateOrder']);
         Route::delete('/{id}', [OrderController::class, 'deleteOrder']);
     });
-});
 
+    /*
+    |--------------------------------------------------------------------------
+    | Client Routes
+    |--------------------------------------------------------------------------
+    | 
+    | Here is where you can register user routes for your application.
+    |
+    */
+    Route::resource('clients', ClientController::class)->except(['create', 'edit']);
 
-Route::group(['middleware' => ['auth:sanctum']], function() {
-    Route::resource('clients', ClientController::class);
+    /*
+    |--------------------------------------------------------------------------
+    | Budget Routes
+    |--------------------------------------------------------------------------
+    |
+    | Here is where you can register budget routes for your application.
+    |
+    */
+    Route::resource('budgets', BudgetController::class)->except(['create', 'edit', 'update']);
+    Route::put('budgets/{id}/from-user', [BudgetController::class, 'updateFromUser']);
+    Route::put('budgets/{id}', [BudgetController::class, 'update'])->middleware('isAdmin');
 });
