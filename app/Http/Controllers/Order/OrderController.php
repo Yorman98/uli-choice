@@ -132,7 +132,7 @@ class OrderController extends Controller
             ], 422);
         }
 
-        $orders = Order::with(['cart.products', 'status.name'])->paginate($request->perPage ?? 10)->toArray();
+        $orders = Order::with(['cart.products', 'status'])->paginate($request->perPage ?? 10)->toArray();
         $this->removeUnnecessaryPaginationData($orders);
 
         return response()->json([
