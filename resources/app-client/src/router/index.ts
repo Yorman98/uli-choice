@@ -114,12 +114,7 @@ const router = createRouter({
         {
           path: 'payment-methods',
           name: 'paymentMethods',
-          component: () => import('@/pages/transactions/UCPaymentMethods.vue'),
-        },
-        {
-          path: 'transactions',
-          name: 'transactions',
-          component: () => import('@/pages/transactions/UCTransactions.vue'),
+          component: () => import('@/pages/paymentMethods/UCPaymentMethods.vue'),
         },
         {
           path: 'orders',
@@ -132,7 +127,7 @@ const router = createRouter({
             {
               path: 'edit-order/:id',
               name: 'editOrderForm',
-              component: () => import('@/pages/orders/UCOrderForm.vue'),
+              component: () => import('@/pages/orders/UCOrderEdit.vue'),
             },
           ],
         },
