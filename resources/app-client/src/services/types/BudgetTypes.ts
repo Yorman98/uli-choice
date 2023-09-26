@@ -3,7 +3,7 @@ import type { BudgetInterface } from '@/store/types/BudgetInterface'
 export interface BudgetResponseInterface {
   success: boolean
   error?: never
-  budgets?: {
+  data?: {
     current_page?: number
     data: BudgetInterface | BudgetInterface[]
     last_page?: number
