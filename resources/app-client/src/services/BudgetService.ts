@@ -9,16 +9,16 @@ class BudgetService {
     return ApiService.get('/budgets')
   }
 
-  getBudgetById(id: number): AxiosPromise<BudgetResponseInterface> {
-    return ApiService.get(`/budgets/${id}`)
-  }
-
   createBudget(payload: UnwrapNestedRefs<BudgetInterface>): AxiosPromise<BudgetResponseInterface> {
     return ApiService.post('/budgets', payload)
   }
 
   updateBudget(payload: UnwrapNestedRefs<BudgetInterface>): AxiosPromise<BudgetResponseInterface> {
     return ApiService.put(`/budgets/${payload.id}`, payload)
+  }
+
+  updateBudgetFromCustomer(payload: UnwrapNestedRefs<BudgetInterface>): AxiosPromise<BudgetResponseInterface> {
+    return ApiService.put(`/budgets/${payload.id}/from-user`, payload)
   }
 
   deleteBudget(id: number): AxiosPromise<BudgetResponseInterface> {
