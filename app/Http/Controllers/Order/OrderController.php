@@ -96,7 +96,20 @@ class OrderController extends Controller
         }
 
         try {
-            $order = Order::with(['cart.products', 'status'])->findOrFail($id);
+            $order = Order::with([
+                'cart' => [
+                    'products' => [
+                        'variation' => [
+                            'attributes' => function($query) {
+                                $query->select('name', 'id');
+                            }
+                        ], 
+                        'product'
+                    ],
+                    'user'
+                ],
+                'status'
+            ])->findOrFail($id);
 
             return response()->json([
                 'success' => true,
@@ -132,7 +145,20 @@ class OrderController extends Controller
             ], 422);
         }
 
-        $orders = Order::with(['cart.products', 'status.name'])->paginate($request->perPage ?? 10)->toArray();
+        $orders = Order::with([
+            'cart' => [
+                'products' => [
+                    'variation' => [
+                        'attributes' => function($query) {
+                            $query->select('name', 'id');
+                        }
+                    ], 
+                    'product'
+                ],
+                'user'
+            ],
+            'status'
+            ])->paginate($request->perPage ?? 10)->toArray();
         $this->removeUnnecessaryPaginationData($orders);
 
         return response()->json([
