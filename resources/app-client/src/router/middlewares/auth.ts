@@ -1,25 +1,45 @@
 import { useUserStore } from '@/store/user'
-import { ADMIN } from '@/utils/constants'
+import { ADMIN, CLIENT } from '@/utils/constants'
+import { useRouter } from 'vue-router'
 
-export function authAdmin({ next, router }: any) {
+export function authPublic({ next }: any) {
+  return next()
+}
+
+export function authAdmin({ next }: any) {
   const userStore = useUserStore()
   const user = userStore.$state
+  const router = useRouter()
 
-  if (!user || user.accessToken === '')
-    router.replace({ name: 'login' })
+  // console.log(user.accessToken)
+  // if (userStore.userInfo.role !== '' && (!user || user.accessToken === '')) {
+  //   router.replace({ name: 'login' })
+  // }
 
-  if (user.userInfo.role !== ADMIN)
-    router.replace({ to: '/404' })
+  if (userStore.userInfo.role !== '' && userStore.userInfo.role !== ADMIN) {
+    alert('admin')
+    return next({
+      name: 'error'
+    })
+  }
 
   return next()
 }
 
-export function authClient({ next, router }: any) {
+export function authClient({ next }: any) {
   const userStore = useUserStore()
   const user = userStore.$state
+  const router = useRouter()
 
-  if (!user || user.accessToken === '')
-    router.replace({ name: 'login' })
+  // if (userStore.userInfo.role !== '' && (!user || user.accessToken === '')) {
+  //   router.replace({ name: 'login' })
+  // }
+
+  if (userStore.userInfo.role !== '' && userStore.userInfo.role !== CLIENT) {
+    return next({
+      name: 'error'
+    })
+  }
 
   return next()
 }
