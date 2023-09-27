@@ -41,7 +41,16 @@ class Cart extends Model
         return $this->belongsTo(Order::class);
     }
 
-    
+    /**
+     * Get the user that owns the cart.
+     *
+     * @return BelongsTo
+     */
+    public function user() : BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function calculateTotalPrice()
     {
         $total = 0;
