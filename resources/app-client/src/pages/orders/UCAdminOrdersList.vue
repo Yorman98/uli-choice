@@ -15,7 +15,7 @@ const ordersStore = useUserStore()
 const router = useRouter()
 
 const headers: any[] = [
-  { title: t('global.headers.reference'), align: 'start', sortable: false, key: 'reference' },
+  { title: t('global.headers.name'), align: 'start', sortable: false, key: 'cart.user.first_name' },
   { title: t('global.headers.status'), key: 'status.name' },
   { title: t('cart.total'), key: 'total_price' },
   { title: t('global.headers.options'), align: 'end', key: 'actions', sortable: false },
@@ -49,6 +49,10 @@ async function initData () {
 async function deleteItem (orderId) {
   await OrderService.deleteOrder(orderId)
 }
+
+async function editItem (orderId) {
+  // router.push({ name: 'editOrderForm', params: { orderId } })
+}
 </script>
 
 <template>
@@ -78,10 +82,9 @@ async function deleteItem (orderId) {
       <VCardText>
         <UCTable
           :headers="headers"
-          :hasSubItems="true"
+          :onlyEdit="true"
           :items="orders"
           @editItem="editItem"
-          @goToItem="goToGroup"
           @deleteItem="deleteItem"
         />
       </VCardText>
