@@ -41,7 +41,7 @@ const headers: any[] = [
 ]
 
 const status: any[] = [
-  { text: t('global.status.to_be_reviewed'), value: 1 },
+  { text: t('global.status.pending'), value: 1 },
   { text: t('global.status.sent'), value: 2 },
   { text: t('global.status.approved'), value: 3 },
   { text: t('global.status.rejected'), value: 4 },

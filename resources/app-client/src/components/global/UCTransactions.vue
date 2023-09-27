@@ -7,6 +7,7 @@ import type { TransactionInterface } from '@/store/types/TransactionInterface'
 import type { PaymentMethodInterface } from '@/store/types/PaymentMethodInterface'
 import PaymentMethodService from '@/services/PaymentMethodService'
 import TransactionService from '@/services/TransactionService'
+import { formatDate } from '@/utils/dateUtils'
 
 const props = defineProps({
   order: Number,
@@ -21,9 +22,9 @@ const totalPending: Ref<number> = ref(0)
 const orderId: Ref<number> = ref(0)
 
 const headers: any[] = [
-  { title: t('global.headers.id'), align: 'start', sortable: false, key: 'id' },
-  { title: t('global.headers.method_payment'), key: 'payment_method.name' },
+  { title: t('global.headers.method_payment'), align: 'start', key: 'payment_method.name' },
   { title: t('global.headers.amount'), key: 'amount' },
+  { title: t('global.headers.date'), key: 'created_at' },
   { title: t('global.headers.options'), align: 'end', key: 'actions', sortable: false },
 ]
 
@@ -44,7 +45,12 @@ async function dataTransactions() {
   const response = data?.transactions ?? []
 
   response.forEach((transaction: TransactionInterface) => {
-    transactionsList.value.push(transaction)
+    if (transaction.created_at != null) {
+      transactionsList.value.push({
+        ...transaction,
+        created_at: formatDate(transaction.created_at),
+      })
+    }
   })
 
   totalPaid.value = data?.total_paid ?? 0

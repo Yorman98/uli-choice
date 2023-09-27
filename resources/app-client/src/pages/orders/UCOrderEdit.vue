@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { Ref } from 'vue'
-import { ref } from 'vue'
+import type { Ref, UnwrapNestedRefs } from 'vue'
+import { reactive, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import type { OrderInterface } from '@/store/types/OrderInterface'
@@ -38,9 +38,32 @@ const path: Ref<any[]> = ref([
   },
 ])
 
+const status: Ref<any[]> = ref([
+  {
+    name: t('global.status.pending'),
+    value: 1,
+  },
+  {
+    name: t('global.status.sent'),
+    value: 2,
+  },
+  {
+    name: t('global.status.approved'),
+    value: 3,
+  },
+  {
+    name: t('global.status.rejected'),
+    value: 4,
+  },
+])
+
 const orderDetails: Ref<OrderInterface> = ref({} as OrderInterface)
 const userDetails: Ref<ClientInterface> = ref({} as ClientInterface)
 const cantProducts: Ref<number> = ref(0)
+
+const orderUpdateInfo: UnwrapNestedRefs<OrderInterface> = reactive({
+  status_id: null,
+} as OrderInterface)
 
 async function dataOrderDetails() {
   const { data } = await OrderService.getOrder(Number(route.params.id))
@@ -50,6 +73,11 @@ async function dataOrderDetails() {
   await dataUserDetails(orderDetails.value.cart.user_id)
 
   cantProducts.value = orderDetails.value.cart.products.length
+
+  Object.assign(orderUpdateInfo, {
+    id: orderDetails.value.id,
+    status_id: orderDetails.value.status_id,
+  })
 }
 
 async function dataUserDetails(userId: number) {
@@ -61,6 +89,15 @@ async function dataUserDetails(userId: number) {
 onMounted(async () => {
   await dataOrderDetails()
 })
+
+async function uploadOrder() {
+  await OrderService.updateOrder(orderUpdateInfo)
+
+  Object.assign(orderUpdateInfo, {
+    status_id: null,
+  })
+  await dataOrderDetails()
+}
 </script>
 
 <template>
@@ -108,7 +145,29 @@ onMounted(async () => {
                 </div>
 
                 <div>
-                  <p>Status: XXX</p>
+                  <p class="ma-0 details-title">
+                    {{ $t('sales.order_status') }}
+                  </p>
+                  <div class="d-flex flex-row align-start mt-2 update-status">
+                    <VSelect
+                      v-model="orderUpdateInfo.status_id"
+                      :items="status"
+                      item-title="name"
+                      item-value="value"
+                      :label="$t('global.headers.status')"
+                      class="mb-6"
+                      density="compact"
+                    />
+
+                    <VBtn @click="uploadOrder">
+                      <VIcon size="25">
+                        mdi-content-save-outline
+                      </VIcon>
+                      <p class="text-button text-white ma-0">
+                        {{ t('global.update') }}
+                      </p>
+                    </VBtn>
+                  </div>
                 </div>
               </VCol>
             </VRow>
@@ -165,6 +224,10 @@ onMounted(async () => {
 
   .order-transactions {
     width: calc(60% - 15px);
+  }
+
+  .update-status {
+    gap: 10px;
   }
 
   @media screen and (max-width: 1024px) {
