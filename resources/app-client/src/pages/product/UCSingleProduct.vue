@@ -49,6 +49,7 @@ const attrData = computed((variations: any[] = product?.value?.variations ?? [])
 
     // Función auxiliar recursiva
     function helper(index: number, current: any[]) {
+      
       if (index === groupIds.length) {
         // Se ha recorrido todos los grupos, se añade la combinación actual al resultado
         possibleCombinations.push(current.slice());
@@ -77,9 +78,64 @@ const attrData = computed((variations: any[] = product?.value?.variations ?? [])
     return data;
   }) ?? [];
 
+
+const filterCombinations = (combinations: any[], selections: any[]) => {
+
+  if (Object.keys(selections).length === 0 ||  combinations.length != Object.keys(selections).length)  {
+    return [];
+  }
+  
+  return combinations?.filter((combination) => {
+    for (const groupName in selections) {
+      const selectedValue = selections[groupName];
+      const found = combination.find((attribute: any) => {
+        return attribute.group.name === groupName && attribute.name === selectedValue;
+      });
+      if (!found) {
+        return false; // No se encontró la selección actual en esta combinación
+      }
+    }
+    return true; // Todas las selecciones coinciden con esta combinación
+  });
+};
+
+
+function findMatchingVariation(variations: any[], combinations: any[]): any | string {
+  
+  if (Object.keys(combinations).length === 0) {
+    return [];
+  }
+  
+  const matchingVariation = variations?.find((variation) => {
+    
+    const attributes = variation.attributes;
+    console.log(combinations)
+    return combinations?.every((combination) => {
+      
+      return combination.some((selectedAttribute) => {
+        const matchingAttribute = attributes.find((attribute) => {
+          return (
+            attribute.group.name === selectedAttribute.group.name &&
+            attribute.name === selectedAttribute.name
+          );
+        });
+        return matchingAttribute !== undefined;
+      });
+    });
+  });
+
+  if (matchingVariation) {
+    return matchingVariation;
+  } else {
+    return "No se encontró una variación que coincida con las combinaciones proporcionadas.";
+  }
+}
+
 function getAttrsNames(attrs: Array<{ name: string }>): Array<string> {
   return attrs?.map((item) => item.name) || [];
 }
+
+
 
 const path: any[] = [
   {
@@ -105,13 +161,15 @@ const headers: any[] = [
 
 <template>
   <VContainer class="pa-0" :fluid="true">
+
     <pre>
-      {{ attrData }}
+      {{ filterCombinations(attrData.combinations, selected) }}
     </pre>
 
     <pre>
-      {{ product }}
+      {{  findMatchingVariation(product.variations,  filterCombinations(attrData.combinations, selected)) }}
     </pre>
+
     <VContainer>
       <VRow class="pa-4">
         <VCol cols="12" xs="12" sm="12" md="5">
