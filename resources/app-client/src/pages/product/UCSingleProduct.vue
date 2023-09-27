@@ -80,10 +80,10 @@ const attrData = computed((variations: any[] = product?.value?.variations ?? [])
 
 
 const filterCombinations = (combinations: any[], selections: any[]) => {
-
-  if (Object.keys(selections).length === 0 ||  combinations.length != Object.keys(selections).length)  {
+  if (Object.keys(selections)?.length === 0 ||  combinations.length != Object.keys(selections).length)  {
     return [];
   }
+
   
   return combinations?.filter((combination) => {
     for (const groupName in selections) {
@@ -99,43 +99,42 @@ const filterCombinations = (combinations: any[], selections: any[]) => {
   });
 };
 
-
-function findMatchingVariation(variations: any[], combinations: any[]): any | string {
-  
-  if (Object.keys(combinations).length === 0) {
-    return [];
+function findMatchingVariation(variations: any[], combinations: any[][]): any | string {
+  if (combinations.length === 0) {
+    return false;
   }
-  
+
   const matchingVariation = variations?.find((variation) => {
-    
     const attributes = variation.attributes;
-    console.log(combinations)
-    return combinations?.every((combination) => {
-      
-      return combination.some((selectedAttribute) => {
-        const matchingAttribute = attributes.find((attribute) => {
-          return (
-            attribute.group.name === selectedAttribute.group.name &&
-            attribute.name === selectedAttribute.name
-          );
-        });
-        return matchingAttribute !== undefined;
-      });
-    });
+
+    const matchedAttributes = combinations.flatMap((combination) =>
+      attributes.filter((attribute) =>
+        combination.some((selectedAttribute) =>
+          attribute.group.name === selectedAttribute.group.name &&
+          attribute.name === selectedAttribute.name
+        )
+      )
+    );
+
+    return matchedAttributes.length === combinations.flat().length;
   });
 
   if (matchingVariation) {
     return matchingVariation;
   } else {
-    return "No se encontró una variación que coincida con las combinaciones proporcionadas.";
+    return false;
   }
 }
+
+// Computed property match
+const match = computed(() => {
+  return findMatchingVariation(product.value.variations, filterCombinations(attrData.value.combinations, selected.value));
+});
+
 
 function getAttrsNames(attrs: Array<{ name: string }>): Array<string> {
   return attrs?.map((item) => item.name) || [];
 }
-
-
 
 const path: any[] = [
   {
@@ -162,20 +161,12 @@ const headers: any[] = [
 <template>
   <VContainer class="pa-0" :fluid="true">
 
-    <pre>
-      {{ filterCombinations(attrData.combinations, selected) }}
-    </pre>
-
-    <pre>
-      {{  findMatchingVariation(product.variations,  filterCombinations(attrData.combinations, selected)) }}
-    </pre>
-
     <VContainer>
       <VRow class="pa-4">
         <VCol cols="12" xs="12" sm="12" md="5">
           <div class="thumbnail-section pa-3">
             <v-carousel>
-              <v-carousel-item :src="product.image" cover></v-carousel-item>
+              <v-carousel-item :src="match.image || product.image" cover></v-carousel-item>
             </v-carousel>
           </div>
         </VCol>
@@ -193,13 +184,13 @@ const headers: any[] = [
                 <p class="mt-2">{{ product.description }}</p>
               </div>
 
-              <pre>
-                {{ selected }}
-              </pre>
-
               <div class="product-pricing">
-                <div class="product-price">
-                  <p>{{ $filters.currencyFormat(0) }}</p>
+                <div v-if="match && match.stock > 0" class="product-price">
+                  <p style="color: #000; font-weigth: 500;" class="mb-1">{{ $filters.currencyFormat(match.price) }}</p>
+                  <span class="mb-3">Productos disponibles en almacen: {{ match.stock  }} </span>
+                </div>
+                <div class="mb-4" v-else>
+                  Articulo no disponible
                 </div>
 
                 <div

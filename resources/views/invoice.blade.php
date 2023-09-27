@@ -76,7 +76,13 @@
         <tbody>
             @foreach ($order->cart->products as $item)
                 <tr>
-                    <td>{{ $item->product->name }}</td>
+                    <td>
+                        <strong><span> {{ $item->variation->sku }} </span></strong> {{ $item->product->name }} 
+                        <!-- Show Attributes of variation -->
+                        @foreach ($item->variation->attributes as $attribute)
+                            <span>- {{ $attribute->name }}</span>
+                        @endforeach
+                    </td>
                     <td>{{ $item->quantity }}</td>
                     <td>{{ $item->unit_price }} USD</td>
                     <td>{{ $item->quantity * $item->unit_price }} USD</td>
