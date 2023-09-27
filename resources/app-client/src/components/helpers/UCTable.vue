@@ -18,7 +18,15 @@ defineProps({
     type: Boolean,
     default: false,
   },
+  onlyEdit: {
+    type: Boolean,
+    default: false,
+  },
   editAndGoto: {
+    type: Boolean,
+    default: false,
+  },
+  onlyGoTo: {
     type: Boolean,
     default: false,
   },
@@ -56,7 +64,7 @@ function deleteItem(item: NonNullable<unknown>) {
 
         <VList>
           <VListItem
-            v-if="hasSubItems || editAndGoto"
+            v-if="hasSubItems || editAndGoto || onlyGoTo"
             @click="goToItem(item)"
           >
             <template #prepend>
@@ -67,7 +75,7 @@ function deleteItem(item: NonNullable<unknown>) {
           </VListItem>
 
           <VListItem
-            v-if="hasSubItems || editAndGoto"
+            v-if="hasSubItems || editAndGoto || onlyEdit"
             @click="editItem(item)"
           >
             <template #prepend>

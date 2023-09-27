@@ -132,6 +132,7 @@ function goToCreateProvider() {
           <UCTable
             :headers="headers"
             :items="providersList"
+            onlyEdit
             @editItem="editItem"
             @deleteItem="deleteItem"
           />
