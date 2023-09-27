@@ -43,10 +43,10 @@
       "client": "Cliente"
     },
     "status": {
-      "sent": "Enviada",
-      "approved": "Aprobada",
-      "rejected": "Rechazada",
-      "to_be_reviewed": "Por revisar"
+      "pending": "Pendiente",
+      "processing": "Procesada",
+      "completed": "Completada",
+      "cancelled": "Cancelada"
     }
   },
   "registration": {
