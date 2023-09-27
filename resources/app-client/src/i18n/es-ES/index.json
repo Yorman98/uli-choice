@@ -137,7 +137,8 @@
     "store_purchases": "Compras realizadas",
     "add_purchase": "Agregar compra",
     "purchase_data": "Datos de la compra",
-    "provider_data": "Datos del proveedor"
+    "provider_data": "Datos del proveedor",
+    "edit_purchase": "Editar compra"
   },
   "budgets": {
     "create_budget": "Crear cotización",
@@ -159,7 +160,8 @@
     "add_payment_method": "Agregar método de pago",
     "transactions_not_available": "Transacciones no disponibles",
     "total_paid": "Total pagado",
-    "total_pending": "Total pendiente"
+    "total_pending": "Total pendiente",
+    "edit_transaction": "Editar transacción"
   },
   "sales": {
     "store_orders": "Ordenes realizadas",

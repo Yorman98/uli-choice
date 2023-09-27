@@ -92,5 +92,8 @@ function saveData() {
 </template>
 
 <style scoped lang="scss">
-
+h4 {
+  font-size: 30px !important;
+  line-height: 1;
+}
 </style>
