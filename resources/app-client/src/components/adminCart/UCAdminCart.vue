@@ -5,6 +5,13 @@ import ProductService from '@/services/ProductService'
 import type { ProductCartInterface } from '@/store/types/ProductInterface'
 import { STORAGE_PATH } from '@/utils/constants'
 
+defineProps({
+  hasDelete: {
+    type: Boolean,
+    default: true,
+  },
+})
+
 const productsCartList: Ref<ProductCartInterface[]> = ref([])
 const userId: Ref<UnwrapRef<number>> = ref(0)
 
@@ -16,7 +23,7 @@ async function updateCart(clientId: number) {
 
   const { data } = await ProductService.getProductsCart(clientId)
 
-  productsCartList.value = data?.products ?? []
+  productsCartList.value = data?.products as ProductCartInterface[]
 }
 
 async function deleteProductCart(productId: number) {
@@ -40,7 +47,10 @@ defineExpose({
           cols="12"
           class="d-flex justify-end flex-column"
         >
-          <ul class="cart-item">
+          <ul
+            v-if="productsCartList.length > 0"
+            class="cart-item"
+          >
             <li
               v-for="product in productsCartList"
               :key="product.id"
@@ -87,7 +97,10 @@ defineExpose({
                   </p>
                 </div>
 
-                <div class="cart-delete d-flex align-center">
+                <div
+                  v-if="hasDelete"
+                  class="cart-delete d-flex align-center"
+                >
                   <VIcon
                     size="30"
                     @click="deleteProductCart(product.id)"
@@ -98,6 +111,13 @@ defineExpose({
               </div>
             </li>
           </ul>
+
+          <div
+            v-else
+            class="no-cart-item"
+          >
+            <p>{{ $t('cart.no_products') }}</p>
+          </div>
         </VCol>
       </VRow>
     </VCardTitle>
@@ -110,8 +130,14 @@ defineExpose({
     list-style: none;
 
     > li {
-      margin-bottom: 30px;
+      margin-bottom: 20px;
     }
+  }
+
+  .no-cart-item p {
+    font-size: 16px;
+    text-align: center;
+    font-style: italic;
   }
 
   .cart-images {
@@ -123,15 +149,15 @@ defineExpose({
     padding: 0 20px;
 
     h4 {
-      font-size: 18px;
+      font-size: 16px;
     }
 
     p {
-      font-size: 16px;
+      font-size: 14px;
     }
 
     ul {
-      font-size: 16px;
+      font-size: 14px;
       padding-left: 40px;
     }
   }
