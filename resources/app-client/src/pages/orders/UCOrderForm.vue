@@ -11,6 +11,7 @@ import ClientService from '@/services/ClientService'
 import OrderService from '@/services/OrderService'
 import UCAdminCart from '@/components/adminCart/UCAdminCart.vue'
 import type { OrderInterface } from '@/store/types/OrderInterface'
+import router from "@/router";
 
 const { t } = useI18n()
 
@@ -91,8 +92,8 @@ async function saveProductsCart() {
   await ProductService.addProductCart(cartInfo)
   adminCart.value.updateCart(cartInfo.user_id)
 
+  await updateCartByClient()
   Object.assign(cartInfo, {
-    user_id: null,
     product_id: null,
     variation_id: null,
     quantity: null,
@@ -111,11 +112,11 @@ async function updateCartByClient() {
 }
 
 async function saveOrder() {
-  await OrderService.createOrder({
+  const { data } = await OrderService.createOrder({
     cart_id: cartProducts.value.cart_id,
   })
 
-  updateCartByClient()
+  await updateCartByClient()
   Object.assign(cartInfo, {
     user_id: null,
     product_id: null,
@@ -124,6 +125,8 @@ async function saveOrder() {
   })
   cartProducts.value = {} as OrderInterface
   processOrder.value = false
+
+  router.push({ name: 'editOrderForm', params: { id: data.order_id } })
 }
 </script>
 

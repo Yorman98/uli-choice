@@ -207,4 +207,9 @@ async function saveCategoryData() {
     color: #FFFFFF;
   }
 }
+
+h4 {
+  font-size: 30px !important;
+  line-height: 1;
+}
 </style>
