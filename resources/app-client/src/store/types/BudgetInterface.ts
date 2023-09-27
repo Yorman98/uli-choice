@@ -15,6 +15,7 @@ export interface BudgetInterface {
   product_links: ProductLinkInterface[]
   created_at?: string
   updated_at?: string
+  msg?: string
 }
 
 interface UserOfBudget {
