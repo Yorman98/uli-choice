@@ -50,7 +50,7 @@ class CartController extends Controller
 
             return response()->json([
                 'success' => true,
-                'cart_id' => $id,
+                'cart_id' => $cart->id,
                 'products' => $products,
                 'total_price' => $this->calculateCartTotal($products)
             ]);

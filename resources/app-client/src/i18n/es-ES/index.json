@@ -27,7 +27,7 @@
       "code": "Código",
       "type_user": "Tipo de usuario",
       "client": "Cliente",
-      "status": "Estatus",
+      "status": "Estado",
       "price": "Precio",
       "cost": "Costo",
       "quantity": "Cantidad",
@@ -35,6 +35,7 @@
       "method_payment": "Método de pago",
       "order": "Orden",
       "amount": "Monto",
+      "date": "Fecha",
       "product_url": "Enlace del producto"
     },
     "welcome": "Bienvenido",
@@ -48,7 +49,8 @@
       "processing": "Procesada",
       "completed": "Completada",
       "cancelled": "Cancelada"
-    }
+    },
+    "information_client": "Información del cliente"
   },
   "registration": {
     "required_field": "Campo requerido",
@@ -154,14 +156,19 @@
   "transaction": {
     "store_transaction": "Transacciones realizadas",
     "add_transaction": "Agregar transacción",
-    "add_payment_method": "Agregar método de pago"
+    "add_payment_method": "Agregar método de pago",
+    "transactions_not_available": "Transacciones no disponibles",
+    "total_paid": "Total pagado",
+    "total_pending": "Total pendiente"
   },
   "sales": {
     "store_orders": "Ordenes realizadas",
     "add_order": "Agregar orden",
     "update_order": "Actualizar orden",
     "order_list": "Lista de ordenes",
-    "order_details": "Detalles de la orden"
+    "order_details": "Detalles de la orden",
+    "process_order": "Procesar orden",
+    "order_status": "Estado de la orden"
   },
   "cart": {
     "my_products": "Mis productos",
@@ -176,6 +183,8 @@
     "generate_order": "Generar orden",
     "see_cart": "Ver carrito",
     "details_cart": "Detalles del carrito",
-    "price_unit": "Precio unitario"
+    "price_unit": "Precio unitario",
+    "products_cant": "Cantidad de productos",
+    "total_price": "Precio total"
   }
 }

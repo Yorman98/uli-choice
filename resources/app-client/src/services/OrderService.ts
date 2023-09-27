@@ -16,6 +16,10 @@ export class OrderService {
   getOrders(): AxiosPromise<OrderResponseInterface> {
     return ApiService.get('/orders')
   }
+
+  updateOrder(payload: UnwrapNestedRefs<OrderInterface>): AxiosPromise<OrderResponseInterface> {
+    return ApiService.put(`/orders/${payload.id}`, payload)
+  }
 }
 
 export default new OrderService()
