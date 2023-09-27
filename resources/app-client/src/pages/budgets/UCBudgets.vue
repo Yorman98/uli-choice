@@ -2,6 +2,7 @@
 import { useI18n } from 'vue-i18n'
 import type { Ref, UnwrapNestedRefs } from 'vue'
 import { ref } from 'vue'
+import { useRouter } from "vue-router"
 import UCHeaderPage from '@/components/helpers/UCHeaderPage.vue'
 import UCTable from '@/components/helpers/UCTable.vue'
 import BudgetService from '@/services/BudgetService'
@@ -12,6 +13,7 @@ import { validateRequired } from '@/services/FormValidationService'
 import type { ProductLinkInterface } from '@/store/types/ProductLinkInterface'
 
 const { t } = useI18n()
+const router = useRouter()
 
 const path: Ref<any[]> = ref([
   {
@@ -32,19 +34,19 @@ const isEditBudget: Ref<boolean> = ref(false)
 const search: Ref<string> = ref('')
 
 const headers: any[] = [
-  { title: t('global.headers.id'), key: 'name' },
-  { title: t('global.headers.client'), key: 'user_id' },
-  { title: t('global.headers.amount'), key: 'price' },
+  { title: t('global.headers.id'), key: 'id' },
+  { title: t('global.headers.client'), key: 'user_full_name' },
+  { title: t('global.headers.amount'), key: 'price', align: 'end' },
   { title: t('global.headers.date_created'), key: 'created_at' },
-  { title: t('global.headers.status'), key: 'status_id' },
+  { title: t('global.headers.status'), key: 'statusName' },
   { title: t('global.headers.options'), align: 'end', key: 'actions', sortable: false },
 ]
 
 const status: any[] = [
   { text: t('global.status.pending'), value: 1 },
-  { text: t('global.status.sent'), value: 2 },
-  { text: t('global.status.approved'), value: 3 },
-  { text: t('global.status.rejected'), value: 4 },
+  { text: t('global.status.processing'), value: 2 },
+  { text: t('global.status.completed'), value: 3 },
+  { text: t('global.status.cancelled'), value: 4 },
 ]
 
 const budgetsList: Ref<BudgetInterface[]> = ref([])
@@ -68,15 +70,26 @@ async function getData() {
     clientList.value.push(client)
   })
 
-//   const data2 = await BudgetService.getBudgets()
-//   const response2 = data2.budgets?.data ?? []
+  const data2 = await BudgetService.getBudgets()
+  const response2 = data2.data?.data ?? []
 
-//   response2.forEach((budget: BudgetInterface) => {
-//     const clientBudget = clientList.value.find((client: ClientInterface) => client.id === budget.user_id)
+  response2.forEach((budget: BudgetInterface) => {
+    if (budget?.user && budget?.user?.length > 0) {
+      budget.user_full_name = `${budget?.user[0].first_name} ${budget?.user[0].last_name}`
+      budget.user_id = budget.user[0].id
+    }
 
-//     budget.user_full_name = clientBudget?.full_name
-//     budgetsList.value.push(budget)
-//   })
+    budget.statusName = t(`global.status.${budget?.status?.name.toLowerCase()}`)
+    budgetsList.value.push(budget)
+  })
+
+  budgetsList.value.sort((a: BudgetInterface, b: BudgetInterface) => {
+    const dateA = new Date(a.created_at)
+    const dateB = new Date(b.created_at)
+
+    return dateB - dateA;
+  })
+
   budgetsListFilter.value = budgetsList.value
 }
 
@@ -133,7 +146,7 @@ function goToCreateBudget() {
         cost: 0,
         price: 0,
       }],
-      status_id: 3,
+      status_id: 1,
       user_id: null,
       id: null,
     })
@@ -143,10 +156,14 @@ function goToCreateBudget() {
 
 function updatePrice() {
   let amount = 0
+  let cost = 0
   budgetInfo.product_links.forEach((product_link: ProductLinkInterface) => {
-    amount += (product_link.cost * product_link.quantity) + (product_link.cost * product_link.quantity) * 0.10
+    product_link.price = (product_link.cost * 1) + (product_link.cost * 1) * 0.15
+    amount += product_link.price * product_link.quantity * 1
+    cost += product_link.cost * 1
   })
-  budgetInfo.price = amount
+  budgetInfo.price = parseFloat(amount.toFixed(2))
+  budgetInfo.cost = parseFloat(cost.toFixed(2))
 }
 
 function addProductLink() {
@@ -163,7 +180,18 @@ function deleteProductLink(index: number) {
 }
 
 function filter() {
-  budgetsListFilter.value = budgetsList.value.filter((budget: BudgetInterface) => budget.user_full_name === search.value)
+  if (search.value.trim() !== '')
+    budgetsListFilter.value = budgetsList.value.filter((budget: BudgetInterface) => budget.user_full_name?.toLowerCase().includes(search.value.toLocaleLowerCase()))
+  else budgetsListFilter.value = budgetsList.value
+}
+
+function goToItem(budget: BudgetInterface) {
+  router.push({
+    name: 'budgetDetail',
+    params: {
+      id: budget.id,
+    },
+  })
 }
 </script>
 
@@ -186,7 +214,7 @@ function filter() {
                 v-model="search"
                 density="compact"
                 :label="$t('budgets.search_by_customer')"
-                @change="filter"
+                @keyup="filter"
               />
             </VCol>
             <VCol cols="2">
@@ -209,8 +237,10 @@ function filter() {
           <UCTable
             :headers="headers"
             :items="budgetsListFilter"
+            hasSubItems
             @editItem="editItem"
             @deleteItem="deleteItem"
+            @goToItem="goToItem"
           />
         </VCardText>
       </VCard>
@@ -233,7 +263,7 @@ function filter() {
                 class="d-flex justify-end"
               >
                 <h3>
-                  {{ t('budgets.price') }} ${{ budgetInfo.price }}
+                  {{ t('global.headers.amount') }} ${{ budgetInfo.price }}
                 </h3>
               </VCol>
             </VRow>
@@ -248,9 +278,6 @@ function filter() {
               :label="$t('global.headers.client')"
               class="mb-6"
               density="compact"
-              :rules="[
-                (val) => validateRequired(val) || $t('registration.required_field'),
-              ]"
             />
 
             <ul class="mb-4">
@@ -328,9 +355,6 @@ function filter() {
               :label="$t('global.headers.status')"
               class="mb-4"
               density="compact"
-              :rules="[
-                (val) => validateRequired(val) || $t('registration.required_field'),
-              ]"
             />
           </VCardText>
 

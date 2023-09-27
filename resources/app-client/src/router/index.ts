@@ -69,6 +69,9 @@ const router = createRouter({
         {
           path: 'users',
           name: 'users',
+          meta: {
+            middleware: [authAdmin],
+          },
           component: () => import('@/pages/users/UCUsers.vue'),
         },
         {
@@ -104,12 +107,31 @@ const router = createRouter({
         {
           path: 'providers',
           name: 'providers',
+          meta: {
+            middleware: [authAdmin],
+          },
           component: () => import('@/pages/providers/UCProviders.vue'),
         },
         {
           path: 'budgets',
-          name: 'budgets',
-          component: () => import('@/pages/budgets/UCBudgets.vue'),
+          children: [
+            {
+              path: '',
+              name: 'budgets',
+              meta: {
+                middleware: [authAdmin],
+              },
+              component: () => import('@/pages/budgets/UCBudgets.vue'),
+            },
+            {
+              path: ':id',
+              name: 'budgetDetail',
+              meta: {
+                middleware: [authAdmin],
+              },
+              component: () => import('@/pages/budgets/UCBudgetDetail.vue'),
+            },
+          ],
         },
         {
           path: 'payment-methods',

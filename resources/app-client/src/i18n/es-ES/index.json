@@ -8,6 +8,7 @@
     "update": "Actualizar",
     "see": "Ver",
     "close": "Cerrar",
+    "send": "Enviar",
     "headers": {
       "id": "ID",
       "name": "Nombre",
@@ -34,7 +35,8 @@
       "method_payment": "Método de pago",
       "order": "Orden",
       "amount": "Monto",
-      "date": "Fecha"
+      "date": "Fecha",
+      "product_url": "Enlace del producto"
     },
     "welcome": "Bienvenido",
     "error": "Ha ocurrido un error.",
@@ -43,10 +45,10 @@
       "client": "Cliente"
     },
     "status": {
-      "sent": "Enviada",
-      "approved": "Aprobada",
-      "rejected": "Rechazada",
-      "pending": "Pendiente"
+      "pending": "Pendiente",
+      "processing": "Procesada",
+      "completed": "Completada",
+      "cancelled": "Cancelada"
     },
     "information_client": "Información del cliente"
   },
@@ -140,8 +142,16 @@
   "budgets": {
     "create_budget": "Crear cotización",
     "add_product_link": "Añadir enlace de producto",
-    "price": "Monto",
-    "search_by_customer": "Buscar por cliente"
+    "price": "Monto cotizado",
+    "search_by_customer": "Buscar por cliente",
+    "details":"Detalles de la cotización",
+    "products_list": "Lista de productos",
+    "id": "Número de cotización",
+    "amount": "Monto total cotizado",
+    "cost": "Costo unitario",
+    "cost_total": "Costo total",
+    "message": "Mensaje de respuesta",
+    "button_message": "Enviar mensaje al cliente"
   },
   "transaction": {
     "store_transaction": "Transacciones realizadas",
