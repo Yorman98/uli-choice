@@ -60,6 +60,7 @@ Route::group(['prefix' => 'auth'], static function () {
 */
 Route::group(['prefix' => 'cart'], static function () {
     Route::get('/{id}', [CartController::class, 'getActiveCartByUserId']);
+    Route::get('/{id}/products', [CartController::class, 'getCartProducts']);
     Route::post('/', [CartController::class, 'addProductToCart']);
     Route::post('/update-quantity', [CartController::class, 'updateQuantityToProduct']);
     Route::delete('/{id}', [CartController::class, 'removeProductFromCart']);
@@ -220,7 +221,7 @@ Route::middleware('auth:sanctum')->group(static function () {
     |--------------------------------------------------------------------------
     | Client Routes
     |--------------------------------------------------------------------------
-    | 
+    |
     | Here is where you can register user routes for your application.
     |
     */

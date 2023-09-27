@@ -62,6 +62,43 @@ class CartController extends Controller
         }
     }
 
+    /**
+     * @param Request $request
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function getCartProducts(Request $request, int $id): JsonResponse
+    {
+        $validationRules = [
+            'id' => 'required|integer|min:1|exists:carts,id'
+        ];
+
+        $validator = Validator::make(['id' => $id], $validationRules);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        try {
+            $cart = Cart::findOrFail($id);
+
+            $products = $this->mapProducts($cart->products()->get()) ?? [];
+
+            return response()->json([
+                'success' => true,
+                'products' => $products
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'errors' => $e->getMessage()
+            ], 404);
+        }
+    }
+
 
     /**
      * Add product to cart
