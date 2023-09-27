@@ -75,6 +75,7 @@ onMounted(async () => {
 
 function closeTransaction() {
   openTransaction.value = false
+  isEditTransaction.value = false
   Object.assign(transactionInfo, {
     id: null,
     amount: null,
@@ -192,12 +193,13 @@ function addTransaction() {
 
     <VDialog
       v-model="openTransaction"
+      persistent
       max-width="700px"
     >
       <VCard class="pa-4">
         <VCardTitle color="red">
           <h4 class="text-h4 mb-2 white--text">
-            {{ t('transaction.add_transaction') }}
+            {{ isEditTransaction ? $t('transaction.edit_transaction') : $t('transaction.add_transaction') }}
           </h4>
         </VCardTitle>
 
@@ -250,11 +252,6 @@ function addTransaction() {
 
 <style lang="scss" scoped>
 .uc-transaction-container {
-  h4 {
-    font-size: 22px !important;
-    line-height: 1;
-  }
-
   .uc-table {
     ::v-deep thead th, ::v-deep tbody td {
       height: 35px !important;
@@ -277,5 +274,10 @@ function addTransaction() {
       }
     }
   }
+}
+
+h4 {
+  font-size: 30px !important;
+  line-height: 1;
 }
 </style>
