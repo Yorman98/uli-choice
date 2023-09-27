@@ -139,7 +139,8 @@
   },
   "budgets": {
     "create_budget": "Crear cotización",
-    "add_product_link": "Añadir enlace de producto",
+    "edit_budget": "Editar cotización",
+    "add_product_link": "Añadir enlace del producto",
     "price": "Monto cotizado",
     "search_by_customer": "Buscar por cliente",
     "details":"Detalles de la cotización",
@@ -149,7 +150,8 @@
     "cost": "Costo unitario",
     "cost_total": "Costo total",
     "message": "Mensaje de respuesta",
-    "button_message": "Enviar mensaje al cliente"
+    "button_message": "Enviar mensaje al cliente",
+    "request_budget": "Solicitar cotización"
   },
   "transaction": {
     "store_transaction": "Transacciones realizadas",

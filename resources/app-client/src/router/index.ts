@@ -134,6 +134,27 @@ const router = createRouter({
           ],
         },
         {
+          path: 'budgets2',
+          children: [
+            {
+              path: '',
+              name: 'budgets2',
+              meta: {
+                middleware: [authClient],
+              },
+              component: () => import('@/pages/budgets/UCBudgetsByClient.vue'),
+            },
+            {
+              path: ':id',
+              name: 'budgetDetail2',
+              meta: {
+                middleware: [authClient],
+              },
+              component: () => import('@/pages/budgets/UCBudgetDetailByClient.vue'),
+            },
+          ],
+        },
+        {
           path: 'payment-methods',
           name: 'paymentMethods',
           component: () => import('@/pages/transactions/UCPaymentMethods.vue'),
