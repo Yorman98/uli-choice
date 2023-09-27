@@ -14,15 +14,27 @@ defineProps({
     type: String,
     default: 'No data available',
   },
+  hasSubItems: {
+    type: Boolean,
+    default: false,
+  },
+  onlyEdit: {
+    type: Boolean,
+    default: false,
+  },
 })
 
-const emit = defineEmits(['editItem', 'deleteItem'])
+const emit = defineEmits(['editItem', 'deleteItem', 'goToItem'])
 
-function editItem(item: Object) {
+function editItem(item: NonNullable<unknown>) {
   emit('editItem', item.selectable)
 }
 
-function deleteItem(item: Object) {
+function goToItem(item: NonNullable<unknown>) {
+  emit('goToItem', item.selectable)
+}
+
+function deleteItem(item: NonNullable<unknown>) {
   emit('deleteItem', item.selectable.id)
 }
 </script>
@@ -31,6 +43,7 @@ function deleteItem(item: Object) {
   <VDataTable
     :headers="headers as any"
     :items="items"
+    :no-data-text="noDataText"
     class="uc-table rounded-lg elevation-1"
   >
     <template #item.actions="{ item }">
@@ -42,7 +55,21 @@ function deleteItem(item: Object) {
         </template>
 
         <VList>
-          <VListItem @click="editItem(item)">
+          <VListItem
+            v-if="hasSubItems"
+            @click="goToItem(item)"
+          >
+            <template #prepend>
+              <VIcon icon="mdi-eye-outline" />
+            </template>
+
+            <VListItemTitle v-text="$t('global.see')" />
+          </VListItem>
+
+          <VListItem
+            v-if="hasSubItems || onlyEdit"
+            @click="editItem(item)"
+          >
             <template #prepend>
               <VIcon icon="mdi-pencil-outline" />
             </template>

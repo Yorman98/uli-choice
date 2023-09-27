@@ -1,24 +1,18 @@
 <script lang="ts" setup>
-import { useTheme } from 'vuetify'
 
 import VerticalNavSectionTitle from '@/@layouts/components/VerticalNavSectionTitle.vue'
-import upgradeBannerDark from '@images/pro/upgrade-banner-dark.png'
-import upgradeBannerLight from '@images/pro/upgrade-banner-light.png'
 import VerticalNavLayout from '@layouts/components/VerticalNavLayout.vue'
 import VerticalNavLink from '@layouts/components/VerticalNavLink.vue'
+import FloatingCart from '@/components/global/UCFloatingCart.vue'
+import ProductService from '@/services/ProductService'
+import { useUserStore } from '@/store/user'
 
 // Components
-import Footer from '@/layouts/components/Footer.vue'
+// import Footer from '@/layouts/components/Footer.vue'
 import NavbarThemeSwitcher from '@/layouts/components/NavbarThemeSwitcher.vue'
 import UserProfile from '@/layouts/components/UserProfile.vue'
 
-// Banner
-
-const vuetifyTheme = useTheme()
-
-const upgradeBanner = computed(() => {
-  return vuetifyTheme.global.name.value === 'light' ? upgradeBannerLight : upgradeBannerDark
-})
+const userStore = useUserStore()
 </script>
 
 <template>
@@ -46,26 +40,14 @@ const upgradeBanner = computed(() => {
 
           <span class="d-none d-md-flex align-center text-disabled">
             <span class="me-3">Search</span>
-            <span class="meta-key">&#8984;K</span>
           </span>
         </div>
 
         <VSpacer />
 
-        <IconBtn
-          class="me-2"
-          href="https://github.com/themeselection/sneat-vuetify-vuejs-admin-template-free"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <VIcon icon="bxl-github" />
-        </IconBtn>
-
-        <IconBtn class="me-2">
-          <VIcon icon="bx-bell" />
-        </IconBtn>
-
         <NavbarThemeSwitcher class="me-2" />
+
+        <FloatingCart />
 
         <UserProfile />
       </div>
@@ -81,16 +63,120 @@ const upgradeBanner = computed(() => {
       />
       <VerticalNavLink
         :item="{
-          title: 'Account Settings',
-          icon: 'mdi-account-cog-outline',
-          to: '/account-settings',
+          title: $t('navbar.users'),
+          icon: 'mdi-account-multiple-outline',
+          to: {
+            name: 'users',
+          },
         }"
       />
 
-      <!-- 👉 Pages -->
+      <!-- 👉 Products -->
       <VerticalNavSectionTitle
         :item="{
-          heading: 'Pages',
+          heading: $t('navbar.products'),
+        }"
+      />
+      <VerticalNavLink
+        :item="{
+          title: $t('navbar.attributes_groups'),
+          icon: 'mdi-tag-multiple-outline',
+          to: {
+            name: 'attributesGroups',
+          },
+        }"
+      />
+      <VerticalNavLink
+        :item="{
+          title: $t('navbar.categories'),
+          icon: 'mdi-tag-outline',
+          to: {
+            name: 'categories',
+          },
+        }"
+      />
+      <VerticalNavLink
+        :item="{
+          title: $t('navbar.products'),
+          icon: 'mdi-hanger',
+          to: {
+            name: 'product-list',
+          },
+        }"
+      />
+
+      <!-- 👉 Purchases -->
+      <VerticalNavSectionTitle
+        :item="{
+          heading: $t('navbar.purchases'),
+        }"
+      />
+      <VerticalNavLink
+        :item="{
+          title: $t('navbar.providers'),
+          icon: 'mdi-account-tag-outline',
+          to: {
+            name: 'providers',
+          },
+        }"
+      />
+      <VerticalNavLink
+        :item="{
+          title: $t('purchases.store_purchases'),
+          icon: 'mdi-shopping-outline',
+          to: {
+            name: 'purchase',
+          },
+        }"
+      />
+
+      <!-- 👉 Orders -->
+      <VerticalNavSectionTitle
+        :item="{
+          heading: $t('navbar.sales'),
+        }"
+      />
+      <VerticalNavLink
+        :item="{
+          title: $t('navbar.methods_payment'),
+          icon: 'mdi-cash-multiple',
+          to: {
+            name: 'paymentMethods',
+          },
+        }"
+      />
+      <VerticalNavLink
+        :item="{
+          title: $t('navbar.orders'),
+          icon: 'mdi-text-box-outline',
+          to: {
+            name: 'ordersList',
+          },
+        }"
+      />
+      <VerticalNavLink
+        :item="{
+          title: $t('navbar.transactions'),
+          icon: 'mdi-account-cash-outline',
+          to: {
+            name: 'transactions',
+          },
+        }"
+      />
+      <VerticalNavLink
+        :item="{
+          title: $t('navbar.budgets'),
+          icon: 'mdi-currency-usd',
+          to: {
+            name: 'budgets',
+          },
+        }"
+      />
+
+      <!-- 👉 Options theme -->
+      <VerticalNavSectionTitle
+        :item="{
+          heading: $t('navbar.configuration'),
         }"
       />
       <VerticalNavLink
@@ -114,75 +200,17 @@ const upgradeBanner = computed(() => {
           to: '/no-existence',
         }"
       />
-
-      <!-- 👉 User Interface -->
-      <VerticalNavSectionTitle
-        :item="{
-          heading: 'User Interface',
-        }"
-      />
-      <VerticalNavLink
-        :item="{
-          title: 'Typography',
-          icon: 'mdi-alpha-t-box-outline',
-          to: '/typography',
-        }"
-      />
-      <VerticalNavLink
-        :item="{
-          title: 'Icons',
-          icon: 'bx-show',
-          to: '/icons',
-        }"
-      />
-      <VerticalNavLink
-        :item="{
-          title: 'Cards',
-          icon: 'bx-credit-card',
-          to: '/cards',
-        }"
-      />
-      <VerticalNavLink
-        :item="{
-          title: 'Tables',
-          icon: 'bx-table',
-          to: '/tables',
-        }"
-      />
-      <VerticalNavLink
-        :item="{
-          title: 'Form Layouts',
-          icon: 'mdi-form-select',
-          to: '/form-layouts',
-        }"
-      />
-    </template>
-
-    <template #after-vertical-nav-items>
-      <!-- 👉 illustration -->
-      <a
-        href="https://themeselection.com/item/sneat-vuetify-vuejs-admin-template"
-        target="_blank"
-        rel="noopener noreferrer"
-        style="margin-left: 7px;"
-      >
-        <img
-          :src="upgradeBanner"
-          alt="upgrade-banner"
-          transition="scale-transition"
-          class="upgrade-banner mx-auto"
-          style="max-width: 230px;"
-        >
-      </a>
     </template>
 
     <!-- 👉 Pages -->
     <slot />
 
     <!-- 👉 Footer -->
-    <template #footer>
+    <!--
+      <template #footer>
       <Footer />
-    </template>
+      </template>
+    -->
   </VerticalNavLayout>
 </template>
 
