@@ -86,7 +86,7 @@ function deleteItem(item: NonNullable<unknown>) {
           </VListItem>
 
           <VListItem
-            v-if="!editAndGoto"
+            v-if="!editAndGoto && !onlyGoTo"
             @click="deleteItem(item)"
           >
             <template #prepend>

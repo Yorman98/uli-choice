@@ -116,7 +116,7 @@ async function sendMessage() {
         <VCardText>
           <VRow>
             <VCol cols="4">
-              <h4>{{ $t('budgets.id') }}</h4>
+              <h3>{{ $t('budgets.id') }}</h3>
               <p>{{ budgetInfo.id }}</p>
             </VCol>
             <VCol cols="4">

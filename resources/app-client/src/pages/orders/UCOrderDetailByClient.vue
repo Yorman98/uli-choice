@@ -5,9 +5,11 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import UCHeaderPage from '@/components/helpers/UCHeaderPage.vue'
 import UCTable from '@/components/helpers/UCTable.vue'
-import BudgetService from '@/services/BudgetService'
-import type { BudgetInterface } from '@/store/types/BudgetInterface'
-import type { ProductLinkInterface } from '@/store/types/ProductLinkInterface'
+import OrderService from '@/services/OrderService'
+import TransactionService from '@/services/TransactionService'
+import type { OrderInterface } from '@/store/types/OrderInterface'
+import type { TransactionInterface } from '@/store/types/TransactionInterface'
+import type { ProductInterface } from '@/store/types/ProductInterface'
 
 const { t } = useI18n()
 const router = useRouter()
@@ -21,82 +23,80 @@ const path: Ref<any[]> = ref([
     },
   },
   {
-    title: t('navbar.budgets'),
+    title: t('navbar.orders'),
     disabled: false,
     to: {
-      name: 'budgets2',
+      name: 'orders2',
     },
   },
   {
-    title: t('budgets.details'),
+    title: t('sales.order_details'),
     disabled: true,
   },
 ])
 
-const headers: any[] = [
-  { title: t('global.headers.product_url'), key: 'url' },
-  { title: t('budgets.cost'), key: 'cost', align: 'end' },
-  { title: t('budgets.price'), key: 'price', align: 'end' },
+const headersProducts: any[] = [
+  { title: t('global.headers.product_name'), key: 'product.name' },
   { title: t('global.headers.quantity'), key: 'quantity', align: 'center' },
-  { title: t('budgets.amount'), key: 'amount', align: 'end' },
+  { title: t('global.headers.amount'), key: 'unit_price', align: 'end' },
+  { title: t('global.headers.options'), align: 'end', key: 'actions', sortable: false },
 ]
 
-const budgetsList: Ref<BudgetInterface[]> = ref([])
+const headersTransactions: any[] = [
+  { title: t('global.headers.payment_method'), key: 'payment_method.name' },
+  { title: t('global.headers.amount'), key: 'amount' },
+  { title: t('global.headers.date'), key: 'created_at' },
+  { title: t('global.headers.notes'), key: 'notes' },
+]
 
-const budgetInfo: UnwrapNestedRefs<BudgetInterface> = reactive({
-  cost: 0,
-  price: 0,
-  product_links: [],
-  status_id: 1,
-  user_id: 0,
-} as BudgetInterface)
+const orderInfo: UnwrapNestedRefs<OrderInterface> = reactive({
+  cart_id: 0,
+} as OrderInterface)
 
-const openMessage: Ref<boolean> = ref(false)
-const existMessage: Ref<boolean> = ref(false)
+const transactionList: Ref<TransactionInterface[]> = ref([])
+const remainingAmount: Ref<number> = ref(0)
 
 async function getData() {
   const id = Number(router.currentRoute.value.params.id)
-  const data = await BudgetService.getBudgets()
-  const response = data.data?.data ?? []
+  const { data } = await OrderService.getOrder(id)
 
-  response.forEach((budget: BudgetInterface) => {
-    if (budget?.user && budget?.user?.length > 0) {
-      budget.user_full_name = `${budget?.user[0].first_name} ${budget?.user[0].last_name}`
-      budget.user_id = budget?.user[0].id
-    }
-    budget.statusName = t(`global.status.${budget?.status?.name.toLowerCase()}`)
-    budgetsList.value.push(budget)
+  const order = data?.data ?? []
+  if (order?.cart?.user)
+    order.user_full_name = `${order?.cart?.user.first_name} ${order?.cart?.user.last_name}`
+
+  order.statusName = t(`global.status.${order?.status?.name.toLowerCase()}`)
+
+  Object.assign(orderInfo, order)
+  remainingAmount.value = orderInfo.total_price
+
+  const data2 = await TransactionService.getTransaction(id)
+  const response = data2.data?.transactions ?? []
+
+  response.forEach((transaction: TransactionInterface) => {
+    transactionList.value.push(transaction)
+    remainingAmount.value = remainingAmount.value - transaction.amount
   })
 
-  const budgetById = budgetsList.value.find((budget: BudgetInterface) => budget.id === id)
+  transactionList.value.sort((a: TransactionInterface, b: TransactionInterface) => {
+    const dateA = new Date(a.created_at)
+    const dateB = new Date(b.created_at)
 
-  Object.assign(budgetInfo, budgetById)
-  budgetInfo.product_links.forEach((product_link: ProductLinkInterface) => {
-    product_link.amount = product_link.price * product_link.quantity
+    return dateB - dateA
   })
-
-  if (budgetInfo.msg)
-    existMessage.value = true
 }
 
 onMounted(() => {
   getData()
 })
 
-function goToSendMessage() {
-  openMessage.value = true
-}
-
-function closeMessage() {
-  openMessage.value = false
-}
-
-async function sendMessage() {
-  await BudgetService.updateBudget(budgetInfo)
-
-  budgetsList.value = []
-  getData()
-  closeMessage()
+function goToItem(product: ProductInterface) {
+  console.log(product);
+  router.push({
+    name: 'product',
+    params: {
+      id: product.product.id,
+    },
+  })
 }
 </script>
 
@@ -105,41 +105,41 @@ async function sendMessage() {
     <VCol cols="12">
       <UCHeaderPage
         class="mb-4"
-        :title="$t('navbar.budgets')"
+        :title="$t('navbar.orders')"
         :path="path"
       />
 
       <VCard
         class="pa-4 mb-7"
-        :title="t('budgets.details')"
+        :title="t('sales.order_details')"
       >
         <VCardText>
           <VRow>
             <VCol cols="4">
-              <h4>{{ $t('budgets.id') }}</h4>
-              <p>{{ budgetInfo.id }}</p>
+              <h3>{{ $t('orders.reference') }}</h3>
+              <p>{{ orderInfo.reference }}</p>
             </VCol>
             <VCol cols="4">
               <h3>{{ $t('global.headers.date_created') }}</h3>
-              <p>{{ budgetInfo.created_at }}</p>
+              <p>{{ orderInfo.created_at }}</p>
             </VCol>
             <VCol cols="4">
-              <h3>{{ $t('budgets.amount') }}</h3>
-              <p>${{ budgetInfo.price }}</p>
+              <h3>{{ $t('orders.amount') }}</h3>
+              <p>${{ orderInfo.total_price }}</p>
             </VCol>
           </VRow>
           <VRow>
             <VCol cols="4">
-              <h3>{{ $t('global.headers.client') }}</h3>
-              <p>{{ budgetInfo.user_full_name }}</p>
+              <h3>{{ $t('orders.client') }}</h3>
+              <p>{{ orderInfo.user_full_name }}</p>
             </VCol>
             <VCol cols="4">
               <h3>{{ $t('global.headers.status') }}</h3>
-              <p>{{ budgetInfo.statusName }}</p>
+              <p>{{ orderInfo.statusName }}</p>
             </VCol>
             <VCol cols="4">
-              <h3>{{ $t('budgets.cost_total') }}</h3>
-              <p>${{ budgetInfo.cost }}</p>
+              <h3>{{ $t('orders.remaining_amount') }}</h3>
+              <p>${{ remainingAmount }}</p>
             </VCol>
           </VRow>
         </VCardText>
@@ -147,74 +147,29 @@ async function sendMessage() {
 
       <VCard
         class="pa-4 mb-7"
-        :title="t('budgets.products_list')"
+        :title="t('orders.product_list')"
       >
         <VCardText>
           <UCTable
-            :headers="headers"
-            :items="budgetInfo.product_links"
+            only-go-to
+            @goToItem="goToItem"
+            :headers="headersProducts"
+            :items="orderInfo.cart?.products"
           />
         </VCardText>
       </VCard>
 
       <VCard
-        v-if="existMessage"
-        class="pa-4"
-        :title="t('budgets.message')"
+        class="pa-4 mb-7"
+        :title="t('orders.transactions_list')"
       >
         <VCardText>
-          <VRow>
-            <VCol cols="12">
-              <p>
-                {{ budgetInfo.msg }}
-              </p>
-            </VCol>
-          </VRow>
+          <UCTable
+            :headers="headersTransactions"
+            :items="transactionList"
+          />
         </VCardText>
       </VCard>
-
-      <VDialog
-        v-model="openMessage"
-        max-width="700px"
-      >
-        <VCard class="pa-4">
-          <VCardTitle>
-            <VRow class="align-center">
-              <VCol cols="12">
-                <h4 class="text-h4 mb-2 white--text">
-                  {{ t('budgets.message') }}
-                </h4>
-              </VCol>
-            </VRow>
-          </VCardTitle>
-
-          <VCardText>
-            <VTextarea
-              v-model="budgetInfo.msg"
-              :placeholder="$t('budgets.message')"
-              :label="$t('budgets.message')"
-            />
-          </VCardText>
-
-          <VCardActions class="d-flex justify-end">
-            <VBtn
-              color="primary"
-              outlined
-              @click="closeMessage"
-            >
-              {{ $t('global.cancel') }}
-            </VBtn>
-
-            <VBtn
-              color="primary"
-              flat
-              @click="sendMessage"
-            >
-              {{ $t('global.send') }}
-            </VBtn>
-          </VCardActions>
-        </VCard>
-      </VDialog>
     </VCol>
   </VRow>
 </template>

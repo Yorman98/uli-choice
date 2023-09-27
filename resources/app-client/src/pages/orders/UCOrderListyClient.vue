@@ -29,17 +29,18 @@ const headers: any[] = [
   { title: t('global.headers.id'), key: 'id' },
   { title: t('global.headers.date_created'), key: 'created_at' },
   { title: t('global.headers.status'), key: 'statusName' },
-  { title: t('global.headers.amount'), key: 'price', align: 'end' },
+  { title: t('global.headers.amount'), key: 'total_price', align: 'end' },
   { title: t('global.headers.options'), align: 'end', key: 'actions', sortable: false },
 ]
 
 const ordersList: Ref<OrderInterface[]> = ref([])
 
 async function getData() {
-  const data = await OrderService.getOrders()
-  const response = data.data?.data ?? []
+  const { data } = await OrderService.getOrders()
+  const response = data?.data?.data ?? []
 
   response.forEach((order: OrderInterface) => {
+    order.statusName = t(`global.status.${order?.status?.name.toLowerCase()}`)
     ordersList.value.push(order)
   })
 
