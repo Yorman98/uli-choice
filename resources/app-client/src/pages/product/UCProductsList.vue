@@ -51,6 +51,11 @@ function addProduct() {
   })
 }
 
+async function exportProducts() {
+  const response = await ProductService.exportProducts()
+  window.location
+}
+
 function viewProduct(product: ProductInterface) {
   router.push({
     name: 'product',
@@ -103,7 +108,7 @@ async function addToCart(product: ProductInterface) {
 
       <VCard class="pa-4">
         <VCardTitle class="d-flex justify-end mb-4">
-          <VBtn @click="addProduct">
+          <VBtn @click="addProduct" class="mr-4">
             <VIcon
               color="white pr-2"
               size="35"
@@ -113,6 +118,18 @@ async function addToCart(product: ProductInterface) {
             <p class="text-button ma-0 text-white">
               {{ t('products.add_product') }}
             </p>
+          </VBtn>
+
+          <VBtn outlined>
+            <a class="text-button ma-0 text-white" href="http://127.0.0.1:8000/api/export-inventory" target="_blank">
+              <VIcon
+                color="white pr-2"
+                size="35"
+              >
+                mdi-file-excel-outline
+              </VIcon>
+                {{ t('products.export_products') }}
+            </a>
           </VBtn>
         </VCardTitle>
 

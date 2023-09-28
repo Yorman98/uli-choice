@@ -89,6 +89,7 @@
   "products": {
     "products_list": "Lista de productos",
     "add_product": "Agregar producto",
+    "export_products": "Exportar productos",
     "attributes": {
       "attributes_group_title": "Grupo de atributos",
       "create_group_attribute": "Crear grupo de atributos",

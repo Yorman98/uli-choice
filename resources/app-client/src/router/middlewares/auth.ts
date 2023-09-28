@@ -17,7 +17,6 @@ export function authAdmin({ next }: any) {
   // }
 
   if (userStore.userInfo.role !== '' && userStore.userInfo.role !== ADMIN) {
-    alert('admin')
     return next({
       name: 'error'
     })

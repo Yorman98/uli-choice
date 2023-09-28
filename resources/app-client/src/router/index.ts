@@ -128,9 +128,6 @@ const router = createRouter({
         {
           path: 'providers',
           name: 'providers',
-          meta: {
-            middleware: [authAdmin],
-          },
           component: () => import('@/pages/providers/UCProviders.vue'),
           meta: {
             middleware: ['admin'],
