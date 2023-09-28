@@ -30,7 +30,7 @@ const path: Ref<any[]> = ref([
     title: t('orders.orders_list'),
     disabled: false,
     to: {
-      name: 'adminDashboard', // TODO: Change to orders list
+      name: 'ordersList', // TODO: Change to orders list
     },
   },
   {
@@ -200,7 +200,7 @@ async function saveOrder() {
                       mdi-content-save-outline
                     </VIcon>
                     <p class="text-button ma-0 text-white">
-                      {{ t('orders.add_order') }}
+                      {{ t('orders.add_cart') }}
                     </p>
                   </VBtn>
                 </div>

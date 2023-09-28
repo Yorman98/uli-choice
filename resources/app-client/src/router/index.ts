@@ -169,6 +169,14 @@ const router = createRouter({
           path: 'orders',
           children: [
             {
+              path: '',
+              name: 'ordersList',
+              component: () => import('@/pages/orders/UCAdminOrdersList.vue'),
+              meta: {
+                middleware: [authAdmin],
+              },
+            },
+            {
               path: 'add-order',
               name: 'addOrderForm',
               component: () => import('@/pages/orders/UCOrderForm.vue'),
@@ -185,14 +193,6 @@ const router = createRouter({
               },
             },
           ],
-        },
-        {
-          path: 'orders',
-          name: 'ordersList',
-          component: () => import('@/pages/orders/UCAdminOrdersList.vue'),
-          meta: {
-            middleware: [authAdmin],
-          },
         },
       ],
     },
