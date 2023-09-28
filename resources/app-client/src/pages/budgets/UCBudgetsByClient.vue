@@ -162,140 +162,142 @@ function goToItem(budget: BudgetInterface) {
 </script>
 
 <template>
-  <VRow>
-    <VCol cols="12">
-      <UCHeaderPage
-        class="mb-5"
-        :title="$t('navbar.budgets')"
-        :path="path"
-      />
+  <VContainer>
+    <VRow>
+      <VCol cols="12">
+        <UCHeaderPage
+          class="mb-5"
+          :title="$t('navbar.budgets')"
+          :path="path"
+        />
 
-      <VCard class="pa-4">
-        <VCardTitle>
-          <VRow>
-            <VCol
-              cols="12"
-              class="d-flex justify-end"
-            >
-              <VBtn
-                class="mb-4"
-                @click="goToCreateBudget"
-              >
-                <VIcon
-                  color="white pr-2"
-                  size="35"
-                >
-                  mdi-plus
-                </VIcon>
-                <p class="text-button ma-0">
-                  {{ t('budgets.request_budget') }}
-                </p>
-              </VBtn>
-            </VCol>
-          </VRow>
-        </VCardTitle>
-
-        <VCardText>
-          <UCTable
-            :headers="headers"
-            :items="budgetsList"
-            edit-and-goto
-            @editItem="editItem"
-            @goToItem="goToItem"
-          />
-        </VCardText>
-      </VCard>
-
-      <VDialog
-        v-model="openBudget"
-        max-width="700px"
-      >
         <VCard class="pa-4">
           <VCardTitle>
-            <VRow class="align-center ">
-              <VCol cols="8">
-                <h4 class="text-h4 mb-2 white--text">
-                  {{ isEditBudget ? $t('budgets.edit_budget') : t('budgets.create_budget') }}
-                </h4>
+            <VRow>
+              <VCol
+                cols="12"
+                class="d-flex justify-end"
+              >
+                <VBtn
+                  class="mb-4"
+                  @click="goToCreateBudget"
+                >
+                  <VIcon
+                    color="white pr-2"
+                    size="35"
+                  >
+                    mdi-plus
+                  </VIcon>
+                  <p class="text-button ma-0">
+                    {{ t('budgets.request_budget') }}
+                  </p>
+                </VBtn>
               </VCol>
             </VRow>
           </VCardTitle>
 
           <VCardText>
-            <ul class="mb-4">
-              <li
-                v-for="(productLink, index) in budgetInfo.product_links"
-                :key="index"
-              >
-                <VRow class="align-center">
-                  <VCol cols="9">
-                    <VTextField
-                      v-model="productLink.url"
-                      density="compact"
-                      :label="$t('global.headers.product_url')"
-                      :rules="[
-                        (val) => validateRequired(val) || $t('registration.required_field'),
-                      ]"
-                    />
-                  </VCol>
+            <UCTable
+              :headers="headers"
+              :items="budgetsList"
+              edit-and-goto
+              @editItem="editItem"
+              @goToItem="goToItem"
+            />
+          </VCardText>
+        </VCard>
 
-                  <VCol cols="2">
-                    <VTextField
-                      v-model="productLink.quantity"
-                      density="compact"
-                      type="number"
-                      :label="$t('global.headers.quantity')"
-                      :rules="[
-                        (val) => validateRequired(val) || $t('registration.required_field'),
-                      ]"
-                    />
-                  </VCol>
-
-                  <VCol cols="1">
-                    <VIcon
-                      v-if="budgetInfo.product_links.length > 1"
-                      icon="mdi-delete"
-                      class=""
-                      @click="deleteProductLink(index)"
-                    />
-                  </VCol>
-                </VRow>
-              </li>
-              <VRow>
-                <VCol cols="6">
-                  <VBtn
-                    class="mb-4"
-                    color="primary"
-                    @click="addProductLink"
-                  >
-                    {{ $t('budgets.add_product_link') }}
-                  </VBtn>
+        <VDialog
+          v-model="openBudget"
+          max-width="700px"
+        >
+          <VCard class="pa-4">
+            <VCardTitle>
+              <VRow class="align-center ">
+                <VCol cols="8">
+                  <h4 class="text-h4 mb-2 white--text">
+                    {{ isEditBudget ? $t('budgets.edit_budget') : t('budgets.create_budget') }}
+                  </h4>
                 </VCol>
               </VRow>
-            </ul>
-          </VCardText>
+            </VCardTitle>
 
-          <VCardActions class="d-flex justify-end">
-            <VBtn
-              color="primary"
-              outlined
-              @click="closeBudget"
-            >
-              {{ $t('global.cancel') }}
-            </VBtn>
+            <VCardText>
+              <ul class="mb-4">
+                <li
+                  v-for="(productLink, index) in budgetInfo.product_links"
+                  :key="index"
+                >
+                  <VRow class="align-center">
+                    <VCol cols="9">
+                      <VTextField
+                        v-model="productLink.url"
+                        density="compact"
+                        :label="$t('global.headers.product_url')"
+                        :rules="[
+                          (val) => validateRequired(val) || $t('registration.required_field'),
+                        ]"
+                      />
+                    </VCol>
 
-            <VBtn
-              color="primary"
-              flat
-              @click="saveBudget"
-            >
-              {{ isEditBudget ? $t('global.update') : $t('global.save') }}
-            </VBtn>
-          </VCardActions>
-        </VCard>
-      </VDialog>
-    </VCol>
-  </VRow>
+                    <VCol cols="2">
+                      <VTextField
+                        v-model="productLink.quantity"
+                        density="compact"
+                        type="number"
+                        :label="$t('global.headers.quantity')"
+                        :rules="[
+                          (val) => validateRequired(val) || $t('registration.required_field'),
+                        ]"
+                      />
+                    </VCol>
+
+                    <VCol cols="1">
+                      <VIcon
+                        v-if="budgetInfo.product_links.length > 1"
+                        icon="mdi-delete"
+                        class=""
+                        @click="deleteProductLink(index)"
+                      />
+                    </VCol>
+                  </VRow>
+                </li>
+                <VRow>
+                  <VCol cols="6">
+                    <VBtn
+                      class="mb-4"
+                      color="primary"
+                      @click="addProductLink"
+                    >
+                      {{ $t('budgets.add_product_link') }}
+                    </VBtn>
+                  </VCol>
+                </VRow>
+              </ul>
+            </VCardText>
+
+            <VCardActions class="d-flex justify-end">
+              <VBtn
+                color="primary"
+                outlined
+                @click="closeBudget"
+              >
+                {{ $t('global.cancel') }}
+              </VBtn>
+
+              <VBtn
+                color="primary"
+                flat
+                @click="saveBudget"
+              >
+                {{ isEditBudget ? $t('global.update') : $t('global.save') }}
+              </VBtn>
+            </VCardActions>
+          </VCard>
+        </VDialog>
+      </VCol>
+    </VRow>
+  </VContainer>
 </template>
 
 <style scoped lang="scss">

@@ -84,79 +84,81 @@ onMounted(() => {
 </script>
 
 <template>
-  <VRow>
-    <VCol cols="12">
-      <UCHeaderPage
-        class="mb-4"
-        :title="$t('navbar.budgets')"
-        :path="path"
-      />
+  <VContainer>
+    <VRow>
+      <VCol cols="12">
+        <UCHeaderPage
+          class="mb-4"
+          :title="$t('navbar.budgets')"
+          :path="path"
+        />
 
-      <VCard
-        class="pa-4 mb-7"
-        :title="t('budgets.details')"
-      >
-        <VCardText>
-          <VRow>
-            <VCol cols="4">
-              <h3>{{ $t('budgets.id') }}</h3>
-              <p>{{ budgetInfo.id }}</p>
-            </VCol>
-            <VCol cols="4">
-              <h3>{{ $t('global.headers.date_created') }}</h3>
-              <p>{{ budgetInfo.created_at }}</p>
-            </VCol>
-            <VCol cols="4">
-              <h3>{{ $t('budgets.amount') }}</h3>
-              <p>${{ budgetInfo.price }}</p>
-            </VCol>
-          </VRow>
-          <VRow>
-            <VCol cols="4">
-              <h3>{{ $t('global.headers.client') }}</h3>
-              <p>{{ budgetInfo.user_full_name }}</p>
-            </VCol>
-            <VCol cols="4">
-              <h3>{{ $t('global.headers.status') }}</h3>
-              <p>{{ budgetInfo.statusName }}</p>
-            </VCol>
-            <VCol cols="4">
-              <h3>{{ $t('budgets.cost_total') }}</h3>
-              <p>${{ budgetInfo.cost }}</p>
-            </VCol>
-          </VRow>
-        </VCardText>
-      </VCard>
+        <VCard
+          class="pa-4 mb-7"
+          :title="t('budgets.details')"
+        >
+          <VCardText>
+            <VRow>
+              <VCol cols="4">
+                <h3>{{ $t('budgets.id') }}</h3>
+                <p>{{ budgetInfo.id }}</p>
+              </VCol>
+              <VCol cols="4">
+                <h3>{{ $t('global.headers.date_created') }}</h3>
+                <p>{{ budgetInfo.created_at }}</p>
+              </VCol>
+              <VCol cols="4">
+                <h3>{{ $t('budgets.amount') }}</h3>
+                <p>${{ budgetInfo.price }}</p>
+              </VCol>
+            </VRow>
+            <VRow>
+              <VCol cols="4">
+                <h3>{{ $t('global.headers.client') }}</h3>
+                <p>{{ budgetInfo.user_full_name }}</p>
+              </VCol>
+              <VCol cols="4">
+                <h3>{{ $t('global.headers.status') }}</h3>
+                <p>{{ budgetInfo.statusName }}</p>
+              </VCol>
+              <VCol cols="4">
+                <h3>{{ $t('budgets.cost_total') }}</h3>
+                <p>${{ budgetInfo.cost }}</p>
+              </VCol>
+            </VRow>
+          </VCardText>
+        </VCard>
 
-      <VCard
-        class="pa-4 mb-7"
-        :title="t('budgets.products_list')"
-      >
-        <VCardText>
-          <UCTable
-            :headers="headers"
-            :items="budgetInfo.product_links"
-          />
-        </VCardText>
-      </VCard>
+        <VCard
+          class="pa-4 mb-7"
+          :title="t('budgets.products_list')"
+        >
+          <VCardText>
+            <UCTable
+              :headers="headers"
+              :items="budgetInfo.product_links"
+            />
+          </VCardText>
+        </VCard>
 
-      <VCard
-        v-if="existMessage"
-        class="pa-4"
-        :title="t('budgets.message')"
-      >
-        <VCardText>
-          <VRow>
-            <VCol cols="12">
-              <p>
-                {{ budgetInfo.message }}
-              </p>
-            </VCol>
-          </VRow>
-        </VCardText>
-      </VCard>
-    </VCol>
-  </VRow>
+        <VCard
+          v-if="existMessage"
+          class="pa-4"
+          :title="t('budgets.message')"
+        >
+          <VCardText>
+            <VRow>
+              <VCol cols="12">
+                <p>
+                  {{ budgetInfo.message }}
+                </p>
+              </VCol>
+            </VRow>
+          </VCardText>
+        </VCard>
+      </VCol>
+    </VRow>
+  </VContainer>
 </template>
 
 <style scoped lang="scss">

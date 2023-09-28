@@ -67,27 +67,29 @@ function goToItem(order: OrderInterface) {
 </script>
 
 <template>
-  <VRow>
-    <VCol cols="12">
-      <UCHeaderPage
-        class="mb-5"
-        :title="$t('navbar.orders')"
-        :path="path"
-      />
+  <VContainer>
+    <VRow>
+      <VCol cols="12">
+        <UCHeaderPage
+          class="mb-5"
+          :title="$t('navbar.orders')"
+          :path="path"
+        />
 
-      <VCard class="pa-4">
-        <VCardText>
-          <UCTable
-            :headers="headers"
-            :items="ordersList"
-            onlyGoTo
-            @editItem="editItem"
-            @goToItem="goToItem"
-          />
-        </VCardText>
-      </VCard>
-    </VCol>
-  </VRow>
+        <VCard class="pa-4">
+          <VCardText>
+            <UCTable
+              :headers="headers"
+              :items="ordersList"
+              only-go-to
+              @editItem="editItem"
+              @goToItem="goToItem"
+            />
+          </VCardText>
+        </VCard>
+      </VCol>
+    </VRow>
+  </VContainer>
 </template>
 
 <style scoped lang="scss">
