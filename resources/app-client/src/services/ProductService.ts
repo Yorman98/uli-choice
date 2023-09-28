@@ -74,6 +74,10 @@ class ProductService {
   deleteVariantion(payload: { productId: number; variantId: number }): AxiosPromise<VariationResponseInterface> {
     return ApiService.delete(`/product/${payload.productId}/variations/${payload.variantId}`)
   }
+
+  exportProducts(): AxiosPromise {
+    return ApiService.get('/export-inventory')
+  }
 }
 
 export default new ProductService()
