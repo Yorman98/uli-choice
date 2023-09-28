@@ -88,7 +88,7 @@ async function addToCart(product: ProductInterface) {
     }
   )
 
-  await ProductService.getProductsCart(response)
+  await ProductService.getProductsActiveCart(response)
 }
 </script>
 

@@ -51,8 +51,12 @@ class ProductService {
   }
 
   /* Products card */
-  getProductsCart(userId: number): AxiosPromise<CartResponseInterface> {
+  getProductsActiveCart(userId: number): AxiosPromise<CartResponseInterface> {
     return ApiService.get(`/cart/${userId}`)
+  }
+
+  getProductsCart(cartId: number): AxiosPromise<CartResponseInterface> {
+    return ApiService.get(`/cart/${cartId}/products`)
   }
 
   addProductCart(payload: UnwrapNestedRefs<ProductCartRequestInterface>): AxiosPromise<CartResponseInterface> {

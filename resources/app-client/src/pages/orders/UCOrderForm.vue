@@ -11,7 +11,7 @@ import ClientService from '@/services/ClientService'
 import OrderService from '@/services/OrderService'
 import UCAdminCart from '@/components/adminCart/UCAdminCart.vue'
 import type { OrderInterface } from '@/store/types/OrderInterface'
-import router from "@/router";
+import router from '@/router'
 
 const { t } = useI18n()
 
@@ -103,7 +103,7 @@ async function saveProductsCart() {
 async function updateCartByClient() {
   processOrder.value = false
 
-  const { data } = await ProductService.getProductsCart(cartInfo.user_id)
+  const { data } = await ProductService.getProductsActiveCart(cartInfo.user_id)
 
   cartProducts.value.cart_id = (data?.cart_id as number)
   adminCart.value.updateCart(cartInfo.user_id)
@@ -135,7 +135,7 @@ async function saveOrder() {
     <VCol cols="12">
       <UCHeaderPage
         class="mb-5"
-        :title="$t('navbar.transactions')"
+        :title="$t('sales.add_order')"
         :path="path"
       />
 
