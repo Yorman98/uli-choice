@@ -27,14 +27,14 @@ const path: Ref<any[]> = ref([
     },
   },
   {
-    title: t('sales.order_list'),
+    title: t('orders.orders_list'),
     disabled: false,
     to: {
       name: 'adminDashboard', // TODO: Change to orders list
     },
   },
   {
-    title: t('sales.add_order'),
+    title: t('orders.add_order'),
     disabled: true,
   },
 ])
@@ -135,14 +135,14 @@ async function saveOrder() {
     <VCol cols="12">
       <UCHeaderPage
         class="mb-5"
-        :title="$t('sales.add_order')"
+        :title="$t('orders.add_order')"
         :path="path"
       />
 
       <div class="d-flex flex-wrap align-start order-details">
         <VCard
           class="mb-6 add-order"
-          :title="$t('sales.order_details')"
+          :title="$t('orders.order_details')"
         >
           <VCardTitle class="d-flex justify-end mb-4">
             <VRow>
@@ -200,7 +200,7 @@ async function saveOrder() {
                       mdi-content-save-outline
                     </VIcon>
                     <p class="text-button ma-0 text-white">
-                      {{ t('sales.add_order') }}
+                      {{ t('orders.add_order') }}
                     </p>
                   </VBtn>
                 </div>
@@ -223,7 +223,7 @@ async function saveOrder() {
             mdi-cart-check
           </VIcon>
           <p class="text-button text-white ma-0">
-            {{ t('sales.process_order') }}
+            {{ t('orders.process_order') }}
           </p>
         </VBtn>
       </div>

@@ -174,15 +174,6 @@
     "total_pending": "Total pendiente",
     "edit_transaction": "Editar transacción"
   },
-  "sales": {
-    "store_orders": "Ordenes realizadas",
-    "add_order": "Agregar orden",
-    "update_order": "Actualizar orden",
-    "order_list": "Lista de ordenes",
-    "order_details": "Detalles de la orden",
-    "process_order": "Procesar orden",
-    "order_status": "Estado de la orden"
-  },
   "cart": {
     "my_products": "Mis productos",
     "no_products": "No hay productos en el carrito",
@@ -196,11 +187,12 @@
     "generate_order": "Generar orden",
     "see_cart": "Ver carrito",
     "details_cart": "Detalles del carrito",
-    "price_unit": "Precio unitario",
-
+    "price_unit": "Precio unitario"
   },
   "orders": {
+    "store_orders": "Ordenes realizadas",
     "orders_list": "Lista de ordenes",
+    "update_order": "Actualizar orden",
     "orders_title": "Ordenes",
     "add_order": "Agregar orden",
     "price_unit": "Precio unitario",
@@ -212,6 +204,9 @@
     "client": "Cliente",
     "product_list": "Lista de productos",
     "transactions_list": "Lista de transacciones",
-    "remaining_amount": "Monto por pagar"
+    "remaining_amount": "Monto por pagar",
+    "order_details": "Detalles de la orden",
+    "process_order": "Procesar orden",
+    "order_status": "Estado de la orden"
   }
 }

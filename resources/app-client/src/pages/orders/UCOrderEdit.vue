@@ -26,14 +26,14 @@ const path: Ref<any[]> = ref([
     },
   },
   {
-    title: t('sales.order_list'),
+    title: t('orders.orders_list'),
     disabled: false,
     to: {
       name: 'adminDashboard', // TODO: Change to orders list
     },
   },
   {
-    title: t('sales.update_order'),
+    title: t('orders.update_order'),
     disabled: true,
   },
 ])
@@ -107,7 +107,7 @@ async function uploadOrder() {
     <VCol cols="12">
       <UCHeaderPage
         class="mb-5"
-        :title="$t('sales.order_details')"
+        :title="$t('orders.order_details')"
         :path="path"
       />
 
@@ -136,7 +136,7 @@ async function uploadOrder() {
 
                 <div class="mb-6">
                   <p class="ma-0 details-title">
-                    {{ $t('sales.order_details') }}
+                    {{ $t('orders.order_details') }}
                   </p>
                   <p class="ma-0">
                     <span>{{ $t('cart.products_cant') }}:</span> {{ cantProducts }}
@@ -148,7 +148,7 @@ async function uploadOrder() {
 
                 <div>
                   <p class="ma-0 details-title">
-                    {{ $t('sales.order_status') }}
+                    {{ $t('orders.order_status') }}
                   </p>
                   <div class="d-flex flex-row align-start mt-2 update-status">
                     <VSelect
