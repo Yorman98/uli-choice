@@ -38,7 +38,6 @@
       "products": "Productos",
       "amount": "Monto",
       "date": "Fecha",
-      "product_url": "Enlace del producto",
       "product_name": "Nombre del producto",
       "total_amount": "Monto total",
       "notes": "Nota",
@@ -187,7 +186,9 @@
     "generate_order": "Generar orden",
     "see_cart": "Ver carrito",
     "details_cart": "Detalles del carrito",
-    "price_unit": "Precio unitario"
+    "price_unit": "Precio unitario",
+    "products_cant": "Cantidad de productos",
+    "total_price": "Precio total"
   },
   "orders": {
     "store_orders": "Ordenes realizadas",
