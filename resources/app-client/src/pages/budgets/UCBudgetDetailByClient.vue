@@ -17,7 +17,7 @@ const path: Ref<any[]> = ref([
     title: t('global.home'),
     disabled: false,
     to: {
-      name: 'adminDashboard',
+      name: 'products',
     },
   },
   {
@@ -51,7 +51,6 @@ const budgetInfo: UnwrapNestedRefs<BudgetInterface> = reactive({
   user_id: 0,
 } as BudgetInterface)
 
-const openMessage: Ref<boolean> = ref(false)
 const existMessage: Ref<boolean> = ref(false)
 
 async function getData() {
@@ -75,29 +74,13 @@ async function getData() {
     product_link.amount = product_link.price * product_link.quantity
   })
 
-  if (budgetInfo.msg)
+  if (budgetInfo.message)
     existMessage.value = true
 }
 
 onMounted(() => {
   getData()
 })
-
-function goToSendMessage() {
-  openMessage.value = true
-}
-
-function closeMessage() {
-  openMessage.value = false
-}
-
-async function sendMessage() {
-  await BudgetService.updateBudget(budgetInfo)
-
-  budgetsList.value = []
-  getData()
-  closeMessage()
-}
 </script>
 
 <template>
@@ -166,55 +149,12 @@ async function sendMessage() {
           <VRow>
             <VCol cols="12">
               <p>
-                {{ budgetInfo.msg }}
+                {{ budgetInfo.message }}
               </p>
             </VCol>
           </VRow>
         </VCardText>
       </VCard>
-
-      <VDialog
-        v-model="openMessage"
-        max-width="700px"
-      >
-        <VCard class="pa-4">
-          <VCardTitle>
-            <VRow class="align-center">
-              <VCol cols="12">
-                <h4 class="text-h4 mb-2 white--text">
-                  {{ t('budgets.message') }}
-                </h4>
-              </VCol>
-            </VRow>
-          </VCardTitle>
-
-          <VCardText>
-            <VTextarea
-              v-model="budgetInfo.msg"
-              :placeholder="$t('budgets.message')"
-              :label="$t('budgets.message')"
-            />
-          </VCardText>
-
-          <VCardActions class="d-flex justify-end">
-            <VBtn
-              color="primary"
-              outlined
-              @click="closeMessage"
-            >
-              {{ $t('global.cancel') }}
-            </VBtn>
-
-            <VBtn
-              color="primary"
-              flat
-              @click="sendMessage"
-            >
-              {{ $t('global.send') }}
-            </VBtn>
-          </VCardActions>
-        </VCard>
-      </VDialog>
     </VCol>
   </VRow>
 </template>

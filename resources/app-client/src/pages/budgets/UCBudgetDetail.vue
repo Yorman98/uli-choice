@@ -75,7 +75,7 @@ async function getData() {
     product_link.amount = product_link.price * product_link.quantity
   })
 
-  if (budgetInfo.msg)
+  if (budgetInfo.message)
     existMessage.value = true
 }
 
@@ -171,7 +171,7 @@ async function sendMessage() {
                 {{ t('budgets.button_message') }}
               </VBtn>
               <p v-if="existMessage">
-                {{ budgetInfo.msg }}
+                {{ budgetInfo.message }}
               </p>
             </VCol>
           </VRow>

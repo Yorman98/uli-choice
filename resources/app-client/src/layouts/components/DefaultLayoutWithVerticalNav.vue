@@ -33,12 +33,12 @@ const userStore = useUserStore()
           style="user-select: none;"
         >
           <!-- 👉 Search Trigger button -->
-          <IconBtn>
+          <IconBtn class="d-none">
             <VIcon icon="bx-search" />
           </IconBtn>
 
           <span class="d-none d-md-flex align-center text-disabled">
-            <span class="me-3">Search</span>
+            <span class="me-3 d-none">Search</span>
           </span>
         </div>
 
@@ -213,7 +213,7 @@ const userStore = useUserStore()
     <template v-else #vertical-nav-content>
       <VerticalNavLink
         :item="{
-          title: 'Dashboardssssss',
+          title: 'Dashboards',
           icon: 'bx-home',
           to: '/dashboard',
         }"
@@ -308,15 +308,6 @@ const userStore = useUserStore()
           icon: 'mdi-text-box-outline',
           to: {
             name: 'ordersList',
-          },
-        }"
-      />
-      <VerticalNavLink
-        :item="{
-          title: $t('navbar.transactions'),
-          icon: 'mdi-account-cash-outline',
-          to: {
-            name: 'transactions',
           },
         }"
       />
