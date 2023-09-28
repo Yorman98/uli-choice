@@ -11,8 +11,10 @@ const userStore = useUserStore()
 
 
 onBeforeMount(async () => {
-  await userStore.loadUser()
-  await userStore.fetchProductsCart(userStore.getUserInfo.id)
+  if (localStorage.getItem('accessToken')) {
+    await userStore.loadUser()
+    await userStore.fetchProductsCart(userStore.getUserInfo.id)
+  }
 })
 </script>
 
