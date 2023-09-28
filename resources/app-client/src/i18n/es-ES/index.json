@@ -196,7 +196,8 @@
     "generate_order": "Generar orden",
     "see_cart": "Ver carrito",
     "details_cart": "Detalles del carrito",
-    "price_unit": "Precio unitario"
+    "price_unit": "Precio unitario",
+
   },
   "orders": {
     "orders_list": "Lista de ordenes",
@@ -204,9 +205,7 @@
     "add_order": "Agregar orden",
     "price_unit": "Precio unitario",
     "products_cant": "Cantidad de productos",
-    "total_price": "Precio total"
-  },
-  "orders": {
+    "total_price": "Precio total",
     "id":"Número de orden",
     "amount": "Monto total",
     "reference": "Número de referencia",
