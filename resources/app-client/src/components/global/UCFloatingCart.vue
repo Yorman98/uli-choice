@@ -28,6 +28,10 @@ async function increaseProduct (quantity: number, productId: number) {
   await cartStore.fetchProductsCart(cartStore.userInfo.id)
 }
 
+async function updateCart() {
+  await cartStore.fetchProductsCart(cartStore.userInfo.id);
+}
+
 async function generateOrder() {
   await OrderService.createOrder({
     cart_id: cartStore.cartId
@@ -108,7 +112,7 @@ async function generateOrder() {
               {{ $t('cart.total') }}
             </p>
             <p class="ma-0" v-if="cartStore.productsCartTotal">
-              {{ cartStore.productsCartTotal }}
+              {{ $filters.currencyFormat(cartStore.productsCartTotal) }}
             </p>
           </div>
         </VCardActions>

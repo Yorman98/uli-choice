@@ -154,11 +154,6 @@ const router = createRouter({
           ],
         },
         {
-          path: 'cart',
-          name: 'cartPage',
-          component: () => import('@/pages/cart/UCCartPage.vue'),
-        },
-        {
           path: 'orders',
           name: 'ordersList',
           component: () => import('@/pages/orders/UCAdminOrdersList.vue'),
@@ -183,6 +178,11 @@ const router = createRouter({
               component: () => import('@/pages/product/UCSingleProduct.vue'),
             },
           ],
+        },
+        {
+          path: 'cart',
+          name: 'cartPage',
+          component: () => import('@/pages/cart/UCCartPage.vue'),
         },
       ],
     },

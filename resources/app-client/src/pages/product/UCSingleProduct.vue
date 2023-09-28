@@ -4,21 +4,19 @@ import { ProductInterface } from "@/store/types/ProductInterface";
 import { ref, Ref } from "vue";
 import { useRouter } from "vue-router";
 import ProductService from "@/services/ProductService";
-import { useUserStore } from '@/store/user'
-import FloatingCart from '@/components/global/UCFloatingCart.vue'
+import { useUserStore } from "@/store/user";
 
-
-const userStore = useUserStore()
+const userStore = useUserStore();
 
 const { t } = useI18n();
 
 const router = useRouter();
 
 const selected: { [key: string]: any } = ref({});
-const processOrder = ref(false)
+const userCart = ref(null);
 
 const product: Ref<ProductInterface> = ref({} as ProductInterface);
-
+  
 /*
  * Cart Info
  */
@@ -29,10 +27,9 @@ const cartInfo: UnwrapNestedRefs<ProductCartRequestInterface> = reactive({
   quantity: 0,
 } as ProductCartRequestInterface);
 
-
 async function saveProductsCart() {
-  await ProductService.addProductCart(cartInfo).then (resp => {
-     ProductService.getProductsCart(cartInfo.user_id);
+  await ProductService.addProductCart(cartInfo).then((resp) => {
+    userStore.fetchProductsCart(userStore.getUserInfo.id);
   });
   cartInfo.quantity = 0;
 }
@@ -43,8 +40,7 @@ onMounted(async () => {
     const response = await ProductService.getProduct(id);
     product.value = response.data?.data;
     cartInfo.product_id = product.value.id;
-    cartInfo.user_id =  userStore.getUserInfo.id;
-
+    cartInfo.user_id = userStore.getUserInfo.id;
   }
 });
 
@@ -198,6 +194,7 @@ const headers: any[] = [
 <template>
   <VContainer class="pa-0" :fluid="true">
     <VContainer>
+
       <VRow class="pa-4">
         <VCol cols="12" xs="12" sm="12" md="5">
           <div class="thumbnail-section pa-3">
@@ -240,7 +237,9 @@ const headers: any[] = [
                         ></v-text-field>
                       </v-col>
                       <v-col cols="6" xs="6" sm="6" md="4">
-                        <v-btn @click="saveProductsCart" color="primary">Agregar al carro</v-btn>
+                        <v-btn @click="saveProductsCart" color="primary"
+                          >Agregar al carro</v-btn
+                        >
                       </v-col>
                     </v-row>
                   </div>
