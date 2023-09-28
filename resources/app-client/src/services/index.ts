@@ -11,6 +11,12 @@ const apiClient: AxiosInstance = axios.create({
   },
 })
 
+apiClient.interceptors.request.use(config => {
+  if (localStorage.getItem('accessToken')) {
+    config.headers!.Authorization = `Bearer ${localStorage.getItem('accessToken')}`
+  }
+  return config
+})
 apiClient.interceptors.response.use(null, error => {
   if (error.response.status === 401)
     router.push('/login')
