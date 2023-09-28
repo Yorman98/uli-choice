@@ -66,6 +66,10 @@ class ProductService {
   updateQuantity(payload: { productCartId: number; quantity: number }): AxiosPromise<CartResponseInterface> {
     return ApiService.post('/cart/update-quantity', payload)
   }
+
+  deleteVariantion(payload: { productId: number; variantId: number }): AxiosPromise<VariationResponseInterface> {
+    return ApiService.delete(`/product/${payload.productId}/variations/${payload.variantId}`)
+  }
 }
 
 export default new ProductService()

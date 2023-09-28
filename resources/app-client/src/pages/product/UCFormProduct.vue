@@ -66,6 +66,10 @@ const attributesGroup: Ref<AttributeGroupInterface[]> = ref([])
 const attributes: Ref<AttributeInterface[]> = ref([])
 
 onMounted(async () => {
+  await initData()
+})
+
+async function initData () {
   const response = await CategoryService.getCategories()
   const attributeGroupResponse = await AttributeService.getAttributeGroup()
 
@@ -99,8 +103,7 @@ onMounted(async () => {
     product.image = STORAGE_PATH + product.image
     productId = route.params.id
   }
-})
-
+}
 function addVariant() {
   variants.value.push({
     sku: '',
@@ -171,19 +174,16 @@ async function saveProductData() {
 }
 
 async function saveProductVariant () {
-
-  await Promise.all(variants.value.map(async (variant) => {
+  await Promise.all(variants.value.map(async (variant, index) => {
     const variantData = new FormData()
-    variantData.append('sku', variant.sku)
+    variantData.append('sku', generateSku(index))
     variantData.append('price', String(variant.price))
     variantData.append('cost', String(variant.cost))
     variantData.append('stock', String(variant.stock))
     if (variant?.id) variantData.append('id', String(variant?.id))
     if (typeof variant.selectedImage === 'object') variantData.append('image', variant.selectedImage[0])
-    for (const value of variant.group)
-      variantData.append('group[]', String(value))
     for (const value of variant.attributes)
-      variantData.append('attributes[]', String(value))
+      if (value) variantData.append('attributes[]', String(value))
     await ProductService.createProductVariant({ productId: productId, data: variantData })
   }))
 }
@@ -194,10 +194,22 @@ async function fetchAttributes (groupId: number) {
 }
 
 function setGroup (groupId: number, index: number) {
-  console.log(index)
   if (variants.value[index]?.group.indexOf(groupId) === -1) {
     variants.value[index].group.push(groupId)
   }
+}
+
+async function deleteVariant (payload: { isSave: boolean, id: number }) {
+  if (payload.isSave) {
+    await ProductService.deleteVariantion({ productId: productId, variantId: payload.id })
+    await initData()
+  } else {
+    variants.value.splice(payload.id, 1)
+  }
+}
+
+function generateSku (index: number, variant) {
+  return `${product.code}-${index}`
 }
 </script>
 
@@ -218,7 +230,7 @@ function setGroup (groupId: number, index: number) {
           <VRow>
             <VCol
               cols="12"
-              class="d-flex justify-end"
+              class="product-options d-flex justify-end flex-wrap"
             >
               <VBtn @click="saveProductData">
                 <VIcon
@@ -338,8 +350,15 @@ function setGroup (groupId: number, index: number) {
         </VCardText>
       </VCard>
 
-      <VCard :title="$t('products.form_product.product_variant')">
-        <VCardTitle>
+      <VCard
+        v-if="variants.length > 0"
+        :title="$t('products.form_product.product_variant')"
+        class="mb-6"
+      >
+      </VCard>
+
+      <VLayoutItem model-value position="bottom" class="text-end" size="88">
+        <div class="ma-4">
           <VBtn
             class="mb-4"
             color="primary"
@@ -347,58 +366,79 @@ function setGroup (groupId: number, index: number) {
           >
             {{ $t('products.form_product.add_variant') }}
           </VBtn>
-        </VCardTitle>
-
-        <VCardText
-          v-for="(variant, index) in variants"
-          :key="index"
-          class="mb-10 py-0"
-        >
+        </div>
+      </VLayoutItem>
+      <VCard
+        v-for="(variant, index) in variants"
+        class="mb-6 py-6"
+        :key="index"
+      >
+        <VCardTitle class="d-flex justify-space-between mb-6">
           <p class="text-h6">
             {{ $t('products.form_product.variant') }} {{ index + 1 }}
           </p>
-          <VRow>
-            <VCol
-              cols="12"
-              class="d-flex flex-column justify-center align-center mb-4"
+
+          <VBtn
+            color="error"
+            class="ml-4"
+            @click="variant?.id ? deleteVariant({ isSave: true, id: variant.id }) : deleteVariant({ isSave: false, id: index })"
+            variant="flat"
+          >
+            <VIcon
+              class="pr-2"
+              size="35"
             >
-              <VImg
-                :src="variant.image ? variant.image : imageUrl"
-                class="img-preview"
-                max-width="300"
-                height="200"
-                contain
-                @click="openVariantFileInput(index)"
-              />
-
-              <VBtn
-                class="my-6"
-                @click="openVariantFileInput(index)"
+              mdi-trash-can-outline
+            </VIcon>
+            <p class="text-button ma-0">
+              {{ t('products.form_product.delete_variant') }}
+            </p>
+          </VBtn>
+        </VCardTitle>
+        <VCardText class="variant-container d-flex align-center mb-10 py-0">
+          <div class="mr-6">
+            <VRow>
+              <VCol
+                cols="12"
+                class="d-flex flex-column justify-center align-center mb-4"
               >
-                {{ $t('products.form_product.change_variant_photo') }}
-              </VBtn>
-            </VCol>
+                <VImg
+                  :src="variant.image ? variant.image : imageUrl"
+                  class="img-preview"
+                  max-width="300"
+                  height="200"
+                  contain
+                  @click="openVariantFileInput(index)"
+                />
 
-            <VCol cols="6">
-              <VFileInput
-                v-model="variant.selectedImage"
-                class="hide"
-                :class="`img-${index}`"
-                label="Upload an image"
-                accept="image/*"
-                prepend-icon="mdi-camera"
-                @change="handleVariantFileChange($event, index)"
-              />
-            </VCol>
-          </VRow>
+                <VBtn
+                  class="my-6"
+                  @click="openVariantFileInput(index)"
+                >
+                  {{ $t('products.form_product.change_variant_photo') }}
+                </VBtn>
+              </VCol>
+
+              <VCol cols="6">
+                <VFileInput
+                  v-model="variant.selectedImage"
+                  class="hide"
+                  :class="`img-${index}`"
+                  label="Upload an image"
+                  accept="image/*"
+                  prepend-icon="mdi-camera"
+                  @change="handleVariantFileChange($event, index)"
+                />
+              </VCol>
+            </VRow>
+          </div>
           <VForm>
             <VRow>
               <VCol cols="6">
                 <VTextField
-                  v-model="variant.sku"
-                  :placeholder="$t('products.form_product.product_sku')"
-                  :label="$t('products.form_product.product_sku')"
+                  :label="variant.sku ? variant.sku : $t('products.form_product.autogenerated_sku')"
                   type="text"
+                  :disabled="true"
                 />
               </VCol>
 
@@ -432,7 +472,7 @@ function setGroup (groupId: number, index: number) {
               <VCol cols="12">
                 <v-expansion-panels>
                   <v-expansion-panel
-                    :title="$t('products.form_product.variant')"
+                    :title="$t('products.form_product.attributes')"
                   >
                     <v-expansion-panel-text>
                       <VRow v-for="(group, groupIndex) in attributesGroup" :key="groupIndex" class="pa-4">
@@ -477,5 +517,15 @@ function setGroup (groupId: number, index: number) {
 
 .img-preview {
   cursor: pointer;
+}
+@media screen and (max-width: 759px) {
+  .product-options {
+    gap: 20px;
+  }
+
+  .variant-container {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 }
 </style>
