@@ -158,6 +158,27 @@ const router = createRouter({
           ],
         },
         {
+          path: 'budgets2',
+          children: [
+            {
+              path: '',
+              name: 'budgets2',
+              meta: {
+                middleware: [authClient],
+              },
+              component: () => import('@/pages/budgets/UCBudgetsByClient.vue'),
+            },
+            {
+              path: ':id',
+              name: 'budgetDetail2',
+              meta: {
+                middleware: [authClient],
+              },
+              component: () => import('@/pages/budgets/UCBudgetDetailByClient.vue'),
+            },
+          ],
+        },
+        {
           path: 'payment-methods',
           name: 'paymentMethods',
           component: () => import('@/pages/transactions/UCPaymentMethods.vue'),
@@ -184,7 +205,7 @@ const router = createRouter({
             {
               path: 'edit-order/:id',
               name: 'editOrderForm',
-              component: () => import('@/pages/orders/UCOrderForm.vue'),
+              component: () => import('@/pages/orders/UCOrderEdit.vue'),
               meta: {
                 middleware: [authAdmin]
               }
@@ -206,6 +227,27 @@ const router = createRouter({
           meta: {
             middleware: [authAdmin]
           }
+        },
+        {
+          path: 'orders2',
+          children: [
+            {
+              path: '',
+              name: 'orders2',
+              meta: {
+                middleware: [authClient],
+              },
+              component: () => import('@/pages/orders/UCOrderListyClient.vue'),
+            },
+            {
+              path: ':id',
+              name: 'orderDetail2',
+              meta: {
+                middleware: [authClient],
+              },
+              component: () => import('@/pages/orders/UCOrderDetailByClient.vue'),
+            },
+          ],
         },
       ],
     },

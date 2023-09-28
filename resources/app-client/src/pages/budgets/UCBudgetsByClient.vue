@@ -6,11 +6,9 @@ import { useRouter } from 'vue-router'
 import UCHeaderPage from '@/components/helpers/UCHeaderPage.vue'
 import UCTable from '@/components/helpers/UCTable.vue'
 import BudgetService from '@/services/BudgetService'
-import ClientService from '@/services/ClientService'
 import type { BudgetInterface } from '@/store/types/BudgetInterface'
-import type { ClientInterface } from '@/store/types/ClientInterface'
 import { validateRequired } from '@/services/FormValidationService'
-import type { ProductLinkInterface } from '@/store/types/ProductLinkInterface'
+import { useUserStore } from '@/store/user'
 
 const { t } = useI18n()
 const router = useRouter()
@@ -31,27 +29,16 @@ const path: Ref<any[]> = ref([
 
 const openBudget: Ref<boolean> = ref(false)
 const isEditBudget: Ref<boolean> = ref(false)
-const search: Ref<string> = ref('')
 
 const headers: any[] = [
   { title: t('global.headers.id'), key: 'id' },
-  { title: t('global.headers.client'), key: 'user_full_name' },
   { title: t('global.headers.date_created'), key: 'created_at' },
   { title: t('global.headers.status'), key: 'statusName' },
   { title: t('global.headers.amount'), key: 'price', align: 'end' },
   { title: t('global.headers.options'), align: 'end', key: 'actions', sortable: false },
 ]
 
-const status: any[] = [
-  { text: t('global.status.pending'), value: 1 },
-  { text: t('global.status.processing'), value: 2 },
-  { text: t('global.status.completed'), value: 3 },
-  { text: t('global.status.cancelled'), value: 4 },
-]
-
 const budgetsList: Ref<BudgetInterface[]> = ref([])
-const budgetsListFilter: Ref<BudgetInterface[]> = ref([])
-const clientList: Ref<ClientInterface[]> = ref([])
 
 const budgetInfo: UnwrapNestedRefs<BudgetInterface> = reactive({
   cost: 0,
@@ -66,24 +53,13 @@ const budgetInfo: UnwrapNestedRefs<BudgetInterface> = reactive({
   user_id: 0,
 } as BudgetInterface)
 
+const userId: Ref<number> = ref(0)
+
 async function getData() {
-  const { data } = await ClientService.getClients()
-  const response = data?.data ?? []
+  const data = await BudgetService.getBudgets()
+  const response = data.data?.data ?? []
 
-  response.forEach((client: ClientInterface) => {
-    client.full_name = `${client.first_name} ${client.last_name}`
-    clientList.value.push(client)
-  })
-
-  const data2 = await BudgetService.getBudgets()
-  const response2 = data2.data?.data ?? []
-
-  response2.forEach((budget: BudgetInterface) => {
-    if (budget?.user && budget?.user?.length > 0) {
-      budget.user_full_name = `${budget?.user[0].first_name} ${budget?.user[0].last_name}`
-      budget.user_id = budget.user[0].id
-    }
-
+  response.forEach((budget: BudgetInterface) => {
     budget.statusName = t(`global.status.${budget?.status?.name.toLowerCase()}`)
     budgetsList.value.push(budget)
   })
@@ -94,19 +70,19 @@ async function getData() {
 
     return dateB - dateA
   })
-
-  budgetsListFilter.value = budgetsList.value
 }
 
 onMounted(() => {
+  const userStore = useUserStore()
+  const user = userStore.$state
+
+  userId.value = user.userInfo.id
+
   getData()
 })
 
 function closeBudget() {
   openBudget.value = false
-  if (isEditBudget.value)
-    isEditBudget.value = false
-
   Object.assign(budgetInfo, {
     cost: 0,
     price: 0,
@@ -117,14 +93,14 @@ function closeBudget() {
       price: 0,
     }],
     status_id: 1,
-    user_id: null,
+    user_id: userId.value,
     id: null,
   })
 }
 
 async function saveBudget() {
   if (isEditBudget.value) {
-    await BudgetService.updateBudget(budgetInfo)
+    await BudgetService.updateBudgetFromCustomer(budgetInfo)
     isEditBudget.value = false
   }
   else {
@@ -137,15 +113,10 @@ async function saveBudget() {
 }
 
 function editItem(budget: BudgetInterface) {
+  budget.user_id = userId.value
   isEditBudget.value = true
   openBudget.value = true
   Object.assign(budgetInfo, budget)
-}
-
-async function deleteItem(payload: number) {
-  await BudgetService.deleteBudget(payload)
-  budgetsList.value = []
-  await getData()
 }
 
 function goToCreateBudget() {
@@ -160,23 +131,11 @@ function goToCreateBudget() {
         price: 0,
       }],
       status_id: 1,
-      user_id: null,
+      user_id: userId.value,
       id: null,
     })
   }
   openBudget.value = true
-}
-
-function updatePrice() {
-  let amount = 0
-  let cost = 0
-  budgetInfo.product_links.forEach((product_link: ProductLinkInterface) => {
-    product_link.price = (product_link.cost * 1) + (product_link.cost * 1) * 0.15
-    amount += product_link.price * product_link.quantity * 1
-    cost += product_link.cost * 1
-  })
-  budgetInfo.price = parseFloat(amount.toFixed(2))
-  budgetInfo.cost = parseFloat(cost.toFixed(2))
 }
 
 function addProductLink() {
@@ -192,15 +151,9 @@ function deleteProductLink(index: number) {
   budgetInfo.product_links.splice(index, 1)
 }
 
-function filter() {
-  if (search.value.trim() !== '')
-    budgetsListFilter.value = budgetsList.value.filter((budget: BudgetInterface) => budget.user_full_name?.toLowerCase().includes(search.value.toLocaleLowerCase()))
-  else budgetsListFilter.value = budgetsList.value
-}
-
 function goToItem(budget: BudgetInterface) {
   router.push({
-    name: 'budgetDetail',
+    name: 'budgetDetail2',
     params: {
       id: budget.id,
     },
@@ -219,19 +172,15 @@ function goToItem(budget: BudgetInterface) {
 
       <VCard class="pa-4">
         <VCardTitle>
-          <VRow class="d-flex justify-end">
-            <VCol cols="3">
-              <VTextField
-                v-model="search"
-                prepend-inner-icon="mdi-magnify"
+          <VRow>
+            <VCol
+              cols="12"
+              class="d-flex justify-end"
+            >
+              <VBtn
                 class="mb-4"
-                density="compact"
-                :label="$t('budgets.search_by_customer')"
-                @keyup="filter"
-              />
-            </VCol>
-            <VCol cols="2">
-              <VBtn @click="goToCreateBudget">
+                @click="goToCreateBudget"
+              >
                 <VIcon
                   color="white pr-2"
                   size="35"
@@ -239,7 +188,7 @@ function goToItem(budget: BudgetInterface) {
                   mdi-plus
                 </VIcon>
                 <p class="text-button ma-0">
-                  {{ t('budgets.create_budget') }}
+                  {{ t('budgets.request_budget') }}
                 </p>
               </VBtn>
             </VCol>
@@ -249,10 +198,9 @@ function goToItem(budget: BudgetInterface) {
         <VCardText>
           <UCTable
             :headers="headers"
-            :items="budgetsListFilter"
-            has-sub-items
+            :items="budgetsList"
+            edit-and-goto
             @editItem="editItem"
-            @deleteItem="deleteItem"
             @goToItem="goToItem"
           />
         </VCardText>
@@ -270,36 +218,17 @@ function goToItem(budget: BudgetInterface) {
                   {{ isEditBudget ? $t('budgets.edit_budget') : t('budgets.create_budget') }}
                 </h4>
               </VCol>
-
-              <VCol
-                cols="4"
-                class="d-flex justify-end"
-              >
-                <h3>
-                  {{ t('global.headers.amount') }} ${{ budgetInfo.price }}
-                </h3>
-              </VCol>
             </VRow>
           </VCardTitle>
 
           <VCardText>
-            <VSelect
-              v-model="budgetInfo.user_id"
-              :items="clientList"
-              item-title="full_name"
-              item-value="id"
-              :label="$t('global.headers.client')"
-              class="mb-6"
-              density="compact"
-            />
-
             <ul class="mb-4">
               <li
                 v-for="(productLink, index) in budgetInfo.product_links"
                 :key="index"
               >
                 <VRow class="align-center">
-                  <VCol cols="7">
+                  <VCol cols="9">
                     <VTextField
                       v-model="productLink.url"
                       density="compact"
@@ -312,19 +241,6 @@ function goToItem(budget: BudgetInterface) {
 
                   <VCol cols="2">
                     <VTextField
-                      v-model="productLink.cost"
-                      density="compact"
-                      type="number"
-                      :label="$t('global.headers.cost')"
-                      :rules="[
-                        (val) => validateRequired(val) || $t('registration.required_field'),
-                      ]"
-                      @change="updatePrice"
-                    />
-                  </VCol>
-
-                  <VCol cols="2">
-                    <VTextField
                       v-model="productLink.quantity"
                       density="compact"
                       type="number"
@@ -332,7 +248,6 @@ function goToItem(budget: BudgetInterface) {
                       :rules="[
                         (val) => validateRequired(val) || $t('registration.required_field'),
                       ]"
-                      @change="updatePrice"
                     />
                   </VCol>
 
@@ -358,17 +273,6 @@ function goToItem(budget: BudgetInterface) {
                 </VCol>
               </VRow>
             </ul>
-
-            <VSelect
-              v-if="isEditBudget"
-              v-model="budgetInfo.status_id"
-              :items="status"
-              item-title="text"
-              item-value="value"
-              :label="$t('global.headers.status')"
-              class="mb-4"
-              density="compact"
-            />
           </VCardText>
 
           <VCardActions class="d-flex justify-end">

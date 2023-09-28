@@ -148,6 +148,7 @@ function goToCreateClient() {
           <UCTable
             :headers="headers"
             :items="clientList"
+            onlyEdit
             @editItem="editItem"
             @deleteItem="deleteItem"
           />

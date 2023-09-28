@@ -57,6 +57,7 @@ onMounted(() => {
 
 function closeProvider() {
   openProvider.value = false
+  isEditProvider.value = false
   Object.assign(providerInfo, {
     name: '',
     website: '',
@@ -105,7 +106,7 @@ function goToCreateProvider() {
 </script>
 
 <template>
-  <VRow>
+  <VRow class="uc-providers-container">
     <VCol cols="12">
       <UCHeaderPage
         class="mb-5"
@@ -132,6 +133,7 @@ function goToCreateProvider() {
           <UCTable
             :headers="headers"
             :items="providersList"
+            only-edit
             @editItem="editItem"
             @deleteItem="deleteItem"
           />
@@ -140,12 +142,13 @@ function goToCreateProvider() {
 
       <VDialog
         v-model="openProvider"
+        persistent
         max-width="700px"
       >
         <VCard class="pa-4">
           <VCardTitle color="red">
             <h4 class="text-h4 mb-2 white--text">
-              {{ t('providers.create_provider') }}
+              {{ isEditProvider ? $t('providers.edit_provider') : t('providers.create_provider') }}
             </h4>
           </VCardTitle>
 
@@ -198,9 +201,16 @@ function goToCreateProvider() {
 </template>
 
 <style scoped lang="scss">
-.v-btn {
-  span.v-btn__content p {
-    color: #FFFFFF;
+.uc-providers-container {
+  .v-btn {
+    span.v-btn__content p {
+      color: #FFFFFF;
+    }
   }
+}
+
+h4 {
+  font-size: 30px !important;
+  line-height: 1;
 }
 </style>

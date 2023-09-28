@@ -13,7 +13,8 @@ class Budget extends Model
         'product_links',
         'status_id',
         'price',
-        'cost'
+        'cost',
+        'message'
     ];
 
     // Cast product_links to array

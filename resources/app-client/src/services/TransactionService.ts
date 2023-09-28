@@ -6,23 +6,19 @@ import type { TransactionInterface } from '@/store/types/TransactionInterface'
 
 class TransactionService {
   createTransaction(payload: UnwrapNestedRefs<TransactionInterface>): AxiosPromise<TransactionResponseInterface> {
-    return ApiService.post('/transaction', payload)
+    return ApiService.post('/transactions', payload)
   }
 
-  getTransactions(): AxiosPromise<TransactionResponseInterface> {
-    return ApiService.get('/transaction')
-  }
-
-  getTransaction(id: number): AxiosPromise<TransactionResponseInterface> {
-    return ApiService.get(`/transaction/${id}`)
+  getTransaction(orderId: number): AxiosPromise<TransactionResponseInterface> {
+    return ApiService.get(`/transactions/${orderId}`)
   }
 
   updateTransaction(payload: UnwrapNestedRefs<TransactionInterface>): AxiosPromise<TransactionResponseInterface> {
-    return ApiService.put(`/transaction/${payload.id}`, payload)
+    return ApiService.put(`/transactions/${payload.id}`, payload)
   }
 
   deleteTransaction(id: number): AxiosPromise<TransactionResponseInterface> {
-    return ApiService.delete(`/transaction/${id}`)
+    return ApiService.delete(`/transactions/${id}`)
   }
 }
 
