@@ -8,6 +8,7 @@ import UCTable from '@/components/helpers/UCTable.vue'
 import BudgetService from '@/services/BudgetService'
 import type { BudgetInterface } from '@/store/types/BudgetInterface'
 import type { ProductLinkInterface } from '@/store/types/ProductLinkInterface'
+import { formatDate } from '@/utils/dateUtils'
 
 const { t } = useI18n()
 const router = useRouter()
@@ -64,6 +65,7 @@ async function getData() {
       budget.user_id = budget?.user[0].id
     }
     budget.statusName = t(`global.status.${budget?.status?.name.toLowerCase()}`)
+    budget.created_at = formatDate(budget.created_at)
     budgetsList.value.push(budget)
   })
 

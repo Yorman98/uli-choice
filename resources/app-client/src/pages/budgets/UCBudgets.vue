@@ -11,6 +11,7 @@ import type { BudgetInterface } from '@/store/types/BudgetInterface'
 import type { ClientInterface } from '@/store/types/ClientInterface'
 import { validateRequired } from '@/services/FormValidationService'
 import type { ProductLinkInterface } from '@/store/types/ProductLinkInterface'
+import { formatDate } from '@/utils/dateUtils'
 
 const { t } = useI18n()
 const router = useRouter()
@@ -85,6 +86,7 @@ async function getData() {
     }
 
     budget.statusName = t(`global.status.${budget?.status?.name.toLowerCase()}`)
+    budget.created_at = formatDate(budget.created_at)
     budgetsList.value.push(budget)
   })
 

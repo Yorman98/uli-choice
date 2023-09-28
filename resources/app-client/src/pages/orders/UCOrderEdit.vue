@@ -29,7 +29,7 @@ const path: Ref<any[]> = ref([
     title: t('orders.orders_list'),
     disabled: false,
     to: {
-      name: 'adminDashboard', // TODO: Change to orders list
+      name: 'ordersList',
     },
   },
   {

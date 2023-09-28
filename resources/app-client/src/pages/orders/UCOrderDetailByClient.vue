@@ -10,6 +10,7 @@ import TransactionService from '@/services/TransactionService'
 import type { OrderInterface } from '@/store/types/OrderInterface'
 import type { TransactionInterface } from '@/store/types/TransactionInterface'
 import type { ProductInterface } from '@/store/types/ProductInterface'
+import { formatDate } from '@/utils/dateUtils'
 
 const { t } = useI18n()
 const router = useRouter()
@@ -65,6 +66,7 @@ async function getData() {
     order.user_full_name = `${order?.cart?.user.first_name} ${order?.cart?.user.last_name}`
 
   order.statusName = t(`global.status.${order?.status?.name.toLowerCase()}`)
+  order.created_at = formatDate(order.created_at)
 
   Object.assign(orderInfo, order)
   remainingAmount.value = orderInfo.total_price
@@ -73,6 +75,7 @@ async function getData() {
   const response = data2.data?.transactions ?? []
 
   response.forEach((transaction: TransactionInterface) => {
+    transaction.created_at = formatDate(transaction.created_at)
     transactionList.value.push(transaction)
     remainingAmount.value = remainingAmount.value - transaction.amount
   })
