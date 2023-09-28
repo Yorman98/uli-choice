@@ -215,11 +215,17 @@ const router = createRouter({
               name: 'products',
               path: '',
               component: () => import('@/pages/product/UCProductsCard.vue'),
+              meta: {
+                middleware: [authClient],
+              },
             },
             {
               path: ':id',
               name: 'product',
               component: () => import('@/pages/product/UCSingleProduct.vue'),
+              meta: {
+                middleware: [authClient],
+              },
             },
           ],
         },
