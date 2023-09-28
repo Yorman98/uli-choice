@@ -1,12 +1,18 @@
 <script setup lang="ts">
 import avatar1 from '@images/avatars/avatar-1.png'
 import { useUserStore } from '@/store/user'
+import { useRouter } from 'vue-router'
 
 const userStore = useUserStore()
+const router = useRouter()
 
 async function logout() {
   try {
     await userStore.logout()
+
+    router.push({
+      name: 'login',
+    })
   }
   catch (error) {
     console.error(error)

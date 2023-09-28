@@ -279,6 +279,7 @@ const router = createRouter({
       children: [
         {
           path: 'login',
+          name: 'login',
           component: () => import('@/pages/auth/UCLogin.vue'),
           meta: {
             middleware: [authPublic],

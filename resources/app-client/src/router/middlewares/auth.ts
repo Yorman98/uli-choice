@@ -15,7 +15,6 @@ export function authAdmin({ next }: any) {
   // if (userStore.userInfo.role !== '' && (!user || user.accessToken === '')) {
   //   router.replace({ name: 'login' })
   // }
-
   if (userStore.userInfo.role !== '' && userStore.userInfo.role !== ADMIN) {
     return next({
       name: 'error'

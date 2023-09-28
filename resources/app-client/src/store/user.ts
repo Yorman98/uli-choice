@@ -5,7 +5,7 @@ import UserService from '@/services/UserService'
 import AuthService from '@/services/AuthService'
 import type { LoginResponseInterface, RegisterResponseInterface } from '@/services/types/AuthTypes'
 import type { UserResponseInterface } from '@/services/types/UserTypes'
-import { ProductCartRequestInterface } from '@/store/types/ProductInterface'
+import type { ProductCartRequestInterface } from '@/store/types/ProductInterface'
 import ProductService from '@/services/ProductService'
 import OrderService from '@/services/OrderService'
 
@@ -21,7 +21,7 @@ export const useUserStore = defineStore('user', {
       accessToken: '' as string | undefined,
       productsCart: [] as any,
       productsCartTotal: 0 as number,
-      cartId: 0 as number
+      cartId: 0 as number,
     }
   },
   getters: {
@@ -49,6 +49,7 @@ export const useUserStore = defineStore('user', {
         role: '',
         id: null,
       }
+      localStorage.clear()
     },
     async loadUser() {
       const response: AxiosResponse<UserResponseInterface> = await UserService.getUser()
@@ -58,7 +59,7 @@ export const useUserStore = defineStore('user', {
         lastName: response.data.last_name,
         email: response.data.email,
         role: response.data.role,
-        id: response.data.id
+        id: response.data.id,
       }
     },
     async register(payload: { first_name: string; last_name: string; phone_number: string; email: string; password: string }) {
@@ -75,25 +76,29 @@ export const useUserStore = defineStore('user', {
     },
     async addToCart(payload: ProductCartRequestInterface) {
       const response = await ProductService.addProductCart(payload)
+
       this.productsCart = response.data.products
       this.productsCartTotal = response.data.total_price
+
       return response.data.cart_id
     },
     async fetchProductsCart(userId: number) {
       const response = await ProductService.getProductsActiveCart(userId)
+
       this.productsCart = response.data.products
       this.cartId = response.data.cart_id
       this.productsCartTotal = response.data.total_price
     },
     async fetchOrders() {
       const response = await OrderService.getOrders()
+
       return response.data
     },
     async removeFromCart(productCartId: number) {
       await ProductService.removeFromCart(productCartId)
     },
-    async updateProductQuantity (payload: { productCartId: number, quantity: number }) {
+    async updateProductQuantity(payload: { productCartId: number, quantity: number }) {
       await ProductService.updateQuantity(payload)
-    }
+    },
   },
 })
