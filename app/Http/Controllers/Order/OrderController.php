@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Doctrine\DBAL\Types\BlobType;
+// Blob
+
 
 class OrderController extends Controller
 {
@@ -265,7 +268,7 @@ class OrderController extends Controller
     }
 
 
-    // generateInvoiceByOrderId
+    // generateInvoiceByOrderId return Blob object
     public function generateInvoiceByOrderId(Request $request, int $id)
     {
         $validationRules = [
@@ -297,8 +300,9 @@ class OrderController extends Controller
                 'status'
             ])->findOrFail($id);
 
-            $pdf = \PDF::loadView('invoice', ['order' => $order]);
-            return $pdf->download('invoice.pdf');
+            $pdf = \PDF::loadView('invoice', ['order' => $order])->set_option('PDF_VERSION', '1.4')->setPaper('a4');
+            
+            return $pdf->stream('invoice.pdf');
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,

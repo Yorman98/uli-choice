@@ -20,6 +20,16 @@ export class OrderService {
   updateOrder(payload: UnwrapNestedRefs<OrderInterface>): AxiosPromise<OrderResponseInterface> {
     return ApiService.put(`/orders/${payload.id}`, payload)
   }
+
+  // Download invoice PDF
+  getInvoice(id: number): AxiosPromise<Blob> {
+    return ApiService.get(`/orders/${id}/invoice`, {
+      headers: {
+        Accept: 'application/pdf',
+        responseType: 'blob'
+      }
+    })
+  } 
 }
 
 export default new OrderService()

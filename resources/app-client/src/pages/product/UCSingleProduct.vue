@@ -5,6 +5,7 @@ import { ref, Ref } from "vue";
 import { useRouter } from "vue-router";
 import ProductService from "@/services/ProductService";
 import { useUserStore } from "@/store/user";
+import OrderService from "@/services/OrderService";
 
 const userStore = useUserStore();
 
@@ -16,7 +17,7 @@ const selected: { [key: string]: any } = ref({});
 const userCart = ref(null);
 
 const product: Ref<ProductInterface> = ref({} as ProductInterface);
-  
+
 /*
  * Cart Info
  */
@@ -169,6 +170,20 @@ function getAttrsNames(attrs: Array<{ name: string }>): Array<string> {
   return attrs?.map((item) => item.name) || [];
 }
 
+const downloadPdf = async () => {
+  const response = await OrderService.getInvoice(2);
+  // Download blob pdf
+  const url = window.URL.createObjectURL(
+    new Blob([response.data], { type: "application/pdf" })
+  );
+  const link = document.createElement("a");
+  console.log(link);
+  link.href = url;
+  link.setAttribute("download", "invoice.pdf"); //or any other extension
+  document.body.appendChild(link);
+  link.click();
+};
+
 const path: any[] = [
   {
     title: t("global.home"),
@@ -194,7 +209,6 @@ const headers: any[] = [
 <template>
   <VContainer class="pa-0" :fluid="true">
     <VContainer>
-
       <VRow class="pa-4">
         <VCol cols="12" xs="12" sm="12" md="5">
           <div class="thumbnail-section pa-3">
