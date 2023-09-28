@@ -1,5 +1,17 @@
 <script setup lang="ts">
 import avatar1 from '@images/avatars/avatar-1.png'
+import { useUserStore } from '@/store/user'
+
+const userStore = useUserStore()
+
+async function logout() {
+  try {
+    await userStore.logout()
+  }
+  catch (error) {
+    console.error(error)
+  }
+}
 </script>
 
 <template>
@@ -110,7 +122,7 @@ import avatar1 from '@images/avatars/avatar-1.png'
           <VDivider class="my-2 d-none" />
 
           <!-- 👉 Logout -->
-          <VListItem to="/login">
+          <VListItem @click="logout">
             <template #prepend>
               <VIcon
                 class="me-2"

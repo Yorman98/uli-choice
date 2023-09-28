@@ -39,6 +39,17 @@ export const useUserStore = defineStore('user', {
       if (this.accessToken)
         localStorage.setItem('accessToken', this.accessToken)
     },
+    async logout() {
+      await AuthService.logout()
+
+      this.userInfo = {
+        firstName: '',
+        lastName: '',
+        email: '',
+        role: '',
+        id: null,
+      }
+    },
     async loadUser() {
       const response: AxiosResponse<UserResponseInterface> = await UserService.getUser()
 
