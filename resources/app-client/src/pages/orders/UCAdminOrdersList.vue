@@ -50,8 +50,13 @@ async function deleteItem (orderId) {
   await OrderService.deleteOrder(orderId)
 }
 
-async function editItem (orderId) {
-  // router.push({ name: 'editOrderForm', params: { orderId } })
+async function editItem (payload: any) {
+  await router.push({
+    name: 'editOrderForm',
+    params: {
+      id: payload?.id
+    }
+  })
 }
 </script>
 
