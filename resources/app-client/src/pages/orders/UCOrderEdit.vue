@@ -26,14 +26,14 @@ const path: Ref<any[]> = ref([
     },
   },
   {
-    title: t('sales.order_list'),
+    title: t('orders.orders_list'),
     disabled: false,
     to: {
       name: 'adminDashboard', // TODO: Change to orders list
     },
   },
   {
-    title: t('sales.update_order'),
+    title: t('orders.update_order'),
     disabled: true,
   },
 ])
@@ -44,15 +44,15 @@ const status: Ref<any[]> = ref([
     value: 1,
   },
   {
-    name: t('global.status.sent'),
+    name: t('global.status.processing'),
     value: 2,
   },
   {
-    name: t('global.status.approved'),
+    name: t('global.status.completed'),
     value: 3,
   },
   {
-    name: t('global.status.rejected'),
+    name: t('global.status.cancelled'),
     value: 4,
   },
 ])
@@ -78,6 +78,8 @@ async function dataOrderDetails() {
     id: orderDetails.value.id,
     status_id: orderDetails.value.status_id,
   })
+
+  adminCart.value.updateCart(null, orderDetails.value.cart_id)
 }
 
 async function dataUserDetails(userId: number) {
@@ -105,7 +107,7 @@ async function uploadOrder() {
     <VCol cols="12">
       <UCHeaderPage
         class="mb-5"
-        :title="$t('navbar.transactions')"
+        :title="$t('orders.order_details')"
         :path="path"
       />
 
@@ -120,7 +122,7 @@ async function uploadOrder() {
                 <h4 class="mb-6">
                   {{ $t('global.headers.order') }} # {{ orderDetails.reference }}
                 </h4>
-                <div class="mb-6">
+                <div class="mb-6 client-info">
                   <p class="ma-0 details-title">
                     {{ $t('global.information_client') }}
                   </p>
@@ -134,7 +136,7 @@ async function uploadOrder() {
 
                 <div class="mb-6">
                   <p class="ma-0 details-title">
-                    {{ $t('sales.order_details') }}
+                    {{ $t('orders.order_details') }}
                   </p>
                   <p class="ma-0">
                     <span>{{ $t('cart.products_cant') }}:</span> {{ cantProducts }}
@@ -146,7 +148,7 @@ async function uploadOrder() {
 
                 <div>
                   <p class="ma-0 details-title">
-                    {{ $t('sales.order_status') }}
+                    {{ $t('orders.order_status') }}
                   </p>
                   <div class="d-flex flex-row align-start mt-2 update-status">
                     <VSelect
@@ -174,25 +176,27 @@ async function uploadOrder() {
           </VCardTitle>
         </VCard>
 
-        <VCard class="mb-6 order-transactions">
-          <VCardTitle class="d-flex justify-end pt-6 pb-6">
-            <VRow>
-              <VCol
-                v-if="orderDetails.id && orderDetails.id > 0"
-                cols="12"
-                class="d-flex justify-end flex-column"
-              >
-                <UCTransactions :order="orderDetails.id" />
-              </VCol>
-            </VRow>
-          </VCardTitle>
-        </VCard>
-      </div>
+        <div class="order-transactions">
+          <VCard class="mb-6 ">
+            <VCardTitle class="d-flex justify-end pt-6 pb-6">
+              <VRow>
+                <VCol
+                  v-if="orderDetails.id && orderDetails.id > 0"
+                  cols="12"
+                  class="d-flex justify-end flex-column"
+                >
+                  <UCTransactions :order="orderDetails.id" />
+                </VCol>
+              </VRow>
+            </VCardTitle>
+          </VCard>
 
-      <UCAdminCart
-        ref="adminCart"
-        :has-delete="false"
-      />
+          <UCAdminCart
+            ref="adminCart"
+            :has-delete="false"
+          />
+        </div>
+      </div>
     </VCol>
   </VRow>
 </template>
@@ -205,7 +209,7 @@ async function uploadOrder() {
   }
 
   .order-details {
-    width: calc(40% - 15px);
+    width: calc(30% - 15px);
 
     .details-title {
       font-weight: 700;
@@ -223,11 +227,29 @@ async function uploadOrder() {
   }
 
   .order-transactions {
-    width: calc(60% - 15px);
+    width: calc(70% - 15px);
   }
 
   .update-status {
     gap: 10px;
+  }
+
+  @media screen and (min-width: 1024px) and (max-width: 1600px) {
+    .order-details {
+      ::v-deep(.v-row) {
+        word-wrap: break-word;
+        display: contents;
+
+        .client-info p, .update-status {
+          display: flex !important;
+          flex-direction: column !important;
+
+          div {
+            margin-bottom: 0 !important;
+          }
+        }
+      }
+    }
   }
 
   @media screen and (max-width: 1024px) {

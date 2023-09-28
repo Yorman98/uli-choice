@@ -239,3 +239,6 @@ Route::middleware('auth:sanctum')->group(static function () {
     Route::put('budgets/{id}/from-user', [BudgetController::class, 'updateFromUser']);
     Route::put('budgets/{id}', [BudgetController::class, 'update'])->middleware('isAdmin');
 });
+
+// Export products to CSV
+Route::get('export-inventory', [ProductController::class, 'exportInventory']);
