@@ -98,8 +98,9 @@ async function getInvoice(order) {
       <VCardText>
         <UCTable
           :headers="headers"
-          :onlyEdit="true"
           :items="orders"
+          onlyEdit
+          onlyInvoice
           @editItem="editItem"
           @getInvoice="getInvoice"
           @deleteItem="deleteItem"

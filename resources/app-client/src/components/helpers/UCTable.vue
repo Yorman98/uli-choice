@@ -30,6 +30,10 @@ defineProps({
     type: Boolean,
     default: false,
   },
+  onlyInvoice: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 const emit = defineEmits(['editItem', 'getInvoice', 'deleteItem', 'goToItem'])
@@ -90,6 +94,7 @@ function getInvoice(item: NonNullable<unknown>) {
           </VListItem>
 
           <VListItem
+            v-if="onlyInvoice"
             @click="getInvoice(item)"
           >
             <template #prepend>
