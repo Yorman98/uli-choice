@@ -134,7 +134,7 @@ const router = createRouter({
           component: () => import('@/pages/providers/UCProviders.vue'),
           meta: {
             middleware: ['admin'],
-          }
+          },
         },
         {
           path: 'budgets',
@@ -184,7 +184,7 @@ const router = createRouter({
                 middleware: [authAdmin],
               },
             },
-          ]
+          ],
         },
         {
           path: 'cart',
@@ -274,10 +274,16 @@ const router = createRouter({
         {
           path: 'login',
           component: () => import('@/pages/auth/UCLogin.vue'),
+          meta: {
+            middleware: [authPublic],
+          },
         },
         {
           path: 'register',
           component: () => import('@/pages/auth/UCRegister.vue'),
+          meta: {
+            middleware: [authPublic],
+          },
         },
         {
           path: '/:pathMatch(.*)*',
@@ -285,30 +291,27 @@ const router = createRouter({
           component: () => import('../pages/[...all].vue'),
           meta: {
             middleware: [authPublic],
-          }
+          },
         },
       ],
     },
   ],
 })
 
-function nextFactory (context: any, middleware: any, index: any) {
+function nextFactory(context: any, middleware: any, index: any) {
   const subsequentMiddleware = middleware[index]
-  // If no subsequent Middleware exists,
-  // the default `next()` callback is returned.
-  if (!subsequentMiddleware) return context.next
+  if (!subsequentMiddleware)
+    return context.next
 
   return (...parameters: any) => {
-    // Run the default Vue Router `next()` callback first.
     context.next(...parameters)
-    // Then run the subsequent Middleware with a new
-    // `nextMiddleware()` callback.
+
     const nextMiddleware = nextFactory(context, middleware, index + 1)
+
     subsequentMiddleware({ ...context, next: nextMiddleware })
   }
 }
 router.beforeEach((to: any, from: any, next: any) => {
-
   if (to.meta.middleware) {
     const middleware = Array.isArray(to.meta.middleware)
       ? to.meta.middleware
@@ -318,8 +321,9 @@ router.beforeEach((to: any, from: any, next: any) => {
       from,
       next,
       router,
-      to
+      to,
     }
+
     const nextMiddleware = nextFactory(context, middleware, 1)
 
     return middleware[0]({ ...context, next: nextMiddleware })

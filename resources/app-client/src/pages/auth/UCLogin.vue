@@ -28,13 +28,11 @@ const checkLogin = async () => {
 
     await userStore.loadUser()
 
-    /* if (userStore.getUserInfo.role === ADMIN)
+    if (userStore.getUserInfo.role === ADMIN)
       router.push('/dashboard')
     else
-      router.push('/') */
+      router.push('/products')
 
-    // TODO: Change this to the correct route
-    router.push('/dashboard')
   }
   catch (error) {
     isProgressLogin.value = false
