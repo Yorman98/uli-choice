@@ -5,10 +5,9 @@ import UserService from '@/services/UserService'
 import AuthService from '@/services/AuthService'
 import type { LoginResponseInterface, RegisterResponseInterface } from '@/services/types/AuthTypes'
 import type { UserResponseInterface } from '@/services/types/UserTypes'
-import { VariantInterface } from "@/store/types/VariantInterface";
-import { ProductInterface, ProductCartRequestInterface } from "@/store/types/ProductInterface";
-import { CategoryInterface } from "@/store/types/CategoryInterface";
-import ProductService from "@/services/ProductService";
+import { ProductCartRequestInterface } from '@/store/types/ProductInterface'
+import ProductService from '@/services/ProductService'
+import OrderService from '@/services/OrderService'
 
 export const useUserStore = defineStore('user', {
   state: () => {
@@ -74,6 +73,10 @@ export const useUserStore = defineStore('user', {
       this.productsCart = response.data.products
       this.cartId = response.data.cart_id
       this.productsCartTotal = response.data.total_price
+    },
+    async fetchOrders() {
+      const response = await OrderService.getOrders()
+      return response.data
     },
     async removeFromCart(productCartId: number) {
       await ProductService.removeFromCart(productCartId)
