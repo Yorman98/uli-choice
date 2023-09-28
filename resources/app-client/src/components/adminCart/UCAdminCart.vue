@@ -5,23 +5,37 @@ import ProductService from '@/services/ProductService'
 import type { ProductCartInterface } from '@/store/types/ProductInterface'
 import { STORAGE_PATH } from '@/utils/constants'
 
+defineProps({
+  hasDelete: {
+    type: Boolean,
+    default: true,
+  },
+})
+
 const productsCartList: Ref<ProductCartInterface[]> = ref([])
 const userId: Ref<UnwrapRef<number>> = ref(0)
 
-async function updateCart(clientId: number) {
-  if (!clientId)
-    return
+async function updateCart(clientId: number, cartId?: number) {
+  if (cartId) {
+    const { data } = await ProductService.getProductsCart(cartId)
 
-  userId.value = clientId
+    productsCartList.value = data?.products as ProductCartInterface[]
+  }
+  else {
+    if (!clientId)
+      return
 
-  const { data } = await ProductService.getProductsCart(clientId)
+    userId.value = clientId
 
-  productsCartList.value = data?.products ?? []
+    const { data } = await ProductService.getProductsActiveCart(clientId)
+
+    productsCartList.value = data?.products as ProductCartInterface[]
+  }
 }
 
 async function deleteProductCart(productId: number) {
   await ProductService.removeFromCart(productId)
-  updateCart(userId.value)
+  await updateCart(userId.value)
 }
 
 defineExpose({
@@ -40,7 +54,10 @@ defineExpose({
           cols="12"
           class="d-flex justify-end flex-column"
         >
-          <ul class="cart-item">
+          <ul
+            v-if="productsCartList.length > 0"
+            class="cart-item"
+          >
             <li
               v-for="product in productsCartList"
               :key="product.id"
@@ -87,7 +104,10 @@ defineExpose({
                   </p>
                 </div>
 
-                <div class="cart-delete d-flex align-center">
+                <div
+                  v-if="hasDelete"
+                  class="cart-delete d-flex align-center"
+                >
                   <VIcon
                     size="30"
                     @click="deleteProductCart(product.id)"
@@ -98,6 +118,13 @@ defineExpose({
               </div>
             </li>
           </ul>
+
+          <div
+            v-else
+            class="no-cart-item"
+          >
+            <p>{{ $t('cart.no_products') }}</p>
+          </div>
         </VCol>
       </VRow>
     </VCardTitle>
@@ -106,12 +133,22 @@ defineExpose({
 
 <style lang="scss" scoped>
 .admin-cart-container {
+  ::v-deep(.v-card-title) {
+    font-size: 22px !important;
+  }
+
   ul.cart-item {
     list-style: none;
 
     > li {
-      margin-bottom: 30px;
+      margin-bottom: 20px;
     }
+  }
+
+  .no-cart-item p {
+    font-size: 16px;
+    text-align: center;
+    font-style: italic;
   }
 
   .cart-images {

@@ -11,10 +11,12 @@ import ClientService from '@/services/ClientService'
 import OrderService from '@/services/OrderService'
 import UCAdminCart from '@/components/adminCart/UCAdminCart.vue'
 import type { OrderInterface } from '@/store/types/OrderInterface'
+import router from '@/router'
 
 const { t } = useI18n()
 
 const adminCart = ref(null)
+const processOrder = ref(false)
 
 const path: Ref<any[]> = ref([
   {
@@ -25,14 +27,14 @@ const path: Ref<any[]> = ref([
     },
   },
   {
-    title: t('sales.order_list'),
+    title: t('orders.orders_list'),
     disabled: false,
     to: {
       name: 'adminDashboard', // TODO: Change to orders list
     },
   },
   {
-    title: t('sales.add_order'),
+    title: t('orders.add_order'),
     disabled: true,
   },
 ])
@@ -40,7 +42,7 @@ const path: Ref<any[]> = ref([
 const clientList: Ref<ClientInterface[]> = ref([])
 const productsList: Ref<ProductInterface[]> = ref([])
 const variationsList: Ref<VariationSelectInterface[]> = ref([])
-const cardInfo: Ref<OrderInterface> = ref({} as OrderInterface)
+const cartProducts: Ref<OrderInterface> = ref({} as OrderInterface)
 
 const cartInfo: UnwrapNestedRefs<ProductCartRequestInterface> = reactive({
   user_id: null,
@@ -90,8 +92,8 @@ async function saveProductsCart() {
   await ProductService.addProductCart(cartInfo)
   adminCart.value.updateCart(cartInfo.user_id)
 
+  await updateCartByClient()
   Object.assign(cartInfo, {
-    user_id: null,
     product_id: null,
     variation_id: null,
     quantity: null,
@@ -99,25 +101,32 @@ async function saveProductsCart() {
 }
 
 async function updateCartByClient() {
-  const { data } = await productService.getProductsCart(cartInfo.user_id)
+  processOrder.value = false
 
-  cardInfo.value.cart_id = data?.cart_id
+  const { data } = await ProductService.getProductsActiveCart(cartInfo.user_id)
+
+  cartProducts.value.cart_id = (data?.cart_id as number)
   adminCart.value.updateCart(cartInfo.user_id)
+  if (cartProducts.value.cart_id)
+    processOrder.value = true
 }
 
 async function saveOrder() {
-  await OrderService.createOrder({
-    cart_id: cardInfo.value.cart_id,
+  const { data } = await OrderService.createOrder({
+    cart_id: cartProducts.value.cart_id,
   })
 
-  updateCartByClient()
+  await updateCartByClient()
   Object.assign(cartInfo, {
     user_id: null,
     product_id: null,
     variation_id: null,
     quantity: null,
   })
-  cardInfo.value = {} as OrderInterface
+  cartProducts.value = {} as OrderInterface
+  processOrder.value = false
+
+  router.push({ name: 'editOrderForm', params: { id: data.order_id } })
 }
 </script>
 
@@ -126,14 +135,14 @@ async function saveOrder() {
     <VCol cols="12">
       <UCHeaderPage
         class="mb-5"
-        :title="$t('navbar.transactions')"
+        :title="$t('orders.add_order')"
         :path="path"
       />
 
-      <div class="d-flex order-details">
+      <div class="d-flex flex-wrap align-start order-details">
         <VCard
-          class="mb-6 w-50"
-          :title="$t('sales.order_details')"
+          class="mb-6 add-order"
+          :title="$t('orders.order_details')"
         >
           <VCardTitle class="d-flex justify-end mb-4">
             <VRow>
@@ -191,7 +200,7 @@ async function saveOrder() {
                       mdi-content-save-outline
                     </VIcon>
                     <p class="text-button ma-0 text-white">
-                      {{ t('sales.add_order') }}
+                      {{ t('orders.add_order') }}
                     </p>
                   </VBtn>
                 </div>
@@ -200,36 +209,25 @@ async function saveOrder() {
           </VCardTitle>
         </VCard>
 
-        <VCard
-          class="mb-6 w-50"
-          :title="$t('sales.order_details')"
-        >
-          <VCardTitle class="d-flex justify-end mb-4">
-            <VRow>
-              <VCol
-                cols="12"
-                class="d-flex justify-end flex-column"
-              >
-                transactions... in progress
-              </VCol>
-            </VRow>
-          </VCardTitle>
-        </VCard>
+        <div class="mb-6 cart-order">
+          <UCAdminCart ref="adminCart" />
+        </div>
       </div>
 
-      <UCAdminCart ref="adminCart" />
+      <div class="save-order">
+        <VBtn
+          :disabled="!processOrder"
+          @click="saveOrder"
+        >
+          <VIcon size="25">
+            mdi-cart-check
+          </VIcon>
+          <p class="text-button text-white ma-0">
+            {{ t('orders.process_order') }}
+          </p>
+        </VBtn>
+      </div>
     </VCol>
-
-    <div class="save-order">
-      <VBtn @click="saveOrder">
-        <VIcon size="35">
-          mdi-content-save-outline
-        </VIcon>
-        <p class="text-button text-white ma-0">
-          {{ t('global.save') }}
-        </p>
-      </VBtn>
-    </div>
   </VRow>
 </template>
 
@@ -248,6 +246,24 @@ async function saveOrder() {
     padding: 12px;
     width: 100%;
     text-align: end;
+
+    p {
+      padding-left: 5px;
+    }
+  }
+
+  .add-order {
+    width: calc(35% - 15px);
+  }
+
+  .cart-order {
+    width: calc(65% - 15px);
+  }
+
+  @media screen and (max-width: 1024px) {
+    .add-order, .cart-order {
+      width: 100%;
+    }
   }
 }
 </style>

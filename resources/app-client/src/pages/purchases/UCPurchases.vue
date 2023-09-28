@@ -73,6 +73,7 @@ onMounted(async () => {
 
 function closePurchase() {
   openPurchase.value = false
+  isEditPurchase.value = false
   Object.assign(purchaseInfo, {
     total: null,
     id: null,
@@ -161,12 +162,13 @@ function addPurchase() {
 
       <VDialog
         v-model="openPurchase"
+        persistent
         max-width="700px"
       >
         <VCard class="pa-4">
           <VCardTitle color="red">
             <h4 class="text-h4 mb-2 white--text">
-              {{ $t('purchases.add_purchase') }}
+              {{ isEditPurchase ? $t('purchases.edit_purchase') : $t('purchases.add_purchase') }}
             </h4>
           </VCardTitle>
 
@@ -263,10 +265,8 @@ function addPurchase() {
 </template>
 
 <style lang="scss" scoped>
-.uc-purchases-container {
-  h4 {
-    font-size: 30px !important;
-    line-height: 1;
-  }
+h4 {
+  font-size: 30px !important;
+  line-height: 1;
 }
 </style>
