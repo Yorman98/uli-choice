@@ -126,7 +126,7 @@ function addTransaction() {
     <div class="d-flex align-start justify-space-between mb-6">
       <h4>{{ $t('navbar.transactions') }} </h4>
       <VBtn
-        density="compact"
+        density="comfortable"
         @click="addTransaction"
       >
         <VIcon
@@ -255,7 +255,7 @@ function addTransaction() {
   .uc-table {
     ::v-deep thead th, ::v-deep tbody td {
       height: 35px !important;
-      font-size: 15px;
+      font-size: 17px;
       text-transform: capitalize !important;
     }
 
@@ -266,7 +266,7 @@ function addTransaction() {
 
   .transaction-totals {
     p {
-      font-size: 16px;
+      font-size: 18px;
       font-weight: 500;
 
       span {
@@ -277,7 +277,8 @@ function addTransaction() {
 }
 
 h4 {
-  font-size: 30px !important;
+  font-size: 22px !important;
+  font-weight: 500;
   line-height: 1;
 }
 </style>

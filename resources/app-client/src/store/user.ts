@@ -27,7 +27,7 @@ export const useUserStore = defineStore('user', {
   getters: {
     getAccessToken: state => state.accessToken ? state.accessToken : localStorage.getItem('accessToken'),
     getUserInfo: state => state.userInfo,
-    getProductsCart: state => state.productsCart,
+    getProductsActiveCart: state => state.productsCart,
     getCartId: state => state.cartId,
   },
   actions: {
@@ -69,7 +69,7 @@ export const useUserStore = defineStore('user', {
       return response.data.cart_id
     },
     async fetchProductsCart(userId: number) {
-      const response = await ProductService.getProductsCart(userId)
+      const response = await ProductService.getProductsActiveCart(userId)
       this.productsCart = response.data.products
       this.cartId = response.data.cart_id
       this.productsCartTotal = response.data.total_price
