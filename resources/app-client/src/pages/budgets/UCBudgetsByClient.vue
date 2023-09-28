@@ -9,6 +9,7 @@ import BudgetService from '@/services/BudgetService'
 import type { BudgetInterface } from '@/store/types/BudgetInterface'
 import { validateRequired } from '@/services/FormValidationService'
 import { useUserStore } from '@/store/user'
+import { formatDate } from '@/utils/dateUtils'
 
 const { t } = useI18n()
 const router = useRouter()
@@ -61,6 +62,7 @@ async function getData() {
 
   response.forEach((budget: BudgetInterface) => {
     budget.statusName = t(`global.status.${budget?.status?.name.toLowerCase()}`)
+    budget.created_at = formatDate(budget.created_at)
     budgetsList.value.push(budget)
   })
 
