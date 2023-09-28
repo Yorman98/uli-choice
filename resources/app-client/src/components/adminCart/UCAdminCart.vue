@@ -15,20 +15,27 @@ defineProps({
 const productsCartList: Ref<ProductCartInterface[]> = ref([])
 const userId: Ref<UnwrapRef<number>> = ref(0)
 
-async function updateCart(clientId: number) {
-  if (!clientId)
-    return
+async function updateCart(clientId: number, cartId?: number) {
+  if (cartId) {
+    const { data } = await ProductService.getProductsCart(cartId)
 
-  userId.value = clientId
+    productsCartList.value = data?.products as ProductCartInterface[]
+  }
+  else {
+    if (!clientId)
+      return
 
-  const { data } = await ProductService.getProductsCart(clientId)
+    userId.value = clientId
 
-  productsCartList.value = data?.products as ProductCartInterface[]
+    const { data } = await ProductService.getProductsActiveCart(clientId)
+
+    productsCartList.value = data?.products as ProductCartInterface[]
+  }
 }
 
 async function deleteProductCart(productId: number) {
   await ProductService.removeFromCart(productId)
-  updateCart(userId.value)
+  await updateCart(userId.value)
 }
 
 defineExpose({
@@ -126,6 +133,10 @@ defineExpose({
 
 <style lang="scss" scoped>
 .admin-cart-container {
+  ::v-deep(.v-card-title) {
+    font-size: 22px !important;
+  }
+
   ul.cart-item {
     list-style: none;
 
@@ -149,15 +160,15 @@ defineExpose({
     padding: 0 20px;
 
     h4 {
-      font-size: 16px;
+      font-size: 18px;
     }
 
     p {
-      font-size: 14px;
+      font-size: 16px;
     }
 
     ul {
-      font-size: 14px;
+      font-size: 16px;
       padding-left: 40px;
     }
   }

@@ -30,7 +30,7 @@ const path: Ref<any[]> = ref([
     },
   },
   {
-    title: t('sales.order_details'),
+    title: t('orders.order_details'),
     disabled: true,
   },
 ])
@@ -111,7 +111,7 @@ function goToItem(product: ProductInterface) {
 
       <VCard
         class="pa-4 mb-7"
-        :title="t('sales.order_details')"
+        :title="t('orders.order_details')"
       >
         <VCardText>
           <VRow>
