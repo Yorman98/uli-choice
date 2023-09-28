@@ -1,27 +1,32 @@
 <script setup lang="ts">
 import avatar1 from "@images/avatars/avatar-1.png";
-import { useRouter } from 'vue-router'
-import { useUserStore } from '@/store/user'
+import { useRouter } from "vue-router";
+import { useUserStore } from "@/store/user";
 
-const userStore = useUserStore()
-const router = useRouter()
+const userStore = useUserStore();
+const router = useRouter();
 
 function goToBudgets(budget: BudgetInterface) {
   router.push({
-    name: 'budgets2',
-  })
+    name: "budgets2",
+  });
+}
+
+function goToOrders(budget: BudgetInterface) {
+  router.push({
+    name: "orders2",
+  });
 }
 
 async function logout() {
   try {
-    await userStore.logout()
+    await userStore.logout();
 
     router.push({
-      name: 'login',
-    })
-  }
-  catch (error) {
-    console.error(error)
+      name: "login",
+    });
+  } catch (error) {
+    console.error(error);
   }
 }
 </script>
@@ -75,13 +80,22 @@ async function logout() {
             <VListItemTitle>Settings</VListItemTitle>
           </VListItem>
 
-          <!-- 👉 Pricing -->
+          <!-- 👉 Cotizaciones -->
           <VListItem link @click="goToBudgets" class="">
             <template #prepend>
               <VIcon class="me-2" icon="bx-dollar" size="22" />
             </template>
 
             <VListItemTitle>Cotizaciones</VListItemTitle>
+          </VListItem>
+
+          <!-- 👉 Ordenes -->
+          <VListItem link @click="goToOrders" class="">
+            <template #prepend>
+              <VIcon class="me-2" icon="bx-package" size="22" />
+            </template>
+
+            <VListItemTitle>Ordenes</VListItemTitle>
           </VListItem>
 
           <!-- 👉 FAQ -->
