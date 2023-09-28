@@ -226,7 +226,7 @@ const router = createRouter({
           name: 'cartPage',
           component: () => import('@/pages/cart/UCCartPage.vue'),
           meta: {
-            middleware: [authAdmin, authClient],
+            middleware: [authClient],
           },
         },
         {
