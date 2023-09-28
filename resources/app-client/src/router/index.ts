@@ -275,7 +275,7 @@ const router = createRouter({
     },
     {
       path: '/',
-      component: () => import('../layouts/blank.vue'),
+      component: () => import('../layouts/blank2.vue'),
       children: [
         {
           path: 'login',
