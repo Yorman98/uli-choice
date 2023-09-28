@@ -9,6 +9,10 @@ use App\Models\Cart;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Doctrine\DBAL\Types\BlobType;
+// Blob
+
 
 class OrderController extends Controller
 {
@@ -259,6 +263,51 @@ class OrderController extends Controller
             return response()->json([
                 'success' => false,
                 'errors' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+
+    // generateInvoiceByOrderId return Blob object
+    public function generateInvoiceByOrderId(Request $request, int $id)
+    {
+        $validationRules = [
+            'id' => 'required|integer|min:1|exists:orders,id'
+        ];
+
+        $validator = Validator::make(['id' => $id], $validationRules);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        try {
+            $order = Order::with([
+                'cart' => [
+                    'products' => [
+                        'variation' => [
+                            'attributes' => function($query) {
+                                $query->select('name', 'id');
+                            }
+                        ], 
+                        'product'
+                    ],
+                    'user'
+                ],
+                'status'
+            ])->findOrFail($id);
+
+
+            $pdf = \PDF::loadView('invoice', ['order' => $order])->setPaper('a4', 'landscape')->setWarnings(false);
+
+            return chunk_split(base64_encode($pdf->output()));
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'errors' => $e->getMessage(),
             ], 500);
         }
     }

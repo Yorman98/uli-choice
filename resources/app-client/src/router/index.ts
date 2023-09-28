@@ -187,14 +187,6 @@ const router = createRouter({
           ],
         },
         {
-          path: 'cart',
-          name: 'cartPage',
-          component: () => import('@/pages/cart/UCCartPage.vue'),
-          meta: {
-            middleware: [authAdmin, authClient],
-          },
-        },
-        {
           path: 'orders',
           name: 'ordersList',
           component: () => import('@/pages/orders/UCAdminOrdersList.vue'),
@@ -228,6 +220,14 @@ const router = createRouter({
               },
             },
           ],
+        },
+        {
+          path: 'cart',
+          name: 'cartPage',
+          component: () => import('@/pages/cart/UCCartPage.vue'),
+          meta: {
+            middleware: [authAdmin, authClient],
+          },
         },
         {
           path: 'my-budgets',
@@ -275,7 +275,7 @@ const router = createRouter({
     },
     {
       path: '/',
-      component: () => import('../layouts/blank.vue'),
+      component: () => import('../layouts/blank2.vue'),
       children: [
         {
           path: 'login',

@@ -66,7 +66,7 @@ class ProductController extends Controller
             ], 422);
         }
 
-        $product = Product::with(['categories', 'variations.attributes'])->find($id);
+        $product = Product::with(['categories', 'variations.attributes.group'])->find($id);
 
         return response()->json([
             'success' => true,

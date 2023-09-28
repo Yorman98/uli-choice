@@ -1,10 +1,16 @@
 <script setup lang="ts">
-import avatar1 from '@images/avatars/avatar-1.png'
-import { useUserStore } from '@/store/user'
+import avatar1 from "@images/avatars/avatar-1.png";
 import { useRouter } from 'vue-router'
+import { useUserStore } from '@/store/user'
 
 const userStore = useUserStore()
 const router = useRouter()
+
+function goToBudgets(budget: BudgetInterface) {
+  router.push({
+    name: 'budgets2',
+  })
+}
 
 async function logout() {
   try {
@@ -21,28 +27,12 @@ async function logout() {
 </script>
 
 <template>
-  <VBadge
-    dot
-    location="bottom right"
-    offset-x="3"
-    offset-y="3"
-    color="success"
-    bordered
-  >
-    <VAvatar
-      class="cursor-pointer"
-      color="primary"
-      variant="tonal"
-    >
+  <VBadge dot location="bottom right" offset-x="3" offset-y="3" color="success" bordered>
+    <VAvatar class="cursor-pointer" color="primary" variant="tonal">
       <VImg :src="avatar1" />
 
       <!-- SECTION Menu -->
-      <VMenu
-        activator="parent"
-        width="230"
-        location="bottom end"
-        offset="14px"
-      >
+      <VMenu activator="parent" width="230" location="bottom end" offset="14px">
         <VList>
           <!-- 👉 User Avatar & Name -->
           <VListItem>
@@ -55,19 +45,14 @@ async function logout() {
                   offset-y="3"
                   color="success"
                 >
-                  <VAvatar
-                    color="primary"
-                    variant="tonal"
-                  >
+                  <VAvatar color="primary" variant="tonal">
                     <VImg :src="avatar1" />
                   </VAvatar>
                 </VBadge>
               </VListItemAction>
             </template>
 
-            <VListItemTitle class="font-weight-semibold">
-              John Doe
-            </VListItemTitle>
+            <VListItemTitle class="font-weight-semibold"> John Doe </VListItemTitle>
             <VListItemSubtitle>Admin</VListItemSubtitle>
           </VListItem>
           <VDivider class="my-2" />
@@ -75,11 +60,7 @@ async function logout() {
           <!-- 👉 Profile -->
           <VListItem link class="d-none">
             <template #prepend>
-              <VIcon
-                class="me-2"
-                icon="bx-user"
-                size="22"
-              />
+              <VIcon class="me-2" icon="bx-user" size="22" />
             </template>
 
             <VListItemTitle>Profile</VListItemTitle>
@@ -88,53 +69,37 @@ async function logout() {
           <!-- 👉 Settings -->
           <VListItem link class="d-none">
             <template #prepend>
-              <VIcon
-                class="me-2"
-                icon="bx-cog"
-                size="22"
-              />
+              <VIcon class="me-2" icon="bx-cog" size="22" />
             </template>
 
             <VListItemTitle>Settings</VListItemTitle>
           </VListItem>
 
           <!-- 👉 Pricing -->
-          <VListItem link class="d-none">
+          <VListItem link @click="goToBudgets" class="">
             <template #prepend>
-              <VIcon
-                class="me-2"
-                icon="bx-dollar"
-                size="22"
-              />
+              <VIcon class="me-2" icon="bx-dollar" size="22" />
             </template>
 
-            <VListItemTitle>Pricing</VListItemTitle>
+            <VListItemTitle>Cotizaciones</VListItemTitle>
           </VListItem>
 
           <!-- 👉 FAQ -->
           <VListItem link class="d-none">
             <template #prepend>
-              <VIcon
-                class="me-2"
-                icon="bx-help-circle"
-                size="22"
-              />
+              <VIcon class="me-2" icon="bx-help-circle" size="22" />
             </template>
 
             <VListItemTitle>FAQ</VListItemTitle>
           </VListItem>
 
           <!-- Divider -->
-          <VDivider class="my-2 d-none" />
+          <VDivider class="my-2" />
 
           <!-- 👉 Logout -->
           <VListItem @click="logout">
             <template #prepend>
-              <VIcon
-                class="me-2"
-                icon="bx-log-out"
-                size="22"
-              />
+              <VIcon class="me-2" icon="bx-log-out" size="22" />
             </template>
 
             <VListItemTitle>Logout</VListItemTitle>

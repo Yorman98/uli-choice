@@ -215,6 +215,8 @@ Route::middleware('auth:sanctum')->group(static function () {
         Route::post('/', [OrderController::class, 'createOrder']);
         Route::put('/{id}', [OrderController::class, 'updateOrder']);
         Route::delete('/{id}', [OrderController::class, 'deleteOrder']);
+        // Download PDF
+        Route::get('/{id}/invoice', [OrderController::class, 'generateInvoiceByOrderId']);
     });
 
     /*

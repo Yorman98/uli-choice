@@ -32,7 +32,7 @@ defineProps({
   },
 })
 
-const emit = defineEmits(['editItem', 'deleteItem', 'goToItem'])
+const emit = defineEmits(['editItem', 'getInvoice', 'deleteItem', 'goToItem'])
 
 function editItem(item: NonNullable<unknown>) {
   emit('editItem', item.selectable)
@@ -44,6 +44,10 @@ function goToItem(item: NonNullable<unknown>) {
 
 function deleteItem(item: NonNullable<unknown>) {
   emit('deleteItem', item.selectable.id)
+}
+
+function getInvoice(item: NonNullable<unknown>) {
+  emit('getInvoice', item.selectable)
 }
 </script>
 
@@ -83,6 +87,16 @@ function deleteItem(item: NonNullable<unknown>) {
             </template>
 
             <VListItemTitle v-text="$t('global.edit')" />
+          </VListItem>
+
+          <VListItem
+            @click="getInvoice(item)"
+          >
+            <template #prepend>
+              <VIcon icon="mdi-receipt-text-check-outline" />
+            </template>
+
+            <VListItemTitle v-text="$t('global.invoice')" />
           </VListItem>
 
           <VListItem
