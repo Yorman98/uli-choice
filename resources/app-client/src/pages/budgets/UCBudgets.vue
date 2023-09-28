@@ -2,7 +2,7 @@
 import { useI18n } from 'vue-i18n'
 import type { Ref, UnwrapNestedRefs } from 'vue'
 import { ref } from 'vue'
-import { useRouter } from "vue-router"
+import { useRouter } from 'vue-router'
 import UCHeaderPage from '@/components/helpers/UCHeaderPage.vue'
 import UCTable from '@/components/helpers/UCTable.vue'
 import BudgetService from '@/services/BudgetService'
@@ -36,9 +36,9 @@ const search: Ref<string> = ref('')
 const headers: any[] = [
   { title: t('global.headers.id'), key: 'id' },
   { title: t('global.headers.client'), key: 'user_full_name' },
-  { title: t('global.headers.amount'), key: 'price', align: 'end' },
   { title: t('global.headers.date_created'), key: 'created_at' },
   { title: t('global.headers.status'), key: 'statusName' },
+  { title: t('global.headers.amount'), key: 'price', align: 'end' },
   { title: t('global.headers.options'), align: 'end', key: 'actions', sortable: false },
 ]
 
@@ -56,7 +56,12 @@ const clientList: Ref<ClientInterface[]> = ref([])
 const budgetInfo: UnwrapNestedRefs<BudgetInterface> = reactive({
   cost: 0,
   price: 0,
-  product_links: [],
+  product_links: [{
+    url: '',
+    quantity: 1,
+    cost: 0,
+    price: 0,
+  }],
   status_id: 1,
   user_id: 0,
 } as BudgetInterface)
@@ -87,7 +92,7 @@ async function getData() {
     const dateA = new Date(a.created_at)
     const dateB = new Date(b.created_at)
 
-    return dateB - dateA;
+    return dateB - dateA
   })
 
   budgetsListFilter.value = budgetsList.value
@@ -99,10 +104,18 @@ onMounted(() => {
 
 function closeBudget() {
   openBudget.value = false
+  if (isEditBudget.value)
+    isEditBudget.value = false
+
   Object.assign(budgetInfo, {
     cost: 0,
     price: 0,
-    product_links: [],
+    product_links: [{
+      url: '',
+      quantity: 1,
+      cost: 0,
+      price: 0,
+    }],
     status_id: 1,
     user_id: null,
     id: null,
@@ -209,9 +222,9 @@ function goToItem(budget: BudgetInterface) {
           <VRow class="d-flex justify-end">
             <VCol cols="3">
               <VTextField
+                v-model="search"
                 prepend-inner-icon="mdi-magnify"
                 class="mb-4"
-                v-model="search"
                 density="compact"
                 :label="$t('budgets.search_by_customer')"
                 @keyup="filter"
@@ -237,7 +250,7 @@ function goToItem(budget: BudgetInterface) {
           <UCTable
             :headers="headers"
             :items="budgetsListFilter"
-            hasSubItems
+            has-sub-items
             @editItem="editItem"
             @deleteItem="deleteItem"
             @goToItem="goToItem"
@@ -254,7 +267,7 @@ function goToItem(budget: BudgetInterface) {
             <VRow class="align-center ">
               <VCol cols="8">
                 <h4 class="text-h4 mb-2 white--text">
-                  {{ t('budgets.create_budget') }}
+                  {{ isEditBudget ? $t('budgets.edit_budget') : t('budgets.create_budget') }}
                 </h4>
               </VCol>
 
@@ -290,7 +303,7 @@ function goToItem(budget: BudgetInterface) {
                     <VTextField
                       v-model="productLink.url"
                       density="compact"
-                      :label="$t('global.headers.url')"
+                      :label="$t('global.headers.product_url')"
                       :rules="[
                         (val) => validateRequired(val) || $t('registration.required_field'),
                       ]"

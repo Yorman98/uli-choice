@@ -30,6 +30,10 @@ export class OrderService {
       }
     })
   } 
+  
+  deleteOrder(id: number): AxiosPromise<OrderResponseInterface> {
+    return ApiService.delete(`/orders/${id}`)
+  }
 }
 
 export default new OrderService()

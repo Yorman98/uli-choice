@@ -55,7 +55,7 @@ import avatar1 from '@images/avatars/avatar-1.png'
           <VDivider class="my-2" />
 
           <!-- 👉 Profile -->
-          <VListItem link>
+          <VListItem link class="d-none">
             <template #prepend>
               <VIcon
                 class="me-2"
@@ -68,7 +68,7 @@ import avatar1 from '@images/avatars/avatar-1.png'
           </VListItem>
 
           <!-- 👉 Settings -->
-          <VListItem link>
+          <VListItem link class="d-none">
             <template #prepend>
               <VIcon
                 class="me-2"
@@ -81,7 +81,7 @@ import avatar1 from '@images/avatars/avatar-1.png'
           </VListItem>
 
           <!-- 👉 Pricing -->
-          <VListItem link>
+          <VListItem link class="d-none">
             <template #prepend>
               <VIcon
                 class="me-2"
@@ -94,7 +94,7 @@ import avatar1 from '@images/avatars/avatar-1.png'
           </VListItem>
 
           <!-- 👉 FAQ -->
-          <VListItem link>
+          <VListItem link class="d-none">
             <template #prepend>
               <VIcon
                 class="me-2"
@@ -107,7 +107,7 @@ import avatar1 from '@images/avatars/avatar-1.png'
           </VListItem>
 
           <!-- Divider -->
-          <VDivider class="my-2" />
+          <VDivider class="my-2 d-none" />
 
           <!-- 👉 Logout -->
           <VListItem to="/login">

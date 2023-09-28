@@ -5,10 +5,9 @@ import UserService from '@/services/UserService'
 import AuthService from '@/services/AuthService'
 import type { LoginResponseInterface, RegisterResponseInterface } from '@/services/types/AuthTypes'
 import type { UserResponseInterface } from '@/services/types/UserTypes'
-import { VariantInterface } from "@/store/types/VariantInterface";
-import { ProductInterface, ProductCartRequestInterface } from "@/store/types/ProductInterface";
-import { CategoryInterface } from "@/store/types/CategoryInterface";
-import ProductService from "@/services/ProductService";
+import { ProductCartRequestInterface } from '@/store/types/ProductInterface'
+import ProductService from '@/services/ProductService'
+import OrderService from '@/services/OrderService'
 
 export const useUserStore = defineStore('user', {
   state: () => {
@@ -28,7 +27,7 @@ export const useUserStore = defineStore('user', {
   getters: {
     getAccessToken: state => state.accessToken ? state.accessToken : localStorage.getItem('accessToken'),
     getUserInfo: state => state.userInfo,
-    getProductsCart: state => state.productsCart,
+    getProductsActiveCart: state => state.productsCart,
     getCartId: state => state.cartId,
   },
   actions: {
@@ -70,10 +69,14 @@ export const useUserStore = defineStore('user', {
       return response.data.cart_id
     },
     async fetchProductsCart(userId: number) {
-      const response = await ProductService.getProductsCart(userId)
+      const response = await ProductService.getProductsActiveCart(userId)
       this.productsCart = response.data.products
       this.cartId = response.data.cart_id
       this.productsCartTotal = response.data.total_price
+    },
+    async fetchOrders() {
+      const response = await OrderService.getOrders()
+      return response.data
     },
     async removeFromCart(productCartId: number) {
       await ProductService.removeFromCart(productCartId)

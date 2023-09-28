@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('products', function (Blueprint $table) {
-            $table->string('slug')->unique()->nullable()->change();
+        Schema::table('budgets', function (Blueprint $table) {
+            $table->string('message')->after('cost')->nullable();
         });
     }
 
@@ -25,8 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('products', function (Blueprint $table) {
-            $table->dropUnique(['slug']);
+        Schema::table('budgets', function (Blueprint $table) {
+            $table->dropColumn(['message']);
         });
     }
 };

@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use League\Csv\CannotInsertRecord;
 
 class ProductController extends Controller
 {
@@ -258,5 +259,79 @@ class ProductController extends Controller
                 'errors' => $th->getMessage()
             ], 500);
         }
+    }
+
+    /**
+     * Export products inventory to CSV
+     *
+     * @param Request $request
+     * @throws CannotInsertRecord
+     */
+    public function exportInventory(Request $request)
+    {
+        $products = Product::with(['variations', 'variations.attributes'])->get();
+
+        $productsToExport = [];
+        foreach ($products as $product) {
+            $productToExport = [
+                'product_id' => $product->id,
+                'product_name' => $product->name,
+                'product_code' => $product->code,
+                'product_description' => $product->description,
+                'variation_id' => null,
+                'sku' => null,
+                'stock' => null,
+                'cost' => null,
+                'price' => null,
+                'image' => $product->image,
+                'attribute_ids' => null,
+                'created_at' => $product->created_at,
+                'updated_at' => $product->updated_at,
+            ];
+
+            if ($product->variations->count() > 0) {
+                foreach ($product->variations as $variation) {
+                    $productToExport['variation_id'] = $variation->id;
+                    $productToExport['sku'] = $variation->sku;
+                    $productToExport['stock'] = $variation->stock;
+                    $productToExport['cost'] = $variation->cost;
+                    $productToExport['price'] = $variation->price;
+                    $productToExport['image'] = $variation->image;
+
+                    // Attributes
+                    if ($variation->attributes) {
+                        $productToExport['attribute_ids'] = [];
+
+                        foreach ($variation->attributes as $attribute) {
+                            $productToExport['attribute_ids'][] = $attribute->id;
+                        }
+
+                        $productToExport['attribute_ids'] = implode(',', $productToExport['attribute_ids']);
+                    }
+
+                    $productsToExport[] = $productToExport;
+                }
+            } else {
+                $productsToExport[] = $productToExport;
+            }
+        }
+
+        $csvExporter = new \Laracsv\Export();
+
+        $csvExporter->build(collect($productsToExport), [
+            'product_id' => 'ID',
+            'product_name' => 'Name',
+            'product_code' => 'Code',
+            'product_description' => 'Description',
+            'variation_id' => 'Variation ID',
+            'sku' => 'SKU',
+            'stock' => 'Stock',
+            'cost' => 'Cost',
+            'price' => 'Price',
+            'image' => 'Image',
+            'attribute_ids' => 'Attribute IDs',
+            'created_at' => 'Created At',
+            'updated_at' => 'Updated At',
+        ])->download();
     }
 }
