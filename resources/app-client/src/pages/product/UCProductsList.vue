@@ -102,7 +102,7 @@ async function addToCart(product: ProductInterface) {
     <VCol cols="12">
       <UCHeaderPage
         class="mb-5"
-        :title="$t('navbar.purchases')"
+        :title="$t('navbar.products')"
         :path="path"
       />
 
@@ -137,7 +137,7 @@ async function addToCart(product: ProductInterface) {
           <UCTable
             :headers="headers"
             :items="productsList"
-            has-sub-items
+            only-edit
             @goToItem="viewProduct"
             @editItem="editProduct"
             @deleteItem="deleteProduct"

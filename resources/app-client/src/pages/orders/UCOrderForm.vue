@@ -200,7 +200,7 @@ async function saveOrder() {
                       mdi-content-save-outline
                     </VIcon>
                     <p class="text-button ma-0 text-white">
-                      {{ t('orders.add_cart') }}
+                      {{ t('orders.add_to_order') }}
                     </p>
                   </VBtn>
                 </div>
