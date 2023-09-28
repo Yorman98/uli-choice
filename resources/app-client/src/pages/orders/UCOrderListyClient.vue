@@ -7,6 +7,7 @@ import UCHeaderPage from '@/components/helpers/UCHeaderPage.vue'
 import UCTable from '@/components/helpers/UCTable.vue'
 import OrderService from '@/services/OrderService'
 import type { OrderInterface } from '@/store/types/OrderInterface'
+import { formatDate } from '@/utils/dateUtils'
 
 const { t } = useI18n()
 const router = useRouter()
@@ -41,6 +42,7 @@ async function getData() {
 
   response.forEach((order: OrderInterface) => {
     order.statusName = t(`global.status.${order?.status?.name.toLowerCase()}`)
+    order.created_at = formatDate(order.created_at)
     ordersList.value.push(order)
   })
 
