@@ -4,9 +4,8 @@ import VerticalNavSectionTitle from '@/@layouts/components/VerticalNavSectionTit
 import VerticalNavLayout from '@layouts/components/VerticalNavLayout.vue'
 import VerticalNavLink from '@layouts/components/VerticalNavLink.vue'
 import FloatingCart from '@/components/global/UCFloatingCart.vue'
-import ProductService from '@/services/ProductService'
 import { useUserStore } from '@/store/user'
-
+import { ADMIN } from '@/utils/constants'
 // Components
 // import Footer from '@/layouts/components/Footer.vue'
 import NavbarThemeSwitcher from '@/layouts/components/NavbarThemeSwitcher.vue'
@@ -53,10 +52,168 @@ const userStore = useUserStore()
       </div>
     </template>
 
-    <template #vertical-nav-content>
+    <template v-if="userStore.userInfo.role === ADMIN" #vertical-nav-content>
       <VerticalNavLink
         :item="{
           title: 'Dashboard',
+          icon: 'bx-home',
+          to: '/dashboard',
+        }"
+      />
+      <VerticalNavLink
+        :item="{
+          title: $t('navbar.users'),
+          icon: 'mdi-account-multiple-outline',
+          to: {
+            name: 'users',
+          },
+        }"
+      />
+
+      <!-- 👉 Products -->
+      <VerticalNavSectionTitle
+        :item="{
+          heading: $t('navbar.products'),
+        }"
+      />
+      <VerticalNavLink
+        :item="{
+          title: $t('navbar.attributes_groups'),
+          icon: 'mdi-tag-multiple-outline',
+          to: {
+            name: 'attributesGroups',
+          },
+        }"
+      />
+      <VerticalNavLink
+        :item="{
+          title: $t('navbar.categories'),
+          icon: 'mdi-tag-outline',
+          to: {
+            name: 'categories',
+          },
+        }"
+      />
+      <VerticalNavLink
+        :item="{
+          title: $t('navbar.products'),
+          icon: 'mdi-hanger',
+          to: {
+            name: 'product-list',
+          },
+        }"
+      />
+
+      <!-- 👉 Purchases -->
+      <VerticalNavSectionTitle
+        :item="{
+          heading: $t('navbar.purchases'),
+        }"
+      />
+      <VerticalNavLink
+        :item="{
+          title: $t('navbar.providers'),
+          icon: 'mdi-account-tag-outline',
+          to: {
+            name: 'providers',
+          },
+        }"
+      />
+      <VerticalNavLink
+        :item="{
+          title: $t('purchases.store_purchases'),
+          icon: 'mdi-shopping-outline',
+          to: {
+            name: 'purchase',
+          },
+        }"
+      />
+      <VerticalNavLink
+        :item="{
+          title: $t('navbar.orders'),
+          icon: 'mdi-text-box-outline',
+          to: {
+            name: 'orders2',
+          },
+        }"
+      />
+      <VerticalNavLink
+        :item="{
+          title: $t('navbar.budgets'),
+          icon: 'mdi-currency-usd',
+          to: {
+            name: 'budgets2',
+          },
+        }"
+      />
+
+      <!-- 👉 Orders -->
+      <VerticalNavSectionTitle
+        :item="{
+          heading: $t('navbar.sales'),
+        }"
+      />
+      <VerticalNavLink
+        :item="{
+          title: $t('navbar.methods_payment'),
+          icon: 'mdi-cash-multiple',
+          to: {
+            name: 'paymentMethods',
+          },
+        }"
+      />
+      <VerticalNavLink
+        :item="{
+          title: $t('navbar.orders'),
+          icon: 'mdi-text-box-outline',
+          to: {
+            name: 'ordersList',
+          },
+        }"
+      />
+      <VerticalNavLink
+        :item="{
+          title: $t('navbar.budgets'),
+          icon: 'mdi-currency-usd',
+          to: {
+            name: 'budgets',
+          },
+        }"
+      />
+
+      <!-- 👉 Options theme -->
+      <VerticalNavSectionTitle
+        :item="{
+          heading: $t('navbar.configuration'),
+        }"
+      />
+      <VerticalNavLink
+        :item="{
+          title: 'Login',
+          icon: 'bx-log-in',
+          to: '/login',
+        }"
+      />
+      <VerticalNavLink
+        :item="{
+          title: 'Register',
+          icon: 'bx-user-plus',
+          to: '/register',
+        }"
+      />
+      <VerticalNavLink
+        :item="{
+          title: 'Error',
+          icon: 'bx-info-circle',
+          to: '/no-existence',
+        }"
+      />
+    </template>
+
+    <template v-else #vertical-nav-content>
+      <VerticalNavLink
+        :item="{
+          title: 'Dashboardssssss',
           icon: 'bx-home',
           to: '/dashboard',
         }"
@@ -201,6 +358,7 @@ const userStore = useUserStore()
         }"
       />
     </template>
+
 
     <!-- 👉 Pages -->
     <slot />

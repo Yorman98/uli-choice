@@ -3,4 +3,5 @@ export interface ProductLinkInterface {
   quantity: number
   cost: number
   price: number
+  amount?: number
 }
