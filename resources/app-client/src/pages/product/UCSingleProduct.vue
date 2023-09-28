@@ -4,24 +4,52 @@ import { ProductInterface } from "@/store/types/ProductInterface";
 import { ref, Ref } from "vue";
 import { useRouter } from "vue-router";
 import ProductService from "@/services/ProductService";
+import { useUserStore } from '@/store/user'
+import FloatingCart from '@/components/global/UCFloatingCart.vue'
+
+
+const userStore = useUserStore()
 
 const { t } = useI18n();
 
 const router = useRouter();
 
 const selected: { [key: string]: any } = ref({});
+const processOrder = ref(false)
 
 const product: Ref<ProductInterface> = ref({} as ProductInterface);
+
+/*
+ * Cart Info
+ */
+const cartInfo: UnwrapNestedRefs<ProductCartRequestInterface> = reactive({
+  user_id: null,
+  product_id: null,
+  variation_id: null,
+  quantity: 0,
+} as ProductCartRequestInterface);
+
+
+async function saveProductsCart() {
+  await ProductService.addProductCart(cartInfo).then (resp => {
+     ProductService.getProductsCart(cartInfo.user_id);
+  });
+  cartInfo.quantity = 0;
+}
 
 onMounted(async () => {
   const id = Number(router.currentRoute.value.params.id);
   if (id) {
     const response = await ProductService.getProduct(id);
     product.value = response.data?.data;
+    cartInfo.product_id = product.value.id;
+    cartInfo.user_id =  userStore.getUserInfo.id;
+
   }
 });
 
-const attrData = computed((variations: any[] = product?.value?.variations ?? []) => {
+const attrData =
+  computed((variations: any[] = product?.value?.variations ?? []) => {
     let data: { [key: string | number]: any } = { groups: null, combinations: null };
 
     /*
@@ -49,7 +77,6 @@ const attrData = computed((variations: any[] = product?.value?.variations ?? [])
 
     // Función auxiliar recursiva
     function helper(index: number, current: any[]) {
-      
       if (index === groupIds.length) {
         // Se ha recorrido todos los grupos, se añade la combinación actual al resultado
         possibleCombinations.push(current.slice());
@@ -78,13 +105,14 @@ const attrData = computed((variations: any[] = product?.value?.variations ?? [])
     return data;
   }) ?? [];
 
-
 const filterCombinations = (combinations: any[], selections: any[]) => {
-  if (Object.keys(selections)?.length === 0 ||  combinations.length != Object.keys(selections).length)  {
+  if (
+    Object.keys(selections)?.length === 0 ||
+    combinations.length != Object.keys(selections).length
+  ) {
     return [];
   }
 
-  
   return combinations?.filter((combination) => {
     for (const groupName in selections) {
       const selectedValue = selections[groupName];
@@ -109,9 +137,10 @@ function findMatchingVariation(variations: any[], combinations: any[][]): any | 
 
     const matchedAttributes = combinations.flatMap((combination) =>
       attributes.filter((attribute) =>
-        combination.some((selectedAttribute) =>
-          attribute.group.name === selectedAttribute.group.name &&
-          attribute.name === selectedAttribute.name
+        combination.some(
+          (selectedAttribute) =>
+            attribute.group.name === selectedAttribute.group.name &&
+            attribute.name === selectedAttribute.name
         )
       )
     );
@@ -120,17 +149,25 @@ function findMatchingVariation(variations: any[], combinations: any[][]): any | 
   });
 
   if (matchingVariation) {
+    cartInfo.variation_id = matchingVariation.id;
     return matchingVariation;
   } else {
+    Object.assign(cartInfo, {
+      product_id: null,
+      variation_id: null,
+      quantity: 0,
+    });
     return false;
   }
 }
 
 // Computed property match
 const match = computed(() => {
-  return findMatchingVariation(product.value.variations, filterCombinations(attrData.value.combinations, selected.value));
+  return findMatchingVariation(
+    product.value.variations,
+    filterCombinations(attrData.value.combinations, selected.value)
+  );
 });
-
 
 function getAttrsNames(attrs: Array<{ name: string }>): Array<string> {
   return attrs?.map((item) => item.name) || [];
@@ -160,13 +197,15 @@ const headers: any[] = [
 
 <template>
   <VContainer class="pa-0" :fluid="true">
-
     <VContainer>
       <VRow class="pa-4">
         <VCol cols="12" xs="12" sm="12" md="5">
           <div class="thumbnail-section pa-3">
             <v-carousel>
-              <v-carousel-item :src="match.image || product.image" cover></v-carousel-item>
+              <v-carousel-item
+                :src="match.image || product.image"
+                cover
+              ></v-carousel-item>
             </v-carousel>
           </div>
         </VCol>
@@ -186,16 +225,34 @@ const headers: any[] = [
 
               <div class="product-pricing">
                 <div v-if="match && match.stock > 0" class="product-price">
-                  <p style="color: #000; font-weigth: 500;" class="mb-1">{{ $filters.currencyFormat(match.price) }}</p>
-                  <span class="mb-3">Productos disponibles en almacen: {{ match.stock  }} </span>
+                  <p style="color: #000; font-weigth: 500" class="mb-1">
+                    {{ $filters.currencyFormat(match.price) }}
+                  </p>
+
+                  <div class="product-add-to-cart mb-2 mt-5">
+                    <v-row align="center">
+                      <v-col cols="6" xs="6" sm="6" md="4">
+                        <v-text-field
+                          v-model="cartInfo.quantity"
+                          label="Cantidad"
+                          type="number"
+                          min="1"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="6" xs="6" sm="6" md="4">
+                        <v-btn @click="saveProductsCart" color="primary">Agregar al carro</v-btn>
+                      </v-col>
+                    </v-row>
+                  </div>
+                  <span class="mb-5"
+                    >Productos disponibles en almacen: {{ match.stock }}
+                  </span>
                 </div>
-                <div class="mb-4" v-else>
-                  Articulo no disponible
-                </div>
+                <div class="mb-5" v-else>Articulo no disponible</div>
 
                 <div
                   v-if="Object.keys(attrData?.groups)?.length > 0"
-                  class="product-variation"
+                  class="product-variation mt-3"
                 >
                   <div v-for="(attr, name) in attrData?.groups" :key="name">
                     <h3>{{ name }}:</h3>
