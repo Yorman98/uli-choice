@@ -90,7 +90,7 @@ onMounted(() => {
 })
 
 function goToItem(product: ProductInterface) {
-  console.log(product);
+  console.log(product)
   router.push({
     name: 'product',
     params: {
@@ -101,77 +101,79 @@ function goToItem(product: ProductInterface) {
 </script>
 
 <template>
-  <VRow>
-    <VCol cols="12">
-      <UCHeaderPage
-        class="mb-4"
-        :title="$t('navbar.orders')"
-        :path="path"
-      />
+  <VContainer>
+    <VRow>
+      <VCol cols="12">
+        <UCHeaderPage
+          class="mb-4"
+          :title="$t('navbar.orders')"
+          :path="path"
+        />
 
-      <VCard
-        class="pa-4 mb-7"
-        :title="t('orders.order_details')"
-      >
-        <VCardText>
-          <VRow>
-            <VCol cols="4">
-              <h3>{{ $t('orders.reference') }}</h3>
-              <p>{{ orderInfo.reference }}</p>
-            </VCol>
-            <VCol cols="4">
-              <h3>{{ $t('global.headers.date_created') }}</h3>
-              <p>{{ orderInfo.created_at }}</p>
-            </VCol>
-            <VCol cols="4">
-              <h3>{{ $t('orders.amount') }}</h3>
-              <p>${{ orderInfo.total_price }}</p>
-            </VCol>
-          </VRow>
-          <VRow>
-            <VCol cols="4">
-              <h3>{{ $t('orders.client') }}</h3>
-              <p>{{ orderInfo.user_full_name }}</p>
-            </VCol>
-            <VCol cols="4">
-              <h3>{{ $t('global.headers.status') }}</h3>
-              <p>{{ orderInfo.statusName }}</p>
-            </VCol>
-            <VCol cols="4">
-              <h3>{{ $t('orders.remaining_amount') }}</h3>
-              <p>${{ remainingAmount }}</p>
-            </VCol>
-          </VRow>
-        </VCardText>
-      </VCard>
+        <VCard
+          class="pa-4 mb-7"
+          :title="t('orders.order_details')"
+        >
+          <VCardText>
+            <VRow>
+              <VCol cols="4">
+                <h3>{{ $t('orders.reference') }}</h3>
+                <p>{{ orderInfo.reference }}</p>
+              </VCol>
+              <VCol cols="4">
+                <h3>{{ $t('global.headers.date_created') }}</h3>
+                <p>{{ orderInfo.created_at }}</p>
+              </VCol>
+              <VCol cols="4">
+                <h3>{{ $t('orders.amount') }}</h3>
+                <p>${{ orderInfo.total_price }}</p>
+              </VCol>
+            </VRow>
+            <VRow>
+              <VCol cols="4">
+                <h3>{{ $t('orders.client') }}</h3>
+                <p>{{ orderInfo.user_full_name }}</p>
+              </VCol>
+              <VCol cols="4">
+                <h3>{{ $t('global.headers.status') }}</h3>
+                <p>{{ orderInfo.statusName }}</p>
+              </VCol>
+              <VCol cols="4">
+                <h3>{{ $t('orders.remaining_amount') }}</h3>
+                <p>${{ remainingAmount }}</p>
+              </VCol>
+            </VRow>
+          </VCardText>
+        </VCard>
 
-      <VCard
-        class="pa-4 mb-7"
-        :title="t('orders.product_list')"
-      >
-        <VCardText>
-          <UCTable
-            only-go-to
-            @goToItem="goToItem"
-            :headers="headersProducts"
-            :items="orderInfo.cart?.products"
-          />
-        </VCardText>
-      </VCard>
+        <VCard
+          class="pa-4 mb-7"
+          :title="t('orders.product_list')"
+        >
+          <VCardText>
+            <UCTable
+              only-go-to
+              :headers="headersProducts"
+              :items="orderInfo.cart?.products"
+              @goToItem="goToItem"
+            />
+          </VCardText>
+        </VCard>
 
-      <VCard
-        class="pa-4 mb-7"
-        :title="t('orders.transactions_list')"
-      >
-        <VCardText>
-          <UCTable
-            :headers="headersTransactions"
-            :items="transactionList"
-          />
-        </VCardText>
-      </VCard>
-    </VCol>
-  </VRow>
+        <VCard
+          class="pa-4 mb-7"
+          :title="t('orders.transactions_list')"
+        >
+          <VCardText>
+            <UCTable
+              :headers="headersTransactions"
+              :items="transactionList"
+            />
+          </VCardText>
+        </VCard>
+      </VCol>
+    </VRow>
+  </VContainer>
 </template>
 
 <style scoped lang="scss">
