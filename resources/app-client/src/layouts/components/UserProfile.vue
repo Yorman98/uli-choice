@@ -1,13 +1,29 @@
 <script setup lang="ts">
 import avatar1 from "@images/avatars/avatar-1.png";
 import { useRouter } from 'vue-router'
+import { useUserStore } from '@/store/user'
 
+
+const userStore = useUserStore()
 const router = useRouter()
 
 function goToBudgets(budget: BudgetInterface) {
   router.push({
     name: 'budgets2',
   })
+}
+
+async function logout() {
+  try {
+    await userStore.logout()
+
+    router.push({
+      name: 'login',
+    })
+  }
+  catch (error) {
+    console.error(error)
+  }
 }
 </script>
 
@@ -82,7 +98,7 @@ function goToBudgets(budget: BudgetInterface) {
           <VDivider class="my-2" />
 
           <!-- 👉 Logout -->
-          <VListItem to="/login">
+          <VListItem @click="logout">
             <template #prepend>
               <VIcon class="me-2" icon="bx-log-out" size="22" />
             </template>
