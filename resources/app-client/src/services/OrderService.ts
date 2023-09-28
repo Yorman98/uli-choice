@@ -21,6 +21,16 @@ export class OrderService {
     return ApiService.put(`/orders/${payload.id}`, payload)
   }
 
+  // Download invoice PDF
+  getInvoice(id: number): AxiosPromise<Blob> {
+    return ApiService.get(`/orders/${id}/invoice`, {
+      headers: {
+        Accept: 'application/pdf',
+        responseType: 'blob'
+      }
+    })
+  } 
+  
   deleteOrder(id: number): AxiosPromise<OrderResponseInterface> {
     return ApiService.delete(`/orders/${id}`)
   }
