@@ -70,7 +70,7 @@ async function generateOrder() {
                 <VIcon @click="removeProductCart(item.id)">
                   mdi-close
                 </VIcon>
-                <img :src="`${STORAGE_PATH}${item.image}`" width="35" height="35" class="rounded-circle" alt="product-img"/>
+                <img :src="item.image" style="object-fit: cover;" width="35" height="35" class="rounded-circle" alt="product-img"/>
                 <div class="d-flex justify-space-between align-center w-75">
                   <p class="ma-0">{{ item.name }}</p>
                   <VTextField

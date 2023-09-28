@@ -57,8 +57,8 @@ async function logout() {
               </VListItemAction>
             </template>
 
-            <VListItemTitle class="font-weight-semibold"> John Doe </VListItemTitle>
-            <VListItemSubtitle>Admin</VListItemSubtitle>
+            <VListItemTitle class="font-weight-semibold"> {{ userStore.userInfo.firstName }} </VListItemTitle>
+            <VListItemSubtitle>{{ userStore.userInfo.role }}</VListItemSubtitle>
           </VListItem>
           <VDivider class="my-2" />
 
