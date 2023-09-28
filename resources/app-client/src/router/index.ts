@@ -134,6 +134,27 @@ const router = createRouter({
           ],
         },
         {
+          path: 'budgets2',
+          children: [
+            {
+              path: '',
+              name: 'budgets2',
+              meta: {
+                middleware: [authClient],
+              },
+              component: () => import('@/pages/budgets/UCBudgetsByClient.vue'),
+            },
+            {
+              path: ':id',
+              name: 'budgetDetail2',
+              meta: {
+                middleware: [authClient],
+              },
+              component: () => import('@/pages/budgets/UCBudgetDetailByClient.vue'),
+            },
+          ],
+        },
+        {
           path: 'payment-methods',
           name: 'paymentMethods',
           component: () => import('@/pages/paymentMethods/UCPaymentMethods.vue'),
@@ -162,6 +183,27 @@ const router = createRouter({
           path: 'orders',
           name: 'ordersList',
           component: () => import('@/pages/orders/UCAdminOrdersList.vue'),
+        },
+        {
+          path: 'orders2',
+          children: [
+            {
+              path: '',
+              name: 'orders2',
+              meta: {
+                middleware: [authClient],
+              },
+              component: () => import('@/pages/orders/UCOrderListyClient.vue'),
+            },
+            {
+              path: ':id',
+              name: 'orderDetail2',
+              meta: {
+                middleware: [authClient],
+              },
+              component: () => import('@/pages/orders/UCOrderDetailByClient.vue'),
+            },
+          ],
         },
       ],
     },
