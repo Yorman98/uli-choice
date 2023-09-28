@@ -170,20 +170,6 @@ function getAttrsNames(attrs: Array<{ name: string }>): Array<string> {
   return attrs?.map((item) => item.name) || [];
 }
 
-const downloadPdf = async () => {
-  const response = await OrderService.getInvoice(2);
-  // Download blob pdf
-  const url = window.URL.createObjectURL(
-    new Blob([response.data], { type: "application/pdf" })
-  );
-  const link = document.createElement("a");
-  console.log(link);
-  link.href = url;
-  link.setAttribute("download", "invoice.pdf"); //or any other extension
-  document.body.appendChild(link);
-  link.click();
-};
-
 const path: any[] = [
   {
     title: t("global.home"),

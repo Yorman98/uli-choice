@@ -53,6 +53,17 @@ async function deleteItem (orderId) {
 async function editItem (orderId) {
   // router.push({ name: 'editOrderForm', params: { orderId } })
 }
+
+async function getInvoice(order) {
+  const response = await OrderService.getInvoice(order.id);
+  const linkSource = `data:application/pdf;base64,${response.data}`;
+  const downloadLink = document.createElement("a");
+  const fileName = `Invoice-${order.reference}.pdf`;
+  downloadLink.href = linkSource;
+  downloadLink.download = fileName;
+  downloadLink.click()
+};
+
 </script>
 
 <template>
@@ -85,6 +96,7 @@ async function editItem (orderId) {
           :onlyEdit="true"
           :items="orders"
           @editItem="editItem"
+          @getInvoice="getInvoice"
           @deleteItem="deleteItem"
         />
       </VCardText>

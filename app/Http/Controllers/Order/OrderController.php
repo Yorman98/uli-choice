@@ -300,9 +300,10 @@ class OrderController extends Controller
                 'status'
             ])->findOrFail($id);
 
-            $pdf = \PDF::loadView('invoice', ['order' => $order])->set_option('PDF_VERSION', '1.4')->setPaper('a4');
-            
-            return $pdf->stream('invoice.pdf');
+
+            $pdf = \PDF::loadView('invoice', ['order' => $order])->setPaper('a4', 'landscape')->setWarnings(false);
+
+            return chunk_split(base64_encode($pdf->output()));
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
