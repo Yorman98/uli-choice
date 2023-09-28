@@ -129,6 +129,24 @@ const userStore = useUserStore()
           },
         }"
       />
+      <VerticalNavLink
+        :item="{
+          title: $t('navbar.orders'),
+          icon: 'mdi-text-box-outline',
+          to: {
+            name: 'orders2',
+          },
+        }"
+      />
+      <VerticalNavLink
+        :item="{
+          title: $t('navbar.budgets'),
+          icon: 'mdi-currency-usd',
+          to: {
+            name: 'budgets2',
+          },
+        }"
+      />
 
       <!-- 👉 Orders -->
       <VerticalNavSectionTitle

@@ -22,6 +22,14 @@ defineProps({
     type: Boolean,
     default: false,
   },
+  editAndGoto: {
+    type: Boolean,
+    default: false,
+  },
+  onlyGoTo: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 const emit = defineEmits(['editItem', 'deleteItem', 'goToItem'])
@@ -56,7 +64,7 @@ function deleteItem(item: NonNullable<unknown>) {
 
         <VList>
           <VListItem
-            v-if="hasSubItems"
+            v-if="hasSubItems || editAndGoto || onlyGoTo"
             @click="goToItem(item)"
           >
             <template #prepend>
@@ -67,7 +75,7 @@ function deleteItem(item: NonNullable<unknown>) {
           </VListItem>
 
           <VListItem
-            v-if="hasSubItems || onlyEdit"
+            v-if="hasSubItems || editAndGoto || onlyEdit"
             @click="editItem(item)"
           >
             <template #prepend>
@@ -77,7 +85,10 @@ function deleteItem(item: NonNullable<unknown>) {
             <VListItemTitle v-text="$t('global.edit')" />
           </VListItem>
 
-          <VListItem @click="deleteItem(item)">
+          <VListItem
+            v-if="!editAndGoto && !onlyGoTo"
+            @click="deleteItem(item)"
+          >
             <template #prepend>
               <VIcon icon="mdi-delete-outline" />
             </template>

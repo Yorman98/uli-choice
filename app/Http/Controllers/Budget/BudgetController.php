@@ -158,6 +158,7 @@ class BudgetController extends Controller
             'product_links' => $request->get('product_links'), // optional
             'price' => $request->get('price'), // optional
             'cost' => $request->get('cost'), // optional
+            'message' => $request->get('msg') // optional
         ]);
 
         // Attach user to budget
@@ -168,11 +169,16 @@ class BudgetController extends Controller
             // Get user
             $user = $budget->user()->first();
 
-            // Send an email to the user
-            Mail::raw($request->msg, function ($message) use ($user){
-                $message->to($user->email)
-                ->subject('Budget updated');
-            });
+            try {
+                // Send an email to the user
+                Mail::raw($request->msg, function ($message) use ($user){
+                    $message->to($user->email)
+                    ->subject('Budget updated');
+                });
+            } catch (\Throwable $th) {
+                // Log error
+                echo $th->getMessage();
+            }
         }
 
         // Response

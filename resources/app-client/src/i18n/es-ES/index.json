@@ -38,7 +38,11 @@
       "products": "Productos",
       "amount": "Monto",
       "date": "Fecha",
-      "product_url": "Enlace del producto"
+      "product_url": "Enlace del producto",
+      "product_name": "Nombre del producto",
+      "total_amount": "Monto total",
+      "notes": "Nota",
+      "payment_method": "Método de pago"
     },
     "welcome": "Bienvenido",
     "error": "Ha ocurrido un error.",
@@ -147,7 +151,8 @@
   },
   "budgets": {
     "create_budget": "Crear cotización",
-    "add_product_link": "Añadir enlace de producto",
+    "edit_budget": "Editar cotización",
+    "add_product_link": "Añadir enlace del producto",
     "price": "Monto cotizado",
     "search_by_customer": "Buscar por cliente",
     "details":"Detalles de la cotización",
@@ -157,7 +162,8 @@
     "cost": "Costo unitario",
     "cost_total": "Costo total",
     "message": "Mensaje de respuesta",
-    "button_message": "Enviar mensaje al cliente"
+    "button_message": "Enviar mensaje al cliente",
+    "request_budget": "Solicitar cotización"
   },
   "transaction": {
     "store_transaction": "Transacciones realizadas",
@@ -199,5 +205,14 @@
     "price_unit": "Precio unitario",
     "products_cant": "Cantidad de productos",
     "total_price": "Precio total"
+  },
+  "orders": {
+    "id":"Número de orden",
+    "amount": "Monto total",
+    "reference": "Número de referencia",
+    "client": "Cliente",
+    "product_list": "Lista de productos",
+    "transactions_list": "Lista de transacciones",
+    "remaining_amount": "Monto por pagar"
   }
 }
