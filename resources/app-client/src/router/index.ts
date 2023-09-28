@@ -56,24 +56,24 @@ const router = createRouter({
           name: 'attributesGroups',
           component: () => import('@/pages/attributes/UCAttributeGroups .vue'),
           meta: {
-            middleware: [authAdmin]
-          }
+            middleware: [authAdmin],
+          },
         },
         {
           path: 'attributes/list/:id',
           name: 'attributesList',
           component: () => import('@/pages/attributes/UCAttributesList.vue'),
           meta: {
-            middleware: [authAdmin]
-          }
+            middleware: [authAdmin],
+          },
         },
         {
           path: 'categories',
           name: 'categories',
           component: () => import('@/pages/categories/UCCategories.vue'),
           meta: {
-            middleware: [authAdmin]
-          }
+            middleware: [authAdmin],
+          },
         },
         {
           path: 'users',
@@ -88,8 +88,8 @@ const router = createRouter({
           name: 'subCategories',
           component: () => import('@/pages/categories/UCCategories.vue'),
           meta: {
-            middleware: [authAdmin]
-          }
+            middleware: [authAdmin],
+          },
         },
         {
           path: 'product-list',
@@ -99,24 +99,24 @@ const router = createRouter({
               path: '',
               component: () => import('@/pages/product/UCProductsList.vue'),
               meta: {
-                middleware: [authAdmin]
-              }
+                middleware: [authAdmin],
+              },
             },
             {
               path: 'new-product',
               name: 'formProduct',
               component: () => import('@/pages/product/UCFormProduct.vue'),
               meta: {
-                middleware: [authAdmin]
-              }
+                middleware: [authAdmin],
+              },
             },
             {
               path: 'edit-product/:id',
               name: 'editFormProduct',
               component: () => import('@/pages/product/UCFormProduct.vue'),
               meta: {
-                middleware: [authAdmin]
-              }
+                middleware: [authAdmin],
+              },
             },
           ],
         },
@@ -125,8 +125,8 @@ const router = createRouter({
           name: 'purchase',
           component: () => import('@/pages/purchases/UCPurchases.vue'),
           meta: {
-            middleware: [authAdmin]
-          }
+            middleware: [authAdmin],
+          },
         },
         {
           path: 'providers',
@@ -158,7 +158,78 @@ const router = createRouter({
           ],
         },
         {
-          path: 'budgets2',
+          path: 'payment-methods',
+          name: 'paymentMethods',
+          component: () => import('@/pages/transactions/UCPaymentMethods.vue'),
+          meta: {
+            middleware: [authAdmin],
+          },
+        },
+        {
+          path: 'transactions',
+          name: 'transactions',
+          component: () => import('@/pages/transactions/UCTransactions.vue'),
+        },
+        {
+          path: 'orders',
+          children: [
+            {
+              path: 'add-order',
+              name: 'addOrderForm',
+              component: () => import('@/pages/orders/UCOrderForm.vue'),
+              meta: {
+                middleware: [authAdmin],
+              },
+            },
+            {
+              path: 'edit-order/:id',
+              name: 'editOrderForm',
+              component: () => import('@/pages/orders/UCOrderEdit.vue'),
+              meta: {
+                middleware: [authAdmin],
+              },
+            },
+          ],
+        },
+        {
+          path: 'cart',
+          name: 'cartPage',
+          component: () => import('@/pages/cart/UCCartPage.vue'),
+          meta: {
+            middleware: [authAdmin, authClient],
+          },
+        },
+        {
+          path: 'orders',
+          name: 'ordersList',
+          component: () => import('@/pages/orders/UCAdminOrdersList.vue'),
+          meta: {
+            middleware: [authAdmin],
+          },
+        },
+      ],
+    },
+    {
+      path: '/',
+      component: () => import('../layouts/blank.vue'),
+      children: [
+        {
+          path: 'products',
+          children: [
+            {
+              name: 'products',
+              path: '',
+              component: () => import('@/pages/product/UCProductsCard.vue'),
+            },
+            {
+              path: ':id',
+              name: 'product',
+              component: () => import('@/pages/product/UCSingleProduct.vue'),
+            },
+          ],
+        },
+        {
+          path: 'my-budgets',
           children: [
             {
               path: '',
@@ -179,57 +250,7 @@ const router = createRouter({
           ],
         },
         {
-          path: 'payment-methods',
-          name: 'paymentMethods',
-          component: () => import('@/pages/transactions/UCPaymentMethods.vue'),
-          meta: {
-            middleware: [authAdmin]
-          }
-        },
-        {
-          path: 'transactions',
-          name: 'transactions',
-          component: () => import('@/pages/transactions/UCTransactions.vue'),
-        },
-        {
-          path: 'orders',
-          children: [
-            {
-              path: 'add-order',
-              name: 'addOrderForm',
-              component: () => import('@/pages/orders/UCOrderForm.vue'),
-              meta: {
-                middleware: [authAdmin]
-              }
-            },
-            {
-              path: 'edit-order/:id',
-              name: 'editOrderForm',
-              component: () => import('@/pages/orders/UCOrderEdit.vue'),
-              meta: {
-                middleware: [authAdmin]
-              }
-            },
-          ],
-        },
-        {
-          path: 'cart',
-          name: 'cartPage',
-          component: () => import('@/pages/cart/UCCartPage.vue'),
-          meta: {
-            middleware: [authAdmin, authClient]
-          }
-        },
-        {
-          path: 'orders',
-          name: 'ordersList',
-          component: () => import('@/pages/orders/UCAdminOrdersList.vue'),
-          meta: {
-            middleware: [authAdmin]
-          }
-        },
-        {
-          path: 'orders2',
+          path: 'my-orders',
           children: [
             {
               path: '',
@@ -246,27 +267,6 @@ const router = createRouter({
                 middleware: [authClient],
               },
               component: () => import('@/pages/orders/UCOrderDetailByClient.vue'),
-            },
-          ],
-        },
-      ],
-    },
-    {
-      path: '/',
-      component: () => import('../layouts/blank.vue'),
-      children: [
-        {
-          path: 'products',
-          children: [
-            {
-              name: 'products',
-              path: '',
-              component: () => import('@/pages/product/UCProductsCard.vue'),
-            },
-            {
-              path: ':id',
-              name: 'product',
-              component: () => import('@/pages/product/UCSingleProduct.vue'),
             },
           ],
         },

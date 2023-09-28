@@ -18,7 +18,7 @@ const path: Ref<any[]> = ref([
     title: t('global.home'),
     disabled: false,
     to: {
-      name: 'adminDashboard',
+      name: 'products',
     },
   },
   {
