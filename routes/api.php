@@ -17,6 +17,7 @@ use App\Http\Controllers\Product\ProductVariationController;
 use App\Http\Controllers\Order\OrderController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\Budget\BudgetController;
+use App\Http\Controllers\Analytic\AnalyticController;
 
 
 /*
@@ -240,6 +241,20 @@ Route::middleware('auth:sanctum')->group(static function () {
     Route::resource('budgets', BudgetController::class)->except(['create', 'edit', 'update']);
     Route::put('budgets/{id}/from-user', [BudgetController::class, 'updateFromUser']);
     Route::put('budgets/{id}', [BudgetController::class, 'update'])->middleware('isAdmin');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Analytic Routes
+    |--------------------------------------------------------------------------
+    |
+    | Here is where you can register analytic routes for your application.
+    |
+    */
+    Route::group(['prefix' => 'analytics'], static function () {
+        Route::get('/order-statistics', [AnalyticController::class, 'orderStatistics']);
+        Route::get('/general', [AnalyticController::class, 'generalStatistics']);
+    });
 });
 
 // Export products to CSV

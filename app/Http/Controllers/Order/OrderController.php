@@ -59,8 +59,26 @@ class OrderController extends Controller
                 'total_cost' => $total_cost
             ]);
 
+            /*
+            * Validate variation stock is available
+            */
+            foreach ($cart->products as $product) {   
+                if ($product->quantity > $product->variation->stock) {
+                    return response()->json([
+                        'success' => false,
+                        'errors' => 'Product ' . $product->product->name . ' | SKU: ' . $product->variation->sku  . ' is out of stock'
+                    ], 422);
+                }
+            }
+
             $order = Order::create($request->all());
 
+            // Reduce product variation stock after create order
+            foreach ($cart->products as $product) {
+                $product->variation->stock -= $product->quantity;
+                $product->variation->save();
+            }
+            
             // Set cart active status to false
             $cart->active = false;
             $cart->save();

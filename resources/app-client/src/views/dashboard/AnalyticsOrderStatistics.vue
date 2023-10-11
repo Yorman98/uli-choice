@@ -84,7 +84,7 @@ const chartOptions = computed(() => {
 
 const orders = [
   {
-    amount: '82.5k',
+    amount: '82.52k',
     title: 'Electronic',
     avatarColor: 'primary',
     subtitle: 'Mobile, Earbuds, TV',
