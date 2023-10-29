@@ -27,6 +27,7 @@
             :headers="headers"
             :items="categories"
             :hasSubItems="false"
+            onlyEdit
             @editItem="editItem"
             @goToItem="goToCategory"
             @deleteItem="deleteItem"
