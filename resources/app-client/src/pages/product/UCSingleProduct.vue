@@ -29,10 +29,11 @@ const cartInfo: UnwrapNestedRefs<ProductCartRequestInterface> = reactive({
 } as ProductCartRequestInterface);
 
 async function saveProductsCart() {
-  await ProductService.addProductCart(cartInfo).then((resp) => {
+  await ProductService.addProductCart(cartInfo)
+  .then((resp) => {
     userStore.fetchProductsCart(userStore.getUserInfo.id);
+    cartInfo.quantity = 0;
   });
-  cartInfo.quantity = 0;
 }
 
 onMounted(async () => {
@@ -103,9 +104,9 @@ const attrData =
   }) ?? [];
 
 const filterCombinations = (combinations: any[], selections: any[]) => {
+    
   if (
-    Object.keys(selections)?.length === 0 ||
-    combinations.length != Object.keys(selections).length
+    Object.keys(selections)?.length === 0 
   ) {
     return [];
   }
@@ -150,7 +151,7 @@ function findMatchingVariation(variations: any[], combinations: any[][]): any | 
     return matchingVariation;
   } else {
     Object.assign(cartInfo, {
-      product_id: null,
+      product_id: product.value.id,
       variation_id: null,
       quantity: 0,
     });
@@ -200,7 +201,7 @@ const headers: any[] = [
           <div class="thumbnail-section pa-3">
             <v-carousel>
               <v-carousel-item
-                :src="match.image || product.image"
+                :src="match.image || 'https://i.pinimg.com/564x/36/85/37/368537ab800464ee9b14d843e117ab01.jpg'"
                 cover
               ></v-carousel-item>
             </v-carousel>
