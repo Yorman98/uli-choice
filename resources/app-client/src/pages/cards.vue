@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import CardBasic from '@/views/pages/cards/card-basic/CardBasic.vue'
 import CardNavigation from '@/views/pages/cards/card-basic/CardNavigation.vue'
-import CardSolid from '@/views/pages/cards/card-basic/CardSolid.vue'
 </script>
 
 <template>
@@ -21,7 +20,5 @@ import CardSolid from '@/views/pages/cards/card-basic/CardSolid.vue'
     <p class="text-2xl mt-14 mb-6 ">
       Solid Cards
     </p>
-
-    <CardSolid />
   </div>
 </template>

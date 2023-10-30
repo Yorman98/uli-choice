@@ -148,7 +148,7 @@ class ClientController extends Controller
                 
         // Update user
         $client->update([
-            'first_name' => $request->name,
+            'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $request->email,
             'phone_number' => $request->get('phone_number'), // optional
@@ -167,7 +167,7 @@ class ClientController extends Controller
      * This function deletes a specific client identified by its ID.
      *
      * @param  int  $id The ID of the client to delete.
-     * @return \Illuminate\Http\Response A JSON response containing the deleted client if successful.
+     * @return \Illuminate\Http\JsonResponse A JSON response containing the deleted client if successful.
      *                                     - If validation fails for the ID, 'success' will be false, and 'errors' will contain the validation errors.  
      *                                    - If the client with the given ID is not found, 'success' will be false, and 'message' will indicate 'User not found'.
      */

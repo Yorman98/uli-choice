@@ -28,8 +28,7 @@ class Product extends Model
         'name',
         'slug',
         'code',
-        'description',
-        'image'
+        'description'
     ];
 
     /**

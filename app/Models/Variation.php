@@ -11,6 +11,8 @@ class Variation extends Model
 {
     use HasFactory;
 
+    protected $hidden = ['pivot'];
+
     /**
      * The attributes that are mass assignable.
      *
@@ -21,7 +23,8 @@ class Variation extends Model
         'sku',
         'price',
         'cost',
-        'stock'
+        'stock',
+        'image'
     ];
 
     /**
@@ -39,6 +42,6 @@ class Variation extends Model
      */
     public function attributes(): BelongsToMany
     {
-        return $this->belongsToMany(Attribute::class);
+        return $this->belongsToMany(Attribute::class, 'variation_attribute')->withTimestamps();
     }
 }

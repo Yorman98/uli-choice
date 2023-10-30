@@ -18,7 +18,7 @@ const illustrationJohn = computed(() => global.name.value === 'dark' ? illustrat
       >
         <VCardItem>
           <VCardTitle class="text-md-h5 text-primary">
-            Congratulations John! 🎉
+            Congratulations! 🎉
           </VCardTitle>
         </VCardItem>
 
