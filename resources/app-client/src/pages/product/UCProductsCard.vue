@@ -3,6 +3,7 @@ import type { Ref } from 'vue'
 import { ref } from 'vue'
 import type { ProductInterface } from '@/store/types/ProductInterface'
 import ProductService from '@/services/ProductService'
+import { STORAGE_PATH } from '@/utils/constants'
 
 const productsList: Ref<ProductInterface[]> = ref([])
 
@@ -40,7 +41,7 @@ onMounted(async () => {
             max-width="350"
           >
             <VImg
-              :src="product.image"
+              :src="`${STORAGE_PATH}/${product.image}`"
               :alt="product.name"
               cover="true"
               height="300px"

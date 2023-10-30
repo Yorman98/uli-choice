@@ -6,6 +6,7 @@ import { useRouter } from "vue-router";
 import ProductService from "@/services/ProductService";
 import { useUserStore } from "@/store/user";
 import OrderService from "@/services/OrderService";
+import { STORAGE_PATH } from '@/utils/constants'
 
 const userStore = useUserStore();
 
@@ -201,7 +202,14 @@ const headers: any[] = [
           <div class="thumbnail-section pa-3">
             <v-carousel>
               <v-carousel-item
-                :src="match.image || 'https://i.pinimg.com/564x/36/85/37/368537ab800464ee9b14d843e117ab01.jpg'"
+                v-if="match.image"
+                :src="`${STORAGE_PATH}/${match.image}`"
+                cover
+              ></v-carousel-item>
+
+              <v-carousel-item
+                v-else
+                :src="'https://i.pinimg.com/564x/36/85/37/368537ab800464ee9b14d843e117ab01.jpg'"
                 cover
               ></v-carousel-item>
             </v-carousel>

@@ -41,19 +41,19 @@ const path: Ref<any[]> = ref([
 const status: Ref<any[]> = ref([
   {
     name: t('global.status.pending'),
-    value: 1,
+    value: '1',
   },
   {
     name: t('global.status.processing'),
-    value: 2,
+    value: '2',
   },
   {
     name: t('global.status.completed'),
-    value: 3,
+    value: '3',
   },
   {
     name: t('global.status.cancelled'),
-    value: 4,
+    value: '4',
   },
 ])
 

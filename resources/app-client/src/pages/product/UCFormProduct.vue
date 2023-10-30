@@ -91,12 +91,12 @@ async function initData () {
     });
     variants.value.forEach((item: any, index: number) => {
       variants.value[index].group = item.attributes.map(attribute => {
-        return attribute.attribute_group_id
+        return attribute.attribute_group_id.toString()
       });
     });
     variants.value.map((item: any, index: number) => {
       variants.value[index].attributes = item.attributes.map(attribute => {
-        return attribute.id;
+        return attribute.id.toString()
       });
     });
     product.categories = productResponse.data.data.categories.map((category: number) => category.id)
@@ -190,7 +190,12 @@ async function saveProductVariant () {
 
 async function fetchAttributes (groupId: number) {
   const attributesResponse = await AttributeService.getAttributesGroupById(groupId)
-  attributes.value.push(attributesResponse.data.attributeGroup.attributes)
+  let attribute = attributesResponse.data.attributeGroup.attributes;
+  attribute = attribute.map((item: any) => {
+    item.id = item.id.toString();
+    return item;
+  });
+  attributes.value.push(attribute);
 }
 
 function setGroup (groupId: number, index: number) {

@@ -44,10 +44,10 @@ const headers: any[] = [
 ]
 
 const status: any[] = [
-  { text: t('global.status.pending'), value: 1 },
-  { text: t('global.status.processing'), value: 2 },
-  { text: t('global.status.completed'), value: 3 },
-  { text: t('global.status.cancelled'), value: 4 },
+  { text: t('global.status.pending'), value: '1' },
+  { text: t('global.status.processing'), value: '2' },
+  { text: t('global.status.completed'), value: '3' },
+  { text: t('global.status.cancelled'), value: '4' },
 ]
 
 const budgetsList: Ref<BudgetInterface[]> = ref([])
