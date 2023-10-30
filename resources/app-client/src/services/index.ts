@@ -4,7 +4,7 @@ import router from '@/router'
 
 const apiClient: AxiosInstance = axios.create({
   // TODO: Create env var
-  baseURL: 'http://localhost:8000/api',
+  baseURL: 'https://uli-api.develtwist.me/api',
   headers: {
     'Content-type': 'application/json',
     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
