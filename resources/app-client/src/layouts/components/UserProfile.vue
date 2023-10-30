@@ -80,24 +80,6 @@ async function logout() {
             <VListItemTitle>Settings</VListItemTitle>
           </VListItem>
 
-          <!-- 👉 Cotizaciones -->
-          <VListItem link @click="goToBudgets" class="">
-            <template #prepend>
-              <VIcon class="me-2" icon="bx-dollar" size="22" />
-            </template>
-
-            <VListItemTitle>Cotizaciones</VListItemTitle>
-          </VListItem>
-
-          <!-- 👉 Ordenes -->
-          <VListItem link @click="goToOrders" class="">
-            <template #prepend>
-              <VIcon class="me-2" icon="bx-package" size="22" />
-            </template>
-
-            <VListItemTitle>Ordenes</VListItemTitle>
-          </VListItem>
-
           <!-- 👉 FAQ -->
           <VListItem link class="d-none">
             <template #prepend>

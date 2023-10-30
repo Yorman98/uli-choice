@@ -90,7 +90,6 @@
   "products": {
     "products_list": "Lista de productos",
     "add_product": "Agregar producto",
-    "export_products": "Exportar productos",
     "attributes": {
       "attributes_group_title": "Grupo de atributos",
       "create_group_attribute": "Crear grupo de atributos",
@@ -149,69 +148,5 @@
     "purchase_data": "Datos de la compra",
     "provider_data": "Datos del proveedor",
     "edit_purchase": "Editar compra"
-  },
-  "budgets": {
-    "create_budget": "Crear cotización",
-    "edit_budget": "Editar cotización",
-    "add_product_link": "Añadir enlace del producto",
-    "price": "Monto cotizado",
-    "search_by_customer": "Buscar por cliente",
-    "details":"Detalles de la cotización",
-    "products_list": "Lista de productos",
-    "id": "Número de cotización",
-    "amount": "Monto total cotizado",
-    "cost": "Costo unitario",
-    "cost_total": "Costo total",
-    "message": "Mensaje de respuesta",
-    "button_message": "Enviar mensaje al cliente",
-    "request_budget": "Solicitar cotización"
-  },
-  "transaction": {
-    "store_transaction": "Transacciones realizadas",
-    "add_transaction": "Agregar transacción",
-    "add_payment_method": "Agregar método de pago",
-    "transactions_not_available": "Transacciones no disponibles",
-    "total_paid": "Total pagado",
-    "total_pending": "Total pendiente",
-    "edit_transaction": "Editar transacción"
-  },
-  "cart": {
-    "my_products": "Mis productos",
-    "no_products": "No hay productos en el carrito",
-    "total": "Total",
-    "my_product_list": "Mi lista de productos",
-    "product": "Producto",
-    "price": "Precio",
-    "options": "Opciones",
-    "summary": "Resumen",
-    "articles": "{article} Artículos",
-    "generate_order": "Generar orden",
-    "see_cart": "Ver carrito",
-    "details_cart": "Detalles del carrito",
-    "price_unit": "Precio unitario",
-    "products_cant": "Cantidad de productos",
-    "total_price": "Precio total"
-  },
-  "orders": {
-    "store_orders": "Ordenes realizadas",
-    "orders_list": "Lista de ordenes",
-    "update_order": "Actualizar orden",
-    "orders_title": "Ordenes",
-    "add_order": "Agregar orden",
-    "add_to_order": "Agregar a orden",
-    "price_unit": "Precio unitario",
-    "products_cant": "Cantidad de productos",
-    "total_price": "Precio total",
-    "id":"Número de orden",
-    "amount": "Monto total",
-    "reference": "Número de referencia",
-    "client": "Cliente",
-    "product_list": "Lista de productos",
-    "transactions_list": "Lista de transacciones",
-    "remaining_amount": "Monto por pagar",
-    "order_details": "Detalles de la orden",
-    "process_order": "Procesar orden",
-    "order_status": "Estado de la orden",
-    "add_cart": "Agregar al carrito"
   }
 }

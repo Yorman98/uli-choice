@@ -3,7 +3,6 @@
 import VerticalNavSectionTitle from '@/@layouts/components/VerticalNavSectionTitle.vue'
 import VerticalNavLayout from '@layouts/components/VerticalNavLayout.vue'
 import VerticalNavLink from '@layouts/components/VerticalNavLink.vue'
-import FloatingCart from '@/components/global/UCFloatingCart.vue'
 import { useUserStore } from '@/store/user'
 import { ADMIN } from '@/utils/constants'
 // Components
@@ -45,8 +44,6 @@ const userStore = useUserStore()
         <VSpacer />
 
         <NavbarThemeSwitcher class="me-2" />
-
-        <FloatingCart />
 
         <UserProfile />
       </div>
@@ -125,40 +122,6 @@ const userStore = useUserStore()
           icon: 'mdi-shopping-outline',
           to: {
             name: 'purchase',
-          },
-        }"
-      />
-
-      <!-- 👉 Orders -->
-      <VerticalNavSectionTitle
-        :item="{
-          heading: $t('navbar.sales'),
-        }"
-      />
-      <VerticalNavLink
-        :item="{
-          title: $t('navbar.methods_payment'),
-          icon: 'mdi-cash-multiple',
-          to: {
-            name: 'paymentMethods',
-          },
-        }"
-      />
-      <VerticalNavLink
-        :item="{
-          title: $t('navbar.orders'),
-          icon: 'mdi-text-box-outline',
-          to: {
-            name: 'ordersList',
-          },
-        }"
-      />
-      <VerticalNavLink
-        :item="{
-          title: $t('navbar.budgets'),
-          icon: 'mdi-currency-usd',
-          to: {
-            name: 'budgets',
           },
         }"
       />

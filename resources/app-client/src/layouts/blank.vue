@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import FloatingCart from "@/components/global/UCFloatingCart.vue";
 import UserProfile from '@/layouts/components/UserProfile.vue'
 import logo from "@images/logo-uli.png";
 </script>
@@ -18,8 +17,6 @@ import logo from "@images/logo-uli.png";
               </RouterLink>
             </div>
             <div class="header-right">
-              <FloatingCart />
-
               <UserProfile />
             </div>
           </header>

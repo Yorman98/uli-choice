@@ -136,64 +136,6 @@ const router = createRouter({
             middleware: [authAdmin],
           },
         },
-        {
-          path: 'budgets',
-          children: [
-            {
-              path: '',
-              name: 'budgets',
-              meta: {
-                middleware: [authAdmin],
-              },
-              component: () => import('@/pages/budgets/UCBudgets.vue'),
-            },
-            {
-              path: ':id',
-              name: 'budgetDetail',
-              meta: {
-                middleware: [authAdmin],
-              },
-              component: () => import('@/pages/budgets/UCBudgetDetail.vue'),
-            },
-          ],
-        },
-        {
-          path: 'payment-methods',
-          name: 'paymentMethods',
-          component: () => import('@/pages/paymentMethods/UCPaymentMethods.vue'),
-          meta: {
-            middleware: [authAdmin],
-          },
-        },
-        {
-          path: 'orders',
-          children: [
-            {
-              path: '',
-              name: 'ordersList',
-              component: () => import('@/pages/orders/UCAdminOrdersList.vue'),
-              meta: {
-                middleware: [authAdmin],
-              },
-            },
-            {
-              path: 'add-order',
-              name: 'addOrderForm',
-              component: () => import('@/pages/orders/UCOrderForm.vue'),
-              meta: {
-                middleware: [authAdmin],
-              },
-            },
-            {
-              path: 'edit-order/:id',
-              name: 'editOrderForm',
-              component: () => import('@/pages/orders/UCOrderEdit.vue'),
-              meta: {
-                middleware: [authAdmin],
-              },
-            },
-          ],
-        },
       ],
     },
     {
@@ -218,56 +160,6 @@ const router = createRouter({
               meta: {
                 middleware: [authClient],
               },
-            },
-          ],
-        },
-        {
-          path: 'cart',
-          name: 'cartPage',
-          component: () => import('@/pages/cart/UCCartPage.vue'),
-          meta: {
-            middleware: [authClient],
-          },
-        },
-        {
-          path: 'my-budgets',
-          children: [
-            {
-              path: '',
-              name: 'budgets2',
-              meta: {
-                middleware: [authClient],
-              },
-              component: () => import('@/pages/budgets/UCBudgetsByClient.vue'),
-            },
-            {
-              path: ':id',
-              name: 'budgetDetail2',
-              meta: {
-                middleware: [authClient],
-              },
-              component: () => import('@/pages/budgets/UCBudgetDetailByClient.vue'),
-            },
-          ],
-        },
-        {
-          path: 'my-orders',
-          children: [
-            {
-              path: '',
-              name: 'orders2',
-              meta: {
-                middleware: [authClient],
-              },
-              component: () => import('@/pages/orders/UCOrderListyClient.vue'),
-            },
-            {
-              path: ':id',
-              name: 'orderDetail2',
-              meta: {
-                middleware: [authClient],
-              },
-              component: () => import('@/pages/orders/UCOrderDetailByClient.vue'),
             },
           ],
         },

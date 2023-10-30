@@ -120,17 +120,6 @@ async function addToCart(product: ProductInterface) {
             </p>
           </VBtn>
 
-          <VBtn outlined>
-            <a class="text-button ma-0 text-white" href="http://127.0.0.1:8000/api/export-inventory" target="_blank">
-              <VIcon
-                color="white pr-2"
-                size="35"
-              >
-                mdi-file-excel-outline
-              </VIcon>
-                {{ t('products.export_products') }}
-            </a>
-          </VBtn>
         </VCardTitle>
 
         <VCardText>

@@ -7,7 +7,6 @@ import type { LoginResponseInterface, RegisterResponseInterface } from '@/servic
 import type { UserResponseInterface } from '@/services/types/UserTypes'
 import type { ProductCartRequestInterface } from '@/store/types/ProductInterface'
 import ProductService from '@/services/ProductService'
-import OrderService from '@/services/OrderService'
 
 export const useUserStore = defineStore('user', {
   state: () => {
