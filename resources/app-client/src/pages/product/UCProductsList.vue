@@ -121,7 +121,7 @@ async function addToCart(product: ProductInterface) {
           </VBtn>
 
           <VBtn outlined>
-            <a class="text-button ma-0 text-white" href="http://127.0.0.1:8000/api/export-inventory" target="_blank">
+            <a class="text-button ma-0 text-white" href="https://uli-api.develtwist.me/api/export-inventory" target="_blank">
               <VIcon
                 color="white pr-2"
                 size="35"
